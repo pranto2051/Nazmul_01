@@ -1,0 +1,152 @@
+---
+/**
+ * ═════════════════════════════════════════════════════════════
+ * [COMPONENT] PublicationStats — Publication Statistics Widget (Right Rail)
+ * ─────────────────────────────────────────────────────────────
+ * Purpose     : Sticky sidebar on publications page displaying totals,
+ *               breakdown by publication type, and bulk BibTeX export.
+ * Props       : metrics (PublicationMetrics), allBibtex
+ * ═════════════════════════════════════════════════════════════
+ */
+
+import type { PublicationMetrics } from '../../lib/publications';
+
+interface Props {
+  metrics: PublicationMetrics;
+  allBibtex: string;
+}
+
+const { metrics, allBibtex } = Astro.props;
+---
+
+<aside class="pub-stats-rail card-surface" aria-label="Publication Overview & Export">
+  <div class="rail-header">
+    <h3 class="rail-title font-mono">Overview & Metrics</h3>
+    <span class="rail-total-badge">{metrics.total} Works</span>
+  </div>
+
+  <div class="metrics-breakdown-list">
+    <div class="breakdown-row">
+      <span class="metric-label">Conference Papers</span>
+      <span class="metric-val font-mono">{metrics.conferenceCount}</span>
+    </div>
+    <div class="breakdown-row">
+      <span class="metric-label">Journal Manuscripts</span>
+      <span class="metric-val font-mono">{metrics.journalCount}</span>
+    </div>
+    <div class="breakdown-row">
+      <span class="metric-label">Book Chapters</span>
+      <span class="metric-val font-mono">{metrics.bookChapterCount}</span>
+    </div>
+    <div class="breakdown-row">
+      <span class="metric-label">First-Author Lead</span>
+      <span class="metric-val font-mono">{metrics.firstAuthorCount}</span>
+    </div>
+    <div class="breakdown-row">
+      <span class="metric-label">Active Years</span>
+      <span class="metric-val font-mono">{metrics.earliestYear} – {metrics.latestYear}</span>
+    </div>
+  </div>
+
+  <div class="rail-actions">
+    <!-- Download All BibTeX as .bib file -->
+    <button
+      type="button"
+      id="export-all-bib-btn"
+      class="btn btn-secondary btn-sm"
+      style="width: 100%;"
+      data-all-bib={allBibtex}
+    >
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+        <polyline points="7 10 12 15 17 10"></polyline>
+        <line x1="12" y1="15" x2="12" y2="3"></line>
+      </svg>
+      <span>Export All as .bib</span>
+    </button>
+  </div>
+</aside>
+
+<style>
+  .pub-stats-rail {
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    position: sticky;
+    top: 96px;
+  }
+
+  .rail-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid var(--border-hairline);
+  }
+
+  .rail-title {
+    font-size: 0.95rem;
+    color: var(--text-primary);
+  }
+
+  .rail-total-badge {
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: var(--accent);
+    background: var(--accent-subtle);
+    padding: 0.15rem 0.55rem;
+    border-radius: var(--radius-sm);
+  }
+
+  .metrics-breakdown-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .breakdown-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 0.9rem;
+  }
+
+  .metric-label {
+    color: var(--text-secondary);
+  }
+
+  .metric-val {
+    font-weight: 700;
+    color: var(--text-primary);
+  }
+
+  .rail-actions {
+    padding-top: 0.75rem;
+    border-top: 1px solid var(--border-hairline);
+  }
+</style>
+
+<script>
+  function setupBibtexExport() {
+    const btn = document.getElementById('export-all-bib-btn');
+    if (!btn) return;
+
+    btn.addEventListener('click', () => {
+      const bibData = btn.getAttribute('data-all-bib') || '';
+      const blob = new Blob([bibData], { type: 'text/plain;charset=utf-8' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'nazmul_hasan_shouvo_publications.bib';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    });
+  }
+
+  setupBibtexExport();
+  document.addEventListener('astro:page-load', setupBibtexExport);
+</script>

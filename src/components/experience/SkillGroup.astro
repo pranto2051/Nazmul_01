@@ -1,0 +1,92 @@
+---
+/**
+ * ═════════════════════════════════════════════════════════════
+ * [CARD] SkillGroup — Categorized Technical Competencies
+ * ─────────────────────────────────────────────────────────────
+ * Purpose     : Clean semantic badge groups for programming languages,
+ *               frameworks, and research methodologies (no arbitrary percentage bars).
+ * Props       : skillGroup (category, skills)
+ * Data Source : src/content/skills/skills.yaml
+ * ═════════════════════════════════════════════════════════════
+ */
+
+interface Props {
+  skillGroup: {
+    id: string;
+    category: string;
+    order: number;
+    skills: string[];
+  };
+}
+
+const { skillGroup } = Astro.props;
+---
+
+<div class="skill-group-box card-surface" id={`skill-${skillGroup.id}`}>
+  <div class="skill-group-header">
+    <span class="skill-group-indicator font-mono">0{skillGroup.order}</span>
+    <h3 class="skill-group-title">{skillGroup.category}</h3>
+  </div>
+
+  <div class="skills-chips-cloud">
+    {skillGroup.skills.map((skill) => (
+      <span class="chip skill-chip font-mono">
+        <span class="skill-dot"></span>
+        <span>{skill}</span>
+      </span>
+    ))}
+  </div>
+</div>
+
+<style>
+  .skill-group-box {
+    padding: 1.75rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+
+  .skill-group-header {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid var(--border-hairline);
+  }
+
+  .skill-group-indicator {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--accent);
+    background: var(--accent-subtle);
+    padding: 0.15rem 0.45rem;
+    border-radius: var(--radius-sm);
+  }
+
+  .skill-group-title {
+    font-size: 1.15rem;
+    color: var(--text-primary);
+  }
+
+  .skills-chips-cloud {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .skill-chip {
+    padding: 0.45rem 0.85rem;
+    font-size: 0.85rem;
+    border-radius: var(--radius-sm);
+    gap: 0.4rem;
+    background: var(--bg-subtle);
+    color: var(--text-primary);
+  }
+
+  .skill-dot {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--accent-2);
+  }
+</style>

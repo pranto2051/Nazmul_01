@@ -1,0 +1,52 @@
+# ═════════════════════════════════════════════════════════════
+# [CARD] Researcher Profile — Personal & Academic Information
+# ─────────────────────────────────────────────────────────────
+# [DATA]    Core site profile data (Hero, About, Footer, CV)
+# [MANUAL-UPDATE] Edit the fields below to update personal records.
+# [VERIFY]  Academic integrity: Phone number is hidden on site by default (showPhoneOnSite: false).
+# ═════════════════════════════════════════════════════════════
+
+- id: profile
+  name: "Nazmul Hasan Shouvo"
+  shortName: "Nazmul"
+  monogram: "NHS"
+  currentRole: "Research Assistant (Placement) & MSc Data Intelligence Student"
+  institution: "Canterbury Christ Church University (CCCU), United Kingdom"
+  location: "Canterbury, Kent, United Kingdom"
+  email: "mdnazmulhasanshouv@gmail.com"
+  phone: "+44 7757 738008"
+  showPhoneOnSite: false # [MANUAL-UPDATE] Set to true to display phone publicly on site
+  positioningLine: "Building explainable, clinically meaningful AI for medical image analysis."
+  bioShort: "Early-career researcher focused on medical image analysis, 3D CT segmentation, and Explainable AI (XAI). MSc Data Intelligence student & Research Assistant at Canterbury Christ Church University, UK."
+  bioLong:
+    - "Nazmul Hasan Shouvo is a graduate researcher and Research Assistant (Placement) at Canterbury Christ Church University (CCCU), UK, currently pursuing an MSc in Data Intelligence with Placement."
+    - "His research centers on applied artificial intelligence in healthcare and clinical decision support, with a specialized focus on pancreatic CT image analysis, 3D volumetric segmentation using Vision Transformers, and Explainable AI (XAI)."
+    - "With 10 accepted peer-reviewed international conference publications (IEEE QPAIN, IEEE ICCIT, IEEE ICECTE, PECCII), 3 accepted book chapters with Bentham Science Publishers, and 2 journal manuscripts, he is committed to building rigorous, transparent, and clinician-aligned machine learning models."
+  researchInterests:
+    - "Artificial Intelligence"
+    - "Machine Learning"
+    - "Deep Learning"
+    - "Medical Image Analysis"
+    - "Explainable AI (XAI)"
+    - "3D Medical Image Segmentation"
+    - "Vision Transformers"
+    - "AI for Healthcare"
+    - "Trustworthy AI"
+  currentFocus:
+    title: "Pancreatic CT Image Analysis & 3D Volumetric Segmentation"
+    description: "Deep learning and Vision Transformer–based architectures for automated pancreatic CT segmentation, class imbalance alleviation, and clinical interpretability."
+    highlights:
+      - "3D volumetric segmentation utilizing hybrid Vision Transformer and CNN architectures"
+      - "Robust preprocessing and HU windowing for low-contrast soft-tissue pancreas boundaries"
+      - "Post-hoc explainability methods and feature attribution for radiologist validation"
+  links:
+    # [LINK] Academic & professional profiles (empty URLs are cleanly omitted from UI)
+    linkedin: "https://www.linkedin.com/in/nazmul-hasan-shouvo" # [VERIFY]
+    googleScholar: "" # [LINK] [MANUAL-UPDATE]
+    orcid: ""         # [LINK] [MANUAL-UPDATE]
+    github: ""        # [LINK] [MANUAL-UPDATE]
+    researchGate: ""  # [LINK] [MANUAL-UPDATE]
+    website: ""
+  availability: "Open to PhD and research opportunities" # [DRAFT]
+  lastUpdated: "2026-10-12"
+  verified: true

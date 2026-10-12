@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000" width="1000" height="1000">
+  <rect width="1000" height="1000" fill="#080d14"/>
+  <defs>
+    <linearGradient id="meshGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#38bdf8"/>
+      <stop offset="100%" stop-color="#2dd4bf"/>
+    </linearGradient>
+  </defs>
+  <!-- Wireframe polygons simulating 3D Slicer surface -->
+  <g stroke="url(#meshGrad)" stroke-width="1.2" fill="rgba(56,189,248,0.08)" transform="translate(100, 150)">
+    <polygon points="200,350 280,300 360,330 300,390"/>
+    <polygon points="280,300 380,260 450,290 360,330"/>
+    <polygon points="380,260 500,240 560,280 450,290"/>
+    <polygon points="500,240 620,230 670,270 560,280"/>
+    <polygon points="620,230 720,250 710,310 670,270"/>
+    <polygon points="300,390 360,330 450,370 380,430"/>
+    <polygon points="360,330 450,290 540,340 450,370"/>
+    <polygon points="450,290 560,280 630,330 540,340"/>
+    <polygon points="560,280 670,270 690,340 630,330"/>
+    <polygon points="380,430 450,370 520,420 460,470"/>
+    <polygon points="450,370 540,340 600,400 520,420"/>
+  </g>
+  <text x="50" y="80" font-family="monospace" font-size="22" fill="#38bdf8">3D ANATOMICAL SURFACE MESH</text>
+  <text x="50" y="115" font-family="monospace" font-size="16" fill="#94a3b8">ISOSURFACE RECONSTRUCTION · 3D SLICER</text>
+  <rect x="850" y="910" width="100" height="40" rx="6" fill="rgba(56,189,248,0.1)" stroke="#38bdf8"/>
+  <text x="900" y="936" font-family="monospace" font-size="14" fill="#38bdf8" font-weight="bold" text-anchor="middle">DEMO</text>
+</svg>

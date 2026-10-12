@@ -1,0 +1,95 @@
+/**
+ * ═════════════════════════════════════════════════════════════
+ * [DESIGN] Print Stylesheet for A4 Academic CV
+ * ─────────────────────────────────────────────────────────────
+ * Dedicated print media styles for CV export and PDF generation:
+ * hides interactive UI, enforces crisp black text, white background,
+ * and standard academic A4 margins.
+ * ═════════════════════════════════════════════════════════════
+ */
+
+@media print {
+  @page {
+    size: A4;
+    margin: 1.5cm 1.5cm 1.5cm 1.5cm;
+  }
+
+  body {
+    background: #ffffff !important;
+    color: #111827 !important;
+    font-size: 10.5pt !important;
+    line-height: 1.4 !important;
+    font-family: 'Times New Roman', Times, serif !important;
+  }
+
+  /* Hide interactive / web-only chrome */
+  header,
+  footer,
+  .skip-link,
+  .theme-toggle,
+  .mobile-menu,
+  .scroll-progress,
+  .back-to-top,
+  .no-print,
+  .btn,
+  .aurora-bg {
+    display: none !important;
+  }
+
+  main {
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  .card-surface {
+    box-shadow: none !important;
+    border: none !important;
+    padding: 0 !important;
+    margin-bottom: 1.25rem !important;
+  }
+
+  h1, h2, h3 {
+    color: #000000 !important;
+    page-break-after: avoid;
+  }
+
+  h1 {
+    font-size: 18pt !important;
+    border-bottom: 1.5pt solid #111827;
+    padding-bottom: 4pt;
+    margin-bottom: 8pt;
+  }
+
+  h2 {
+    font-size: 13pt !important;
+    border-bottom: 0.75pt solid #6b7280;
+    padding-bottom: 2pt;
+    margin-top: 14pt;
+    margin-bottom: 6pt;
+  }
+
+  h3 {
+    font-size: 11pt !important;
+    margin-top: 6pt;
+    margin-bottom: 2pt;
+  }
+
+  p, li {
+    color: #1f2937 !important;
+    font-size: 10pt !important;
+  }
+
+  .print-page-break {
+    page-break-before: always;
+  }
+
+  .print-avoid-break {
+    page-break-inside: avoid;
+  }
+
+  a {
+    color: #111827 !important;
+    text-decoration: none !important;
+  }
+}

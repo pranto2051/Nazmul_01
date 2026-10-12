@@ -1,0 +1,125 @@
+/**
+ * ═════════════════════════════════════════════════════════════
+ * [DESIGN] Typography & Fluid Type Scale
+ * ─────────────────────────────────────────────────────────────
+ * Academic publication styling: editorial serif (Newsreader),
+ * modern sans-serif (Plus Jakarta Sans), and monospace (JetBrains Mono).
+ * ═════════════════════════════════════════════════════════════
+ */
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-serif);
+  color: var(--text-primary);
+  line-height: 1.2;
+  letter-spacing: -0.015em;
+  font-weight: 600;
+}
+
+/* Fluid Typographic Scale */
+.text-hero {
+  font-size: clamp(2.25rem, 5vw + 1rem, 4.25rem);
+  line-height: 1.08;
+  letter-spacing: -0.025em;
+  font-weight: 600;
+}
+
+.text-title-1 {
+  font-size: clamp(1.85rem, 3.5vw + 0.5rem, 2.75rem);
+  line-height: 1.15;
+}
+
+.text-title-2 {
+  font-size: clamp(1.4rem, 2.5vw + 0.5rem, 2rem);
+  line-height: 1.25;
+}
+
+.text-title-3 {
+  font-size: clamp(1.15rem, 1.5vw + 0.5rem, 1.45rem);
+  line-height: 1.35;
+}
+
+p, li, dd {
+  font-family: var(--font-sans);
+  color: var(--text-secondary);
+  font-size: 1.05rem;
+  line-height: 1.7;
+}
+
+.text-sm {
+  font-size: 0.9rem;
+  line-height: 1.55;
+}
+
+.text-xs {
+  font-size: 0.8rem;
+  line-height: 1.45;
+}
+
+.font-mono {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Academic Paper Title Treatment */
+.paper-title {
+  font-family: var(--font-serif);
+  font-size: 1.25rem;
+  line-height: 1.35;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+/* Authors List */
+.authors-list {
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+}
+
+.authors-list strong,
+.authors-list b {
+  color: var(--text-primary);
+  font-weight: 700;
+  text-decoration-line: underline;
+  text-decoration-thickness: 1.5px;
+  text-decoration-color: var(--accent);
+  text-underline-offset: 3px;
+}
+
+/* Venue Tag */
+.venue-name {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--accent);
+}
+
+/* Blockquotes & Callouts */
+blockquote {
+  border-left: 3px solid var(--accent);
+  padding-left: 1.25rem;
+  margin: 1.5rem 0;
+  font-style: italic;
+  color: var(--text-secondary);
+}
+
+code, kbd, samp, pre {
+  font-family: var(--font-mono);
+}
+
+code {
+  font-size: 0.88em;
+  padding: 0.15em 0.35em;
+  background-color: var(--bg-subtle);
+  border: 1px solid var(--border-hairline);
+  border-radius: var(--radius-sm);
+  color: var(--text-primary);
+}
+
+pre {
+  background-color: var(--bg-subtle);
+  border: 1px solid var(--border-hairline);
+  border-radius: var(--radius-md);
+  padding: 1.25rem;
+  overflow-x: auto;
+  font-size: 0.88rem;
+  line-height: 1.6;
+}

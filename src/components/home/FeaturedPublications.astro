@@ -1,0 +1,67 @@
+---
+/**
+ * ═════════════════════════════════════════════════════════════
+ * [SECTION] FeaturedPublications — Selected Flagship Publications
+ * ─────────────────────────────────────────────────────────────
+ * Purpose     : Highlight 3-4 key publications marked featured: true.
+ * Data Source : src/content/publications/publications.yaml
+ * [CARD]      PublicationCard
+ * ═════════════════════════════════════════════════════════════
+ */
+
+import SectionHeading from '../ui/SectionHeading.astro';
+import PublicationCard from '../publications/PublicationCard.astro';
+import type { PublicationItem } from '../../lib/publications';
+
+interface Props {
+  publications: PublicationItem[];
+}
+
+const { publications } = Astro.props;
+const featured = publications.filter((p) => p.featured).slice(0, 4);
+---
+
+<section id="featured-publications" class="section-padding container">
+  <div class="featured-header-row">
+    <SectionHeading
+      eyebrow="SCHOLARLY OUTPUT"
+      title="Featured Publications"
+      subtitle="Selected peer-reviewed articles focusing on medical image segmentation, Explainable AI, and clinical machine learning."
+    />
+    <a href="/publications" class="btn btn-secondary view-all-btn">
+      <span>View All ({publications.length})</span>
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <line x1="5" y1="12" x2="19" y2="12"></line>
+        <polyline points="12 5 19 12 12 19"></polyline>
+      </svg>
+    </a>
+  </div>
+
+  <div class="featured-cards-list">
+    {/* [CARD:PublicationCard] featured items list */}
+    {featured.map((pub) => (
+      <PublicationCard pub={pub} showThumbnail={true} />
+    ))}
+  </div>
+</section>
+
+<style>
+  .featured-header-row {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+    margin-bottom: 2rem;
+  }
+
+  .view-all-btn {
+    margin-bottom: 2.5rem;
+  }
+
+  .featured-cards-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+</style>

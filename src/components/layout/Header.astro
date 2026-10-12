@@ -1,0 +1,288 @@
+---
+/**
+ * ═════════════════════════════════════════════════════════════
+ * [COMPONENT] Header — Main Header & Navigation Bar
+ * ─────────────────────────────────────────────────────────────
+ * Purpose     : Brand identity, desktop navigation, theme toggle, and mobile menu trigger.
+ * Props       : activeHref (optional — highlights active route)
+ * Data Source : Default navigation array or content registry
+ * Used in     : src/layouts/BaseLayout.astro
+ * How to Edit : Update navLinks array below to add or modify routes.
+ * ═════════════════════════════════════════════════════════════
+ */
+
+import ThemeToggle from './ThemeToggle.astro';
+import MobileMenu from './MobileMenu.astro';
+
+interface Props {
+  activeHref?: string;
+}
+
+const { activeHref = '/' } = Astro.props;
+
+// [TEXT] Primary navigation routes
+const navLinks = [
+  { href: '/', label: 'Home' },
+  { href: '/research', label: 'Research' },
+  { href: '/publications', label: 'Publications' },
+  { href: '/experience', label: 'Experience' },
+  { href: '/projects', label: 'Projects' },
+  { href: '/gallery', label: 'Gallery' },
+  { href: '/cv', label: 'CV' },
+  { href: '/contact', label: 'Contact' },
+];
+---
+
+<header id="site-header" class="site-header">
+  <div class="container header-inner">
+    <!-- Brand / Monogram -->
+    <a href="/" class="brand-link" aria-label="Nazmul Hasan Shouvo - Home">
+      <span class="monogram-badge">NHS</span>
+      <span class="brand-name">
+        <span class="full-name">Nazmul Hasan Shouvo</span>
+        <span class="role-sub">Medical AI · ML</span>
+      </span>
+    </a>
+
+    <!-- Desktop Navigation -->
+    <nav class="desktop-nav" aria-label="Main Navigation">
+      <ul class="nav-list">
+        {navLinks.map((item) => {
+          const isActive = activeHref === item.href || (item.href !== '/' && activeHref.startsWith(item.href));
+          return (
+            <li>
+              <a
+                href={item.href}
+                class={`nav-link ${isActive ? 'active' : ''}`}
+                aria-current={isActive ? 'page' : undefined}
+              >
+                {item.label}
+              </a>
+            </li>
+          );
+        })}
+      </ul>
+    </nav>
+
+    <!-- Header Actions (Theme Toggle & CV Button & Mobile Trigger) -->
+    <div class="header-actions">
+      <ThemeToggle />
+
+      <a href="/cv" class="btn btn-primary btn-sm header-cv-btn">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+          <polyline points="7 10 12 15 17 10"></polyline>
+          <line x1="12" y1="15" x2="12" y2="3"></line>
+        </svg>
+        <span>CV</span>
+      </a>
+
+      <!-- Mobile Hamburger Button -->
+      <button
+        type="button"
+        id="mobile-menu-trigger"
+        class="mobile-trigger-btn"
+        aria-label="Open navigation menu"
+        aria-expanded="false"
+        aria-controls="mobile-menu-drawer"
+      >
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <line x1="3" y1="12" x2="21" y2="12"></line>
+          <line x1="3" y1="6" x2="21" y2="6"></line>
+          <line x1="3" y1="18" x2="21" y2="18"></line>
+        </svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<MobileMenu navLinks={navLinks} cvUrl="/cv" activeHref={activeHref} />
+
+<style>
+  .site-header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: var(--bg-glass);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border-subtle);
+    transition: all var(--transition-base);
+  }
+
+  .site-header.scrolled {
+    border-bottom-color: var(--border-hairline);
+    background: var(--bg-overlay);
+    box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.1);
+  }
+
+  [data-theme="dark"] .site-header.scrolled {
+    box-shadow: 0 12px 36px -10px rgba(0, 0, 0, 0.6);
+  }
+
+  .header-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 74px;
+    gap: 1.5rem;
+  }
+
+  .brand-link {
+    display: flex;
+    align-items: center;
+    gap: 0.9rem;
+    text-decoration: none;
+    color: var(--text-primary);
+    transition: transform var(--transition-fast);
+  }
+
+  .brand-link:hover {
+    transform: translateY(-1px);
+  }
+
+  .monogram-badge {
+    width: 38px;
+    height: 38px;
+    border-radius: var(--radius-sm);
+    background: var(--gradient-accent);
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-mono);
+    font-weight: 800;
+    font-size: 0.88rem;
+    letter-spacing: 0.05em;
+    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.35);
+    transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+  }
+
+  .brand-link:hover .monogram-badge {
+    transform: scale(1.05);
+    box-shadow: 0 6px 16px rgba(37, 99, 235, 0.5);
+  }
+
+  .brand-name {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .full-name {
+    font-family: var(--font-sans);
+    font-weight: 700;
+    font-size: 1.1rem;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+    color: var(--text-primary);
+  }
+
+  .role-sub {
+    font-size: 0.72rem;
+    color: var(--accent);
+    font-family: var(--font-mono);
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  .desktop-nav {
+    display: flex;
+    align-items: center;
+  }
+
+  .nav-list {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    list-style: none;
+    background: var(--bg-subtle);
+    padding: 0.3rem 0.4rem;
+    border-radius: var(--radius-full);
+    border: 1px solid var(--border-hairline);
+  }
+
+  .nav-link {
+    display: block;
+    padding: 0.45rem 0.95rem;
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--text-secondary);
+    text-decoration: none;
+    border-radius: var(--radius-full);
+    transition: all var(--transition-fast);
+  }
+
+  .nav-link:hover {
+    color: var(--text-primary);
+    background: var(--bg-surface);
+    box-shadow: var(--shadow-sm);
+  }
+
+  .nav-link.active {
+    color: var(--accent);
+    background: var(--bg-surface);
+    font-weight: 600;
+    box-shadow: var(--shadow-sm);
+    border: 1px solid var(--border-hairline);
+  }
+
+  .header-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .header-cv-btn {
+    display: inline-flex;
+  }
+
+  .mobile-trigger-btn {
+    display: none;
+    background: var(--bg-subtle);
+    border: 1px solid var(--border-hairline);
+    color: var(--text-primary);
+    width: 44px;
+    height: 44px;
+    min-width: 44px;
+    min-height: 44px;
+    border-radius: var(--radius-md);
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background-color var(--transition-fast), border-color var(--transition-fast), color var(--transition-fast);
+  }
+
+  .mobile-trigger-btn:hover,
+  .mobile-trigger-btn:focus-visible {
+    background: var(--accent-subtle);
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+
+  @media (max-width: 960px) {
+    .desktop-nav,
+    .header-cv-btn {
+      display: none;
+    }
+
+    .mobile-trigger-btn {
+      display: flex;
+    }
+  }
+</style>
+
+<script>
+  function handleHeaderScroll() {
+    const header = document.getElementById('site-header');
+    if (!header) return;
+    if (window.scrollY > 15) {
+      header.classList.add('scrolled');
+    } else {
+      header.classList.remove('scrolled');
+    }
+  }
+
+  window.addEventListener('scroll', handleHeaderScroll, { passive: true });
+  document.addEventListener('astro:page-load', handleHeaderScroll);
+</script>

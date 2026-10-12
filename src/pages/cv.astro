@@ -1,0 +1,403 @@
+---
+/**
+ * ═════════════════════════════════════════════════════════════
+ * [SECTION] CV Page (`/cv`) — Web & Print-Optimized Academic CV
+ * ─────────────────────────────────────────────────────────────
+ * Purpose     : Clean single-source curriculum vitae for in-browser review
+ *               and crisp A4 printing or PDF export.
+ * Data Source : profile.yaml, education.yaml, experience.yaml, publications.yaml, awards.yaml, skills.yaml
+ * ═════════════════════════════════════════════════════════════
+ */
+
+import { getCollection } from 'astro:content';
+import PrintLayout from '../layouts/PrintLayout.astro';
+import { formatAuthorsHtml, type PublicationItem } from '../lib/publications';
+
+const siteEntries = await getCollection('site');
+const profile = siteEntries[0]?.data;
+
+const rawEducation = await getCollection('education');
+const educationList = rawEducation.map((e) => e.data);
+
+const rawExperience = await getCollection('experience');
+const experienceList = rawExperience.map((e) => e.data);
+
+const rawPublications = await getCollection('publications');
+const publications: PublicationItem[] = rawPublications.map((p) => p.data);
+// Sort newest first
+publications.sort((a, b) => b.year - a.year);
+
+const rawTeaching = await getCollection('teaching');
+const teachingList = rawTeaching.map((t) => t.data);
+
+const rawAwards = await getCollection('awards');
+const awardsList = rawAwards.map((a) => a.data);
+
+const rawSkills = await getCollection('skills');
+const skillsList = rawSkills.map((s) => s.data).sort((a, b) => a.order - b.order);
+---
+
+<PrintLayout
+  title={`Curriculum Vitae — ${profile.name}`}
+  description={`Academic Curriculum Vitae of ${profile.name} — Research Assistant at Canterbury Christ Church University (CCCU), UK.`}
+  pdfDownloadUrl="/cv/YOUR_NAME_CV.pdf"
+>
+  <div class="cv-sheet-wrapper container">
+    <!-- CV Header -->
+    <header class="cv-header-block">
+      <h1 class="cv-name">{profile.name}</h1>
+      <p class="cv-role-title">
+        {profile.currentRole} · {profile.institution}
+      </p>
+
+      <div class="cv-contact-row font-mono">
+        <span>Canterbury, Kent, United Kingdom</span>
+        <span class="sep">|</span>
+        <a href={`mailto:${profile.email}`}>{profile.email}</a>
+        {profile.showPhoneOnSite && profile.phone && (
+          <>
+            <span class="sep">|</span>
+            <span>{profile.phone}</span>
+          </>
+        )}
+        {profile.links.linkedin && (
+          <>
+            <span class="sep">|</span>
+            <a href={profile.links.linkedin} target="_blank" rel="noopener noreferrer">LinkedIn</a>
+          </>
+        )}
+      </div>
+
+      <p class="cv-summary-line">
+        <strong>Research Focus:</strong> {profile.positioningLine}
+      </p>
+    </header>
+
+    <!-- CV Body Sections -->
+    <div class="cv-sections-body">
+      <!-- 1. Education -->
+      <section class="cv-section print-avoid-break">
+        <h2 class="cv-section-title font-mono">1. EDUCATION</h2>
+        <div class="cv-items-stack">
+          {educationList.map((edu) => (
+            <div class="cv-item">
+              <div class="cv-item-header">
+                <span class="cv-item-title">{edu.degree}</span>
+                <span class="cv-item-date font-mono">{edu.period}</span>
+              </div>
+              <p class="cv-item-inst">
+                {edu.institution}, {edu.location} — <strong>{edu.grade}</strong>
+              </p>
+              {edu.thesisTitle && (
+                <p class="cv-item-thesis">
+                  <em>Thesis:</em> "{edu.thesisTitle}"
+                </p>
+              )}
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <!-- 2. Academic & Research Experience -->
+      <section class="cv-section print-avoid-break">
+        <h2 class="cv-section-title font-mono">2. RESEARCH & PROFESSIONAL APPOINTMENTS</h2>
+        <div class="cv-items-stack">
+          {experienceList.map((exp) => (
+            <div class="cv-item">
+              <div class="cv-item-header">
+                <span class="cv-item-title">{exp.role}</span>
+                <span class="cv-item-date font-mono">{exp.period}</span>
+              </div>
+              <p class="cv-item-inst">
+                {exp.organisation}, {exp.location}
+              </p>
+              <ul class="cv-bullets-list">
+                {exp.bullets.map((b) => (
+                  <li>{b}</li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <!-- 3. Peer-Reviewed Publications -->
+      <section class="cv-section print-avoid-break">
+        <h2 class="cv-section-title font-mono">
+          3. PEER-REVIEWED PUBLICATIONS ({publications.length} WORKS)
+        </h2>
+        
+        <div class="cv-pubs-subgroup">
+          <h3 class="cv-subgroup-title font-mono">A. International Conferences (10)</h3>
+          <ol class="cv-pubs-numbered">
+            {publications.filter(p => p.type === 'conference').map((pub) => (
+              <li class="cv-pub-citation">
+                <span set:html={formatAuthorsHtml(pub.authors, profile.name)} />,
+                "{pub.title}",
+                <em>{pub.venue}</em>, {pub.year}
+                {pub.pages ? `, pp. ${pub.pages}` : ''}.
+                {pub.doi && ` DOI: ${pub.doi}`}
+              </li>
+            ))}
+          </ol>
+        </div>
+
+        <div class="cv-pubs-subgroup print-avoid-break" style="margin-top: 1rem;">
+          <h3 class="cv-subgroup-title font-mono">B. Scholarly Book Chapters (3 — Bentham Science)</h3>
+          <ol class="cv-pubs-numbered" start="11">
+            {publications.filter(p => p.type === 'book-chapter').map((pub) => (
+              <li class="cv-pub-citation">
+                <span set:html={formatAuthorsHtml(pub.authors, profile.name)} />,
+                "{pub.title}",
+                <em>{pub.venue}</em>, {pub.year} ({pub.status.replace('-', ' ')}).
+              </li>
+            ))}
+          </ol>
+        </div>
+
+        <div class="cv-pubs-subgroup print-avoid-break" style="margin-top: 1rem;">
+          <h3 class="cv-subgroup-title font-mono">C. Journal Manuscripts (2)</h3>
+          <ol class="cv-pubs-numbered" start="14">
+            {publications.filter(p => p.type === 'journal').map((pub) => (
+              <li class="cv-pub-citation">
+                <span set:html={formatAuthorsHtml(pub.authors, profile.name)} />,
+                "{pub.title}",
+                <em>{pub.venue}</em>, {pub.year} ({pub.status.replace('-', ' ')}).
+              </li>
+            ))}
+          </ol>
+        </div>
+      </section>
+
+      <!-- 4. Teaching & Mentoring -->
+      <section class="cv-section print-avoid-break">
+        <h2 class="cv-section-title font-mono">4. TEACHING & MENTORING</h2>
+        <div class="cv-items-stack">
+          {teachingList.map((t) => (
+            <div class="cv-item">
+              <div class="cv-item-header">
+                <span class="cv-item-title">{t.role}</span>
+                <span class="cv-item-date font-mono">{t.period}</span>
+              </div>
+              <p class="cv-item-inst">
+                {t.institution} — <em>{t.title}</em>
+              </p>
+              <p class="cv-item-desc">{t.description}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <!-- 5. Awards & Certifications -->
+      <section class="cv-section print-avoid-break">
+        <h2 class="cv-section-title font-mono">5. HONOURS, AWARDS & CERTIFICATIONS</h2>
+        <div class="cv-items-stack">
+          {awardsList.map((a) => (
+            <div class="cv-item">
+              <div class="cv-item-header">
+                <span class="cv-item-title">{a.title}</span>
+                <span class="cv-item-date font-mono">{a.year}</span>
+              </div>
+              <p class="cv-item-inst">{a.issuer}</p>
+              <p class="cv-item-desc">{a.description}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <!-- 6. Technical Skills -->
+      <section class="cv-section print-avoid-break">
+        <h2 class="cv-section-title font-mono">6. TECHNICAL & METHODOLOGICAL PROFICIENCIES</h2>
+        <div class="cv-skills-stack">
+          {skillsList.map((sg) => (
+            <div class="cv-skill-line">
+              <strong class="cv-skill-cat">{sg.category}:</strong>
+              <span class="cv-skill-items">{sg.skills.join(', ')}</span>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <!-- 7. References -->
+      <section class="cv-section print-avoid-break">
+        <h2 class="cv-section-title font-mono">7. REFERENCES</h2>
+        <p class="cv-references-line">Available on request.</p>
+      </section>
+    </div>
+  </div>
+</PrintLayout>
+
+<style>
+  .cv-sheet-wrapper {
+    max-width: 860px;
+    background: var(--bg-surface);
+    border: 1px solid var(--border-hairline);
+    border-radius: var(--radius-lg);
+    padding: clamp(2rem, 5vw, 4rem);
+    box-shadow: var(--shadow-card);
+    margin: 0 auto;
+  }
+
+  .cv-header-block {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 2px solid var(--text-primary);
+    margin-bottom: 2rem;
+  }
+
+  .cv-name {
+    font-size: clamp(2rem, 4vw, 2.75rem);
+    color: var(--text-primary);
+    line-height: 1.1;
+  }
+
+  .cv-role-title {
+    font-size: 1.1rem;
+    color: var(--accent);
+    font-weight: 600;
+  }
+
+  .cv-contact-row {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    margin-top: 0.25rem;
+  }
+
+  .cv-contact-row a {
+    color: var(--accent);
+    text-decoration: none;
+  }
+
+  .sep {
+    color: var(--border-hairline);
+  }
+
+  .cv-summary-line {
+    font-size: 0.95rem;
+    color: var(--text-secondary);
+    margin-top: 0.5rem;
+  }
+
+  .cv-sections-body {
+    display: flex;
+    flex-direction: column;
+    gap: 2.25rem;
+  }
+
+  .cv-section {
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+  }
+
+  .cv-section-title {
+    font-size: 1.05rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    color: var(--text-primary);
+    border-bottom: 1px solid var(--border-hairline);
+    padding-bottom: 0.35rem;
+  }
+
+  .cv-items-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 1.15rem;
+  }
+
+  .cv-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .cv-item-header {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+
+  .cv-item-title {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--text-primary);
+  }
+
+  .cv-item-date {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    font-weight: 600;
+  }
+
+  .cv-item-inst {
+    font-size: 0.95rem;
+    color: var(--text-secondary);
+  }
+
+  .cv-item-thesis {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+  }
+
+  .cv-bullets-list {
+    padding-left: 1.25rem;
+    margin-top: 0.35rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    font-size: 0.92rem;
+    color: var(--text-secondary);
+  }
+
+  .cv-subgroup-title {
+    font-size: 0.92rem;
+    font-weight: 700;
+    color: var(--accent);
+    margin-bottom: 0.5rem;
+  }
+
+  .cv-pubs-numbered {
+    padding-left: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .cv-pub-citation {
+    font-size: 0.92rem;
+    color: var(--text-secondary);
+    line-height: 1.5;
+  }
+
+  .cv-skills-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .cv-skill-line {
+    font-size: 0.92rem;
+    line-height: 1.5;
+  }
+
+  .cv-skill-cat {
+    color: var(--text-primary);
+  }
+
+  .cv-skill-items {
+    color: var(--text-secondary);
+  }
+
+  .cv-references-line {
+    font-size: 0.95rem;
+    color: var(--text-muted);
+    font-style: italic;
+  }
+</style>

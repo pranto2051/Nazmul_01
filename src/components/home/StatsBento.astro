@@ -1,0 +1,278 @@
+---
+/**
+ * ═════════════════════════════════════════════════════════════
+ * [SECTION] StatsBento — Bento Grid Statistics
+ * ─────────────────────────────────────────────────────────────
+ * Purpose     : Verified academic milestones, degrees, and count-up metrics.
+ * Data Source : src/lib/publications.ts (computed dynamically)
+ * ═════════════════════════════════════════════════════════════
+ */
+
+import CountUp from '../ui/CountUp.astro';
+import type { PublicationMetrics } from '../../lib/publications';
+
+interface Props {
+  metrics: PublicationMetrics;
+  mscGrade?: string;
+  bscCgpa?: string;
+}
+
+const {
+  metrics,
+  mscGrade = '70% (Distinction)',
+  bscCgpa = '3.84 / 4.00',
+} = Astro.props;
+---
+
+<section id="stats-bento" class="section-padding container">
+  <div class="bento-grid">
+    <!-- Tile 1: Conference Papers -->
+    <div class="bento-tile bento-highlight card-surface">
+      <div class="tile-header">
+        <span class="tile-tag font-mono">PEER-REVIEWED</span>
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="tile-icon">
+          <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"></path>
+          <polyline points="10 2 10 10 13 7 16 10 16 2"></polyline>
+        </svg>
+      </div>
+      <div class="tile-body">
+        <span class="tile-number">
+          <CountUp target={metrics.conferenceCount} suffix="" />
+        </span>
+        <h3 class="tile-label">International Conference Papers</h3>
+        <p class="tile-desc">IEEE QPAIN, IEEE ICCIT, IEEE ICECTE, PECCII & AI-Scientist-UK</p>
+      </div>
+    </div>
+
+    <!-- Tile 2: Book Chapters -->
+    <div class="bento-tile card-surface">
+      <div class="tile-header">
+        <span class="tile-tag font-mono">SCHOLARLY VOLUMES</span>
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="tile-icon">
+          <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
+          <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
+        </svg>
+      </div>
+      <div class="tile-body">
+        <span class="tile-number">
+          <CountUp target={metrics.bookChapterCount} suffix="" />
+        </span>
+        <h3 class="tile-label">Accepted Book Chapters</h3>
+        <p class="tile-desc">Bentham Science Publishers (2026, in press)</p>
+      </div>
+    </div>
+
+    <!-- Tile 3: Journal Manuscripts -->
+    <div class="bento-tile card-surface">
+      <div class="tile-header">
+        <span class="tile-tag font-mono">JOURNAL PIPELINE</span>
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="tile-icon">
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+          <polyline points="14 2 14 8 20 8"></polyline>
+          <line x1="16" y1="13" x2="8" y2="13"></line>
+          <line x1="16" y1="17" x2="8" y2="17"></line>
+        </svg>
+      </div>
+      <div class="tile-body">
+        <span class="tile-number">
+          <CountUp target={metrics.journalCount} suffix="" />
+        </span>
+        <h3 class="tile-label">Journal Manuscripts</h3>
+        <p class="tile-desc">Frontiers in Complex Dynamical Systems & Engineering Reports</p>
+      </div>
+    </div>
+
+    <!-- Tile 4: MSc Performance -->
+    <div class="bento-tile card-surface">
+      <div class="tile-header">
+        <span class="tile-tag font-mono">POSTGRADUATE</span>
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="tile-icon">
+          <path d="M22 10v6M2 10l10-5 10 5-10 5z"></path>
+          <path d="M6 12v5c3 3 9 3 12 0v-5"></path>
+        </svg>
+      </div>
+      <div class="tile-body">
+        <span class="tile-number font-mono">
+          <CountUp target={70} suffix="%" />
+        </span>
+        <h3 class="tile-label">MSc Average</h3>
+        <p class="tile-desc">{mscGrade} · CCCU, UK</p>
+      </div>
+    </div>
+
+    <!-- Tile 5: Undergraduate CGPA -->
+    <div class="bento-tile card-surface">
+      <div class="tile-header">
+        <span class="tile-tag font-mono">UNDERGRADUATE</span>
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="tile-icon">
+          <circle cx="12" cy="8" r="7"></circle>
+          <polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"></polyline>
+        </svg>
+      </div>
+      <div class="tile-body">
+        <span class="tile-number font-mono">
+          <CountUp target={3.84} decimals={2} suffix="" />
+        </span>
+        <h3 class="tile-label">BSc in CSE CGPA</h3>
+        <p class="tile-desc">{bscCgpa} · IUBAT High Distinction</p>
+      </div>
+    </div>
+
+    <!-- Tile 6: Lead / First Author Papers -->
+    <div class="bento-tile card-surface">
+      <div class="tile-header">
+        <span class="tile-tag font-mono">FIRST AUTHORSHIP</span>
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="tile-icon">
+          <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+        </svg>
+      </div>
+      <div class="tile-body">
+        <span class="tile-number">
+          <CountUp target={metrics.firstAuthorCount || 2} suffix="+" />
+        </span>
+        <h3 class="tile-label">Lead Author Investigations</h3>
+        <p class="tile-desc">IEEE QPAIN 2026, PECCII 2026</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .bento-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+  }
+
+  .bento-tile {
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 220px;
+    position: relative;
+    overflow: hidden;
+    background: var(--bg-surface);
+    border: 1px solid var(--border-hairline);
+    border-radius: var(--radius-xl);
+    box-shadow: var(--shadow-card);
+    transition: all var(--transition-smooth);
+  }
+
+  .bento-tile::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--accent), transparent);
+    opacity: 0;
+    transition: opacity var(--transition-base);
+  }
+
+  .bento-tile:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-hover);
+    border-color: rgba(56, 189, 248, 0.4);
+  }
+
+  .bento-tile:hover::before {
+    opacity: 1;
+  }
+
+  .bento-highlight {
+    background: linear-gradient(135deg, rgba(37, 99, 235, 0.05) 0%, rgba(6, 182, 212, 0.05) 100%);
+    border-color: rgba(37, 99, 235, 0.3);
+  }
+
+  [data-theme="dark"] .bento-highlight {
+    background: linear-gradient(135deg, rgba(56, 189, 248, 0.08) 0%, rgba(139, 92, 246, 0.06) 100%);
+    border-color: rgba(56, 189, 248, 0.35);
+  }
+
+  .tile-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1.5rem;
+  }
+
+  .tile-tag {
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.09em;
+    color: var(--accent);
+    background: var(--accent-subtle);
+    padding: 0.25rem 0.65rem;
+    border-radius: var(--radius-full);
+    border: 1px solid var(--border-hairline);
+  }
+
+  .tile-icon {
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 7px;
+    background: var(--bg-subtle);
+    border-radius: var(--radius-md);
+    color: var(--accent);
+    border: 1px solid var(--border-hairline);
+    transition: transform var(--transition-fast), color var(--transition-fast);
+  }
+
+  .bento-tile:hover .tile-icon {
+    transform: scale(1.1);
+    color: var(--accent);
+    background: var(--accent-subtle);
+  }
+
+  .tile-body {
+    display: flex;
+    flex-direction: column;
+    gap: 0.45rem;
+  }
+
+  .tile-number {
+    font-size: clamp(2.5rem, 4vw, 3.25rem);
+    font-weight: 800;
+    line-height: 1;
+    letter-spacing: -0.03em;
+    color: var(--text-primary);
+  }
+
+  .bento-highlight .tile-number {
+    background: var(--gradient-accent);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .tile-label {
+    font-size: 1.125rem;
+    font-family: var(--font-sans);
+    font-weight: 700;
+    color: var(--text-primary);
+    line-height: 1.3;
+    letter-spacing: -0.01em;
+  }
+
+  .tile-desc {
+    font-size: 0.88rem;
+    color: var(--text-muted);
+    line-height: 1.5;
+  }
+
+  @media (max-width: 960px) {
+    .bento-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (max-width: 640px) {
+    .bento-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

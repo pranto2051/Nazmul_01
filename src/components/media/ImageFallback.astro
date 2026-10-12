@@ -1,0 +1,98 @@
+---
+/**
+ * ═════════════════════════════════════════════════════════════
+ * [COMPONENT] ImageFallback — Diagnostic Placeholder Fallback
+ * ─────────────────────────────────────────────────────────────
+ * Purpose     : Clean diagnostic fallback frame with clinical crosshair
+ *               rendered when an image is missing or loading fails.
+ * Props       : caption, aspect ('square' | 'wide' | 'tall' | 'portrait')
+ * Used In     : src/components/media/Figure.astro
+ * ═════════════════════════════════════════════════════════════
+ */
+
+interface Props {
+  caption?: string;
+  aspect?: 'square' | 'wide' | 'tall' | 'portrait';
+  className?: string;
+}
+
+const {
+  caption = 'Scientific asset in preparation',
+  aspect = 'wide',
+  className = '',
+} = Astro.props;
+---
+
+<div class={`image-fallback aspect-${aspect} ${className}`} role="img" aria-label={caption}>
+  <div class="fallback-center">
+    <div class="crosshair-icon">
+      <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <circle cx="12" cy="12" r="9"/>
+        <line x1="12" y1="3" x2="12" y2="7"/>
+        <line x1="12" y1="17" x2="12" y2="21"/>
+        <line x1="3" y1="12" x2="7" y2="12"/>
+        <line x1="17" y1="12" x2="21" y2="12"/>
+      </svg>
+    </div>
+    <span class="fallback-caption">{caption}</span>
+    <span class="fallback-tag">DIAGNOSTIC VIEWPORT · COMING SOON</span>
+  </div>
+</div>
+
+<style>
+  .image-fallback {
+    width: 100%;
+    background-color: var(--bg-subtle);
+    border: 1px dashed var(--border-hairline);
+    border-radius: var(--radius-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .aspect-square {
+    aspect-ratio: 1 / 1;
+  }
+
+  .aspect-wide {
+    aspect-ratio: 16 / 9;
+  }
+
+  .aspect-tall {
+    aspect-ratio: 3 / 4;
+  }
+
+  .aspect-portrait {
+    aspect-ratio: 4 / 5;
+  }
+
+  .fallback-center {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 1.5rem;
+    text-align: center;
+    color: var(--text-muted);
+  }
+
+  .crosshair-icon {
+    color: var(--accent);
+    opacity: 0.8;
+  }
+
+  .fallback-caption {
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: var(--text-secondary);
+  }
+
+  .fallback-tag {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    letter-spacing: 0.05em;
+    color: var(--text-muted);
+  }
+</style>

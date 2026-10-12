@@ -1,0 +1,121 @@
+---
+/**
+ * ═════════════════════════════════════════════════════════════
+ * [SECTION] VenuesStrip — Publication Venues Strip
+ * ─────────────────────────────────────────────────────────────
+ * Purpose     : Text-only list of peer-reviewed publication venues
+ *               (strict plain styling, zero third-party logos).
+ * ═════════════════════════════════════════════════════════════
+ */
+
+const venues = [
+  'IEEE QPAIN',
+  'IEEE ICCIT',
+  'IEEE ICECTE',
+  'PECCII',
+  'Frontiers in Complex Dynamical Systems',
+  'Wiley Engineering Reports',
+  'Bentham Science Publishers',
+];
+---
+
+<section id="venues-strip" class="venues-strip-section" aria-label="Publication Venues">
+  <div class="container venues-container">
+    <div class="venues-label-group">
+      <span class="venues-pulse" aria-hidden="true"></span>
+      <span class="venues-label font-mono">PEER-REVIEWED & ACCEPTED AT</span>
+    </div>
+    <div class="venues-list">
+      {venues.map((venue) => (
+        <span class="venue-pill">
+          <span class="venue-name-text">{venue}</span>
+        </span>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .venues-strip-section {
+    padding: 1.75rem 0;
+    background: var(--bg-surface);
+    border-top: 1px solid var(--border-hairline);
+    border-bottom: 1px solid var(--border-hairline);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .venues-container {
+    display: flex;
+    align-items: center;
+    gap: 1.75rem;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .venues-label-group {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    flex-shrink: 0;
+  }
+
+  .venues-pulse {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 10px var(--accent);
+    animation: pulseGlow 2s infinite ease-in-out;
+  }
+
+  @keyframes pulseGlow {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.4; transform: scale(0.85); }
+  }
+
+  .venues-label {
+    font-size: 0.76rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    color: var(--accent);
+  }
+
+  .venues-list {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .venue-pill {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.4rem 0.95rem;
+    background: var(--bg-subtle);
+    border: 1px solid var(--border-hairline);
+    border-radius: var(--radius-full);
+    transition: all var(--transition-fast);
+    box-shadow: var(--shadow-sm);
+  }
+
+  .venue-pill:hover {
+    background: var(--bg-surface-elevated);
+    border-color: var(--accent);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-card);
+  }
+
+  .venue-name-text {
+    font-family: var(--font-sans);
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+    transition: color var(--transition-fast);
+  }
+
+  .venue-pill:hover .venue-name-text {
+    color: var(--accent);
+  }
+</style>

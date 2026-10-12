@@ -1,0 +1,315 @@
+---
+/**
+ * ═════════════════════════════════════════════════════════════
+ * [SECTION] Contact Page (`/contact`) — Academic Contact
+ * ─────────────────────────────────────────────────────────────
+ * Purpose     : Email (with instant copy button), physical location,
+ *               scholarly profile links, and outreach details.
+ * Data Source : src/content/site/profile.yaml
+ * ═════════════════════════════════════════════════════════════
+ */
+
+import { getCollection } from 'astro:content';
+import PageLayout from '../layouts/PageLayout.astro';
+import SectionHeading from '../components/ui/SectionHeading.astro';
+
+const siteEntries = await getCollection('site');
+const profile = siteEntries[0]?.data;
+const externalFormUrl = process.env.PUBLIC_CONTACT_FORM_URL || '';
+---
+
+<PageLayout
+  title="Contact & Supervision Inquiries | Nazmul Hasan Shouvo"
+  description="Get in touch with Nazmul Hasan Shouvo for PhD opportunities, research collaboration, and academic correspondence."
+  activeHref="/contact"
+>
+  <div class="contact-page-container container section-padding">
+    <SectionHeading
+      eyebrow="COMMUNICATION & INQUIRIES"
+      title="Contact & Academic Inquiries"
+      subtitle="Open to discussions regarding doctoral research opportunities, academic research placement collaborations, and paper co-authorship."
+    />
+
+    <div class="contact-grid-layout">
+      <!-- Direct Contact Card -->
+      <div class="contact-main-card card-surface">
+        <h3 class="paper-title card-heading">Direct Correspondence</h3>
+        <p class="card-intro">
+          For academic inquiries, supervision discussions, or code and data requests regarding our publications, email is preferred.
+        </p>
+
+        <!-- Email Box with Copy Button -->
+        <div class="email-action-box">
+          <div class="email-text-col">
+            <span class="box-label font-mono">PRIMARY EMAIL ADDRESS</span>
+            <a href={`mailto:${profile.email}`} class="email-link font-mono">{profile.email}</a>
+          </div>
+          <button type="button" id="copy-email-btn" class="btn btn-secondary btn-sm" data-email={profile.email}>
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect>
+              <path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path>
+            </svg>
+            <span id="copy-btn-label">Copy Email</span>
+          </button>
+        </div>
+
+        {profile.showPhoneOnSite && profile.phone && (
+          <div class="phone-box">
+            <span class="box-label font-mono">DIRECT TELEPHONE</span>
+            <span class="phone-val font-mono">{profile.phone}</span>
+          </div>
+        )}
+
+        <!-- Geographic Location -->
+        <div class="location-box">
+          <span class="box-label font-mono">ACADEMIC LOCATION</span>
+          <p class="location-text">
+            <strong>Canterbury Christ Church University (CCCU)</strong><br />
+            School of Computing, Engineering & Advanced Technology<br />
+            Canterbury, Kent, United Kingdom
+          </p>
+        </div>
+
+        {externalFormUrl && (
+          <div class="external-form-box">
+            <a href={externalFormUrl} target="_blank" rel="noopener noreferrer" class="btn btn-primary" style="width: 100%;">
+              <span>Open External Contact Form ↗</span>
+            </a>
+          </div>
+        )}
+      </div>
+
+      <!-- Scholarly Profiles Card -->
+      <div class="scholarly-profiles-card card-surface">
+        <h3 class="paper-title card-heading">Academic Profiles & Code</h3>
+        <p class="card-intro">
+          Verify citations, preprint updates, open-source repositories, and professional credentials across scholarly networks.
+        </p>
+
+        <ul class="scholarly-links-list">
+          {profile.links.linkedin && (
+            <li>
+              <a href={profile.links.linkedin} target="_blank" rel="noopener noreferrer" class="scholarly-link-row">
+                <span class="profile-name">LinkedIn Professional Network</span>
+                <span class="profile-arrow">↗</span>
+              </a>
+            </li>
+          )}
+          {profile.links.googleScholar && (
+            <li>
+              <a href={profile.links.googleScholar} target="_blank" rel="noopener noreferrer" class="scholarly-link-row">
+                <span class="profile-name">Google Scholar Citations</span>
+                <span class="profile-arrow">↗</span>
+              </a>
+            </li>
+          )}
+          {profile.links.orcid && (
+            <li>
+              <a href={profile.links.orcid} target="_blank" rel="noopener noreferrer" class="scholarly-link-row">
+                <span class="profile-name">ORCID Researcher ID</span>
+                <span class="profile-arrow">↗</span>
+              </a>
+            </li>
+          )}
+          {profile.links.github && (
+            <li>
+              <a href={profile.links.github} target="_blank" rel="noopener noreferrer" class="scholarly-link-row">
+                <span class="profile-name">GitHub Open-Source Repositories</span>
+                <span class="profile-arrow">↗</span>
+              </a>
+            </li>
+          )}
+        </ul>
+
+        <div class="availability-callout">
+          <span class="callout-label font-mono">AVAILABILITY STATUS</span>
+          <p class="callout-text">
+            Currently open to PhD opportunities for 2026/2027 intake and academic visits in medical imaging & healthcare AI.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</PageLayout>
+
+<style>
+  .contact-grid-layout {
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+    gap: 2.5rem;
+    align-items: flex-start;
+  }
+
+  .contact-main-card,
+  .scholarly-profiles-card {
+    padding: clamp(2rem, 4vw, 3rem);
+    display: flex;
+    flex-direction: column;
+    gap: 1.75rem;
+    border-radius: var(--radius-2xl);
+    background: var(--bg-surface);
+    border: 1px solid var(--border-hairline);
+    box-shadow: var(--shadow-card);
+    transition: all var(--transition-smooth);
+  }
+
+  .contact-main-card:hover,
+  .scholarly-profiles-card:hover {
+    box-shadow: var(--shadow-hover);
+    border-color: rgba(56, 189, 248, 0.4);
+  }
+
+  .card-heading {
+    font-size: 1.45rem;
+    color: var(--text-primary);
+    font-weight: 700;
+    letter-spacing: -0.015em;
+  }
+
+  .card-intro {
+    font-size: 0.98rem;
+    color: var(--text-secondary);
+    line-height: 1.6;
+  }
+
+  .email-action-box {
+    padding: 1.5rem;
+    border-radius: var(--radius-xl);
+    background: var(--bg-subtle);
+    border: 1px solid var(--border-hairline);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    flex-wrap: wrap;
+    transition: border-color var(--transition-fast);
+  }
+
+  .email-action-box:hover {
+    border-color: var(--accent);
+  }
+
+  .email-text-col {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+  }
+
+  .box-label {
+    font-size: 0.74rem;
+    font-weight: 700;
+    color: var(--accent);
+    letter-spacing: 0.08em;
+  }
+
+  .email-link {
+    font-size: 1.1rem;
+    color: var(--text-primary);
+    text-decoration: none;
+    font-weight: 700;
+  }
+
+  .email-link:hover {
+    color: var(--accent);
+  }
+
+  .location-box {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .location-text {
+    font-size: 0.98rem;
+    color: var(--text-secondary);
+    line-height: 1.6;
+  }
+
+  .scholarly-links-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+  }
+
+  .scholarly-link-row {
+    padding: 1rem 1.25rem;
+    border-radius: var(--radius-md);
+    background: var(--bg-subtle);
+    border: 1px solid var(--border-hairline);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    text-decoration: none;
+    color: var(--text-primary);
+    font-weight: 600;
+    font-size: 0.95rem;
+    transition: all var(--transition-fast);
+  }
+
+  .scholarly-link-row:hover {
+    background: var(--bg-surface-elevated);
+    border-color: var(--accent);
+    color: var(--accent);
+    transform: translateX(4px);
+  }
+
+  .profile-arrow {
+    color: var(--accent);
+    font-weight: 700;
+  }
+
+  .availability-callout {
+    padding: 1.5rem;
+    border-radius: var(--radius-xl);
+    background: rgba(13, 148, 136, 0.08);
+    border: 1px solid rgba(45, 212, 191, 0.3);
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .callout-label {
+    font-size: 0.74rem;
+    font-weight: 700;
+    color: var(--accent-2);
+    letter-spacing: 0.08em;
+  }
+
+  .callout-text {
+    font-size: 0.95rem;
+    color: var(--text-secondary);
+    line-height: 1.55;
+  }
+
+  @media (max-width: 960px) {
+    .contact-grid-layout {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
+
+<script>
+  function setupContactEmailCopy() {
+    const btn = document.getElementById('copy-email-btn');
+    const label = document.getElementById('copy-btn-label');
+    if (!btn || !label) return;
+
+    btn.addEventListener('click', async () => {
+      const email = btn.getAttribute('data-email') || '';
+      try {
+        await navigator.clipboard.writeText(email);
+        const original = label.textContent;
+        label.textContent = 'Copied ✓';
+        setTimeout(() => {
+          label.textContent = original;
+        }, 2000);
+      } catch (err) {
+        console.error('Failed to copy email', err);
+      }
+    });
+  }
+
+  setupContactEmailCopy();
+  document.addEventListener('astro:page-load', setupContactEmailCopy);
+</script>

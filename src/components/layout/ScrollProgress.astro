@@ -1,0 +1,57 @@
+---
+/**
+ * ═════════════════════════════════════════════════════════════
+ * [COMPONENT] ScrollProgress — Reading Progress Bar
+ * ─────────────────────────────────────────────────────────────
+ * Purpose     : Displays visual reading progress bar below the sticky header.
+ * Props       : None
+ * Data Source : Browser window scroll event
+ * Used in     : src/layouts/BaseLayout.astro
+ * How to Edit : Adjust height or accent styling below.
+ * ═════════════════════════════════════════════════════════════
+ */
+---
+
+<div id="scroll-progress-container" class="scroll-progress-track" aria-hidden="true">
+  <div id="scroll-progress-bar" class="scroll-progress-fill"></div>
+</div>
+
+<style>
+  .scroll-progress-track {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    z-index: 1000;
+    background: transparent;
+    pointer-events: none;
+  }
+
+  .scroll-progress-fill {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, var(--accent), var(--accent-2));
+    transition: width 50ms ease-out;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .scroll-progress-track {
+      display: none;
+    }
+  }
+</style>
+
+<script>
+  function updateScrollProgress() {
+    const bar = document.getElementById('scroll-progress-bar');
+    if (!bar) return;
+    const scrollTop = window.scrollY || document.documentElement.scrollTop;
+    const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+    const progress = scrollHeight > 0 ? (scrollTop / scrollHeight) * 100 : 0;
+    bar.style.width = `${Math.min(100, Math.max(0, progress))}%`;
+  }
+
+  window.addEventListener('scroll', updateScrollProgress, { passive: true });
+  document.addEventListener('astro:page-load', updateScrollProgress);
+</script>

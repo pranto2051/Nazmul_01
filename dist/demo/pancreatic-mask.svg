@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000" width="1000" height="1000">
+  <rect width="1000" height="1000" fill="#0b0f17"/>
+  <defs>
+    <pattern id="maskgrid" width="50" height="50" patternUnits="userSpaceOnUse">
+      <path d="M 50 0 L 0 0 0 50" fill="none" stroke="#172234" stroke-width="1"/>
+    </pattern>
+    <radialGradient id="maskGlow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#00f5d4" stop-opacity="0.9"/>
+      <stop offset="70%" stop-color="#0284c7" stop-opacity="0.8"/>
+      <stop offset="100%" stop-color="#0284c7" stop-opacity="0.3"/>
+    </radialGradient>
+  </defs>
+  <rect width="1000" height="1000" fill="url(#maskgrid)"/>
+  
+  <!-- Underlying Anatomy (Desaturated) -->
+  <ellipse cx="500" cy="500" rx="380" ry="320" fill="#141e2e" stroke="#1e2e42" stroke-width="1.5" opacity="0.7"/>
+  <path d="M 440 760 Q 500 700 560 760 Q 530 830 500 850 Q 470 830 440 760 Z" fill="#2d3d54"/>
+  <path d="M 200 450 Q 250 300 420 340 Q 380 560 220 540 Z" fill="#1c2839"/>
+  <path d="M 720 420 Q 800 490 770 560 Q 700 530 710 440 Z" fill="#1c2839"/>
+  
+  <!-- Glowing Segmentation Mask Overlay -->
+  <path d="M 380 490 C 440 450, 560 460, 640 430 C 660 450, 620 500, 550 510 C 460 520, 400 520, 380 490 Z" 
+        fill="url(#maskGlow)" stroke="#00f5d4" stroke-width="4" filter="drop-shadow(0 0 12px #00f5d4)"/>
+  
+  <!-- Target Contours & Centroid -->
+  <circle cx="510" cy="485" r="5" fill="#ffffff"/>
+  <line x1="510" y1="460" x2="510" y2="510" stroke="#ffffff" stroke-width="1.5"/>
+  <line x1="485" y1="485" x2="535" y2="485" stroke="#ffffff" stroke-width="1.5"/>
+  <text x="525" y="480" font-family="monospace" font-size="14" fill="#00f5d4" font-weight="bold">PANCREAS ROI (VOXELS: 14,280)</text>
+
+  <!-- HUD -->
+  <text x="50" y="70" font-family="monospace" font-size="20" fill="#00f5d4" letter-spacing="2">PREDICTED SEGMENTATION MASK</text>
+  <text x="50" y="105" font-family="monospace" font-size="16" fill="#94a3b8">MODEL: Swin-UNETR 3D  |  TARGET DSC: ≥0.82</text>
+  <rect x="850" y="910" width="100" height="40" rx="6" fill="rgba(0,245,212,0.15)" stroke="#00f5d4"/>
+  <text x="900" y="936" font-family="monospace" font-size="14" fill="#00f5d4" font-weight="bold" text-anchor="middle">DEMO</text>
+</svg>

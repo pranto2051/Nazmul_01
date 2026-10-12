@@ -1,0 +1,179 @@
+---
+/**
+ * ═════════════════════════════════════════════════════════════
+ * [SECTION] Publications Page — Searchable Publication Browser
+ * ─────────────────────────────────────────────────────────────
+ * Purpose     : Searchable, filterable browser for 10 conference papers,
+ *               2 journal manuscripts, and 3 book chapters with BibTeX export.
+ * Data Source : src/content/publications/publications.yaml
+ * ═════════════════════════════════════════════════════════════
+ */
+
+import { getCollection } from 'astro:content';
+import PageLayout from '../layouts/PageLayout.astro';
+import SectionHeading from '../components/ui/SectionHeading.astro';
+import PublicationBrowser from '../components/publications/PublicationBrowser.astro';
+import PublicationCard from '../components/publications/PublicationCard.astro';
+import PublicationStats from '../components/publications/PublicationStats.astro';
+import { computePublicationMetrics, generateBibtex, type PublicationItem } from '../lib/publications';
+
+const rawPublications = await getCollection('publications');
+const publications: PublicationItem[] = rawPublications.map((p) => p.data);
+
+// Sort newest first by default
+publications.sort((a, b) => b.year - a.year);
+
+const metrics = computePublicationMetrics(publications);
+
+// Extract distinct topics & years
+const topicsList = Object.keys(metrics.topicCounts).sort();
+const yearsList = Array.from(new Set(publications.map((p) => p.year))).sort((a, b) => b - a);
+
+// Concatenate all BibTeX for the export button
+const allBibtex = publications.map((p) => generateBibtex(p)).join('\n\n');
+
+// Group publications by year
+const publicationsByYear: Record<number, PublicationItem[]> = {};
+yearsList.forEach((year) => {
+  publicationsByYear[year] = publications.filter((p) => p.year === year);
+});
+
+// JSON-LD generation ONLY for items with a real DOI (§8.3)
+const articlesWithDoi = publications.filter((p) => p.doi && p.doi.trim().length > 0);
+const jsonLdArticles = articlesWithDoi.map((p) => ({
+  '@context': 'https://schema.org',
+  '@type': 'ScholarlyArticle',
+  headline: p.title,
+  author: p.authors.map((name) => ({ '@type': 'Person', name })),
+  datePublished: p.year.toString(),
+  publication: {
+    '@type': 'PublicationEvent',
+    name: p.venue,
+  },
+  identifier: `https://doi.org/${p.doi}`,
+  description: p.abstract || undefined,
+}));
+---
+
+<PageLayout
+  title="Publications & Scholarly Output | Nazmul Hasan Shouvo"
+  description="Explore 10 international conference papers, 3 book chapters, and 2 journal manuscripts in Medical Image Analysis, Vision Transformers, and Explainable AI by Nazmul Hasan Shouvo."
+  activeHref="/publications"
+>
+  <slot name="head" slot="head">
+    {jsonLdArticles.length > 0 && (
+      <script type="application/ld+json" set:html={JSON.stringify(jsonLdArticles)} />
+    )}
+  </slot>
+
+  <section class="section-padding container">
+    <SectionHeading
+      eyebrow="SCHOLARLY REPOSITORIES"
+      title="Publications & Academic Papers"
+      subtitle="Peer-reviewed international conference proceedings, scholarly book chapters (Bentham Science), and journal manuscripts."
+    />
+
+    <!-- Browser Interactive Controls -->
+    <PublicationBrowser topics={topicsList} years={yearsList} />
+
+    <!-- Two-column editorial layout (Cards + Sticky Right Rail) -->
+    <div class="publications-layout-grid">
+      <div class="publications-cards-stream publications-list-container">
+        {yearsList.map((year) => (
+          <div class="year-group-section" data-year-group={year}>
+            <div class="year-heading-sticky">
+              <span class="year-number font-mono">{year}</span>
+              <span class="year-line"></span>
+              <span class="year-count font-mono">{publicationsByYear[year].length} papers</span>
+            </div>
+
+            <div class="year-cards-stack">
+              {/* [CARD:PublicationCard] year items */}
+              {publicationsByYear[year].map((pub) => (
+                <PublicationCard pub={pub} showThumbnail={true} />
+              ))}
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <!-- Desktop Sticky Right Rail -->
+      <div class="publications-sidebar-rail">
+        <PublicationStats metrics={metrics} allBibtex={allBibtex} />
+      </div>
+    </div>
+  </section>
+</PageLayout>
+
+<style>
+  .publications-layout-grid {
+    display: grid;
+    grid-template-columns: 1fr 340px;
+    gap: 2.5rem;
+    align-items: flex-start;
+  }
+
+  .publications-cards-stream {
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+  }
+
+  .year-group-section {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .year-heading-sticky {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    position: sticky;
+    top: 72px;
+    z-index: 10;
+    background: var(--bg-canvas);
+    padding: 0.75rem 0;
+    border-bottom: 1px solid var(--border-hairline);
+  }
+
+  .year-number {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: var(--accent);
+  }
+
+  .year-line {
+    flex: 1;
+    height: 1px;
+    background: var(--border-hairline);
+  }
+
+  .year-count {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+  }
+
+  .year-cards-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .publications-sidebar-rail {
+    position: sticky;
+    top: 96px;
+  }
+
+  @media (max-width: 1024px) {
+    .publications-layout-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .publications-sidebar-rail {
+      order: -1;
+      position: static;
+      margin-bottom: 2rem;
+    }
+  }
+</style>

@@ -1,0 +1,139 @@
+---
+/**
+ * ═════════════════════════════════════════════════════════════
+ * [SECTION] Gallery Page (`/gallery`)
+ * ─────────────────────────────────────────────────────────────
+ * Purpose     : Categorized visual gallery & lightbox modal for medical
+ *               scans, architecture diagrams, charts, and certificates.
+ * Data Source : src/content/gallery/gallery.yaml
+ * ═════════════════════════════════════════════════════════════
+ */
+
+import { getCollection } from 'astro:content';
+import PageLayout from '../layouts/PageLayout.astro';
+import SectionHeading from '../components/ui/SectionHeading.astro';
+import Figure from '../components/media/Figure.astro';
+import Lightbox from '../components/media/Lightbox.astro';
+
+const rawGallery = await getCollection('gallery');
+const galleryItems = rawGallery.map((g) => g.data);
+
+const categories = [
+  'All',
+  'Segmentation',
+  'Architecture',
+  'XAI',
+  'Results',
+  'Talks & Events',
+  'Certificates',
+];
+---
+
+<PageLayout
+  title="Visual Gallery & Scientific Figures | Nazmul Hasan Shouvo"
+  description="Explore volumetric CT scans, Swin-3D architectures, Grad-CAM saliency heatmaps, ROC performance curves, and credentials by Nazmul Hasan Shouvo."
+  activeHref="/gallery"
+>
+  <section class="section-padding container">
+    <SectionHeading
+      eyebrow="SCIENTIFIC FIGURES & ASSETS"
+      title="Medical Scans, Architectures & Gallery"
+      subtitle="Comprehensive collection of volumetric CT imaging, neural architectures, Grad-CAM attribution heatmaps, ROC curves, and professional credentials."
+    />
+
+    <!-- Category Filter Tabs -->
+    <div class="gallery-filter-tabs">
+      {categories.map((cat, idx) => (
+        <button
+          type="button"
+          class={`filter-pill gallery-tab-btn ${idx === 0 ? 'active' : ''}`}
+          data-gallery-cat={cat}
+        >
+          {cat}
+        </button>
+      ))}
+    </div>
+
+    <!-- Responsive Figure Grid -->
+    <div class="gallery-grid-layout" id="gallery-grid">
+      {galleryItems.map((item) => (
+        <div class="gallery-grid-item" data-category={item.category}>
+          <Figure
+            imageKey={item.imageKey}
+            caption={item.caption}
+            credit={item.credit}
+            lightboxId={item.id}
+          />
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <!-- Global Lightbox Modal Component -->
+  <Lightbox />
+</PageLayout>
+
+<style>
+  .gallery-filter-tabs {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    margin-bottom: 2.5rem;
+  }
+
+  .gallery-tab-btn {
+    padding: 0.4rem 1rem;
+    font-size: 0.88rem;
+    cursor: pointer;
+  }
+
+  .gallery-grid-layout {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+  }
+
+  .gallery-grid-item {
+    display: flex;
+    flex-direction: column;
+    transition: opacity var(--transition-base);
+  }
+
+  @media (max-width: 1024px) {
+    .gallery-grid-layout {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (max-width: 640px) {
+    .gallery-grid-layout {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
+
+<script>
+  function setupGalleryFilters() {
+    const tabs = document.querySelectorAll<HTMLButtonElement>('[data-gallery-cat]');
+    const items = document.querySelectorAll<HTMLElement>('.gallery-grid-item');
+
+    tabs.forEach((tab) => {
+      tab.addEventListener('click', () => {
+        const cat = tab.getAttribute('data-gallery-cat') || 'All';
+        tabs.forEach((t) => t.classList.toggle('active', t === tab));
+
+        items.forEach((item) => {
+          const itemCat = item.getAttribute('data-category') || '';
+          if (cat === 'All' || itemCat === cat) {
+            item.style.display = 'flex';
+          } else {
+            item.style.display = 'none';
+          }
+        });
+      });
+    });
+  }
+
+  setupGalleryFilters();
+  document.addEventListener('astro:page-load', setupGalleryFilters);
+</script>

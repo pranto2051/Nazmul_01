@@ -1,0 +1,55 @@
+---
+/**
+ * ═════════════════════════════════════════════════════════════
+ * [COMPONENT] RelatedPublications — Associated Publications
+ * ─────────────────────────────────────────────────────────────
+ * Purpose     : Renders cards for publications linked to a specific
+ *               research case study.
+ * Props       : publications (PublicationItem[])
+ * ═════════════════════════════════════════════════════════════
+ */
+
+import PublicationCard from '../publications/PublicationCard.astro';
+import type { PublicationItem } from '../../lib/publications';
+
+interface Props {
+  publications: PublicationItem[];
+}
+
+const { publications } = Astro.props;
+---
+
+{publications.length > 0 && (
+  <section class="related-pubs-section" id="related-publications">
+    <h3 class="related-pubs-heading text-title-3 font-mono">
+      Associated Publications ({publications.length})
+    </h3>
+    <div class="related-pubs-stack">
+      {/* [CARD:PublicationCard] related paper */}
+      {publications.map((pub) => (
+        <PublicationCard pub={pub} showThumbnail={false} />
+      ))}
+    </div>
+  </section>
+)}
+
+<style>
+  .related-pubs-section {
+    margin-top: 3.5rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--border-hairline);
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .related-pubs-heading {
+    color: var(--accent);
+  }
+
+  .related-pubs-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+</style>

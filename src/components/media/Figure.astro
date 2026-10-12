@@ -1,0 +1,205 @@
+---
+/**
+ * ═════════════════════════════════════════════════════════════
+ * [COMPONENT] Figure — Scientific Figure & Media Display
+ * ─────────────────────────────────────────────────────────────
+ * Purpose     : Load image from central registry (IMG), handling captions,
+ *               credits, and demo badges with responsive presentation.
+ * Props       : imageKey, caption, credit, priority, lightboxId
+ * Data Source : src/data/images.ts (IMG)
+ * Used In     : Case studies, Gallery, Home hero
+ * ═════════════════════════════════════════════════════════════
+ */
+
+import { IMG, type RegistryImage } from '../../data/images';
+import ImageFallback from './ImageFallback.astro';
+import DraftBadge from '../ui/DraftBadge.astro';
+
+interface Props {
+  imageKey?: string;
+  image?: RegistryImage;
+  caption?: string;
+  credit?: string;
+  priority?: boolean;
+  lightboxId?: string;
+  className?: string;
+}
+
+const {
+  imageKey,
+  image: explicitImage,
+  caption: explicitCaption,
+  credit: explicitCredit,
+  priority = false,
+  lightboxId,
+  className = '',
+} = Astro.props;
+
+// Retrieve image from registry
+const imgData: RegistryImage | undefined = explicitImage || (imageKey ? IMG[imageKey] : undefined);
+const caption = explicitCaption || '';
+const credit = explicitCredit || imgData?.credit || '';
+const isDemo = imgData?.demo ?? false;
+---
+
+{imgData && imgData.src ? (
+  <figure class={`scientific-figure ${className}`}>
+    <div
+      class={`figure-viewport aspect-${imgData.aspect}`}
+      data-lightbox={lightboxId ? "true" : undefined}
+      data-figure-id={lightboxId}
+      tabindex={lightboxId ? "0" : undefined}
+      role={lightboxId ? "button" : undefined}
+      aria-label={lightboxId ? `Open ${caption || imgData.alt} in lightbox` : undefined}
+    >
+      <img
+        src={imgData.src}
+        alt={imgData.alt}
+        width={imgData.width}
+        height={imgData.height}
+        loading={priority ? 'eager' : 'lazy'}
+        decoding={priority ? 'sync' : 'async'}
+        fetchpriority={priority ? 'high' : 'auto'}
+        class="figure-img"
+        onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
+      />
+
+      <!-- Hidden Fallback Container if client load fails -->
+      <div style="display: none; width: 100%; height: 100%;">
+        <ImageFallback caption={imgData.alt} aspect={imgData.aspect} />
+      </div>
+
+      <!-- Demo Badge in non-production -->
+      {isDemo && (
+        <div class="demo-tag-overlay">
+          <DraftBadge text="Demo Image" />
+        </div>
+      )}
+
+      {lightboxId && (
+        <div class="lightbox-hint" aria-hidden="true">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="15 3 21 3 21 9"/>
+            <polyline points="9 21 3 21 3 15"/>
+            <line x1="21" y1="3" x2="14" y2="10"/>
+            <line x1="3" y1="21" x2="10" y2="14"/>
+          </svg>
+        </div>
+      )}
+    </div>
+
+    {(caption || credit) && (
+      <figcaption class="figure-caption">
+        {caption && <span class="caption-text">{caption}</span>}
+        {credit && <span class="credit-text">Source: {credit}</span>}
+      </figcaption>
+    )}
+  </figure>
+) : (
+  <ImageFallback caption={caption || 'Scientific visual'} />
+)}
+
+<style>
+  .scientific-figure {
+    margin: 0;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 0.65rem;
+  }
+
+  .figure-viewport {
+    position: relative;
+    width: 100%;
+    border-radius: var(--radius-xl);
+    overflow: hidden;
+    background-color: var(--bg-surface);
+    border: 1px solid var(--border-hairline);
+    box-shadow: var(--shadow-card);
+    transition: all var(--transition-smooth);
+  }
+
+  .figure-viewport[role="button"] {
+    cursor: zoom-in;
+  }
+
+  .figure-viewport[role="button"]:hover {
+    border-color: rgba(56, 189, 248, 0.4);
+    box-shadow: var(--shadow-hover);
+    transform: translateY(-3px);
+  }
+
+  .aspect-square {
+    aspect-ratio: 1 / 1;
+  }
+
+  .aspect-wide {
+    aspect-ratio: 16 / 9;
+  }
+
+  .aspect-tall {
+    aspect-ratio: 3 / 4;
+  }
+
+  .aspect-portrait {
+    aspect-ratio: 4 / 5;
+  }
+
+  .figure-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    transition: transform var(--transition-smooth);
+  }
+
+  .figure-viewport[role="button"]:hover .figure-img {
+    transform: scale(1.04);
+  }
+
+  .demo-tag-overlay {
+    position: absolute;
+    top: 0.75rem;
+    right: 0.75rem;
+    z-index: 10;
+  }
+
+  .lightbox-hint {
+    position: absolute;
+    bottom: 0.75rem;
+    right: 0.75rem;
+    width: 32px;
+    height: 32px;
+    border-radius: var(--radius-sm);
+    background: rgba(0, 0, 0, 0.65);
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity var(--transition-fast);
+  }
+
+  .figure-viewport:hover .lightbox-hint {
+    opacity: 1;
+  }
+
+  .figure-caption {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+    font-size: 0.88rem;
+    line-height: 1.5;
+  }
+
+  .caption-text {
+    color: var(--text-secondary);
+    font-weight: 500;
+  }
+
+  .credit-text {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    font-family: var(--font-mono);
+  }
+</style>

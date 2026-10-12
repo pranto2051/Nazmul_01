@@ -1,0 +1,54 @@
+---
+/**
+ * ═════════════════════════════════════════════════════════════
+ * [LAYOUT] PageLayout — Standard Page Shell
+ * ─────────────────────────────────────────────────────────────
+ * Purpose     : Standard application page shell with Header, main content
+ *               area (<main id="main-content">), and Footer.
+ * Props       : title, description, ogImage, canonicalUrl, activeHref
+ * Data Source : Page props
+ * Used in     : Home, Publications, Experience, Projects, Gallery, etc.
+ * How to Edit : Adjust global layout wrappers below.
+ * ═════════════════════════════════════════════════════════════
+ */
+
+import BaseLayout from './BaseLayout.astro';
+import Header from '../components/layout/Header.astro';
+import Footer from '../components/layout/Footer.astro';
+
+interface Props {
+  title?: string;
+  description?: string;
+  ogImage?: string;
+  canonicalUrl?: string;
+  activeHref?: string;
+}
+
+const { title, description, ogImage, canonicalUrl, activeHref } = Astro.props;
+---
+
+<BaseLayout
+  title={title}
+  description={description}
+  ogImage={ogImage}
+  canonicalUrl={canonicalUrl}
+>
+  <slot name="head" slot="head" />
+  
+  <Header activeHref={activeHref || Astro.url.pathname} />
+  
+  <main id="main-content" class="site-main">
+    <slot />
+  </main>
+  
+  <Footer />
+</BaseLayout>
+
+<style>
+  .site-main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-height: calc(100vh - 72px - 250px);
+  }
+</style>

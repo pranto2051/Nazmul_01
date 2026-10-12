@@ -1,0 +1,62 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000" width="1000" height="1000">
+  <rect width="1000" height="1000" fill="#0f1724"/>
+  <text x="80" y="80" font-family="monospace" font-size="24" fill="#38bdf8">MULTI-CLASS CONFUSION MATRIX</text>
+  <text x="80" y="115" font-family="sans-serif" font-size="18" fill="#94a3b8">IEEE QPAIN 2026 · Class-Weighted ResNet50 Sensitivity</text>
+  
+  <!-- Grid Matrix -->
+  <g transform="translate(180, 200)">
+    <!-- 4x4 matrix -->
+    <rect x="0" y="0" width="150" height="150" fill="#0284c7" stroke="#0f1724" stroke-width="4"/>
+    <text x="75" y="85" font-family="monospace" font-size="26" fill="#ffffff" font-weight="bold" text-anchor="middle">0.96</text>
+    
+    <rect x="150" y="0" width="150" height="150" fill="#1e2e42" stroke="#0f1724" stroke-width="4"/>
+    <text x="225" y="85" font-family="monospace" font-size="24" fill="#94a3b8" text-anchor="middle">0.02</text>
+    
+    <rect x="300" y="0" width="150" height="150" fill="#1e2e42" stroke="#0f1724" stroke-width="4"/>
+    <text x="375" y="85" font-family="monospace" font-size="24" fill="#94a3b8" text-anchor="middle">0.01</text>
+    
+    <rect x="450" y="0" width="150" height="150" fill="#1e2e42" stroke="#0f1724" stroke-width="4"/>
+    <text x="525" y="85" font-family="monospace" font-size="24" fill="#94a3b8" text-anchor="middle">0.01</text>
+
+    <!-- Row 2 -->
+    <rect x="0" y="150" width="150" height="150" fill="#1e2e42" stroke="#0f1724" stroke-width="4"/>
+    <text x="75" y="235" font-family="monospace" font-size="24" fill="#94a3b8" text-anchor="middle">0.03</text>
+    
+    <rect x="150" y="150" width="150" height="150" fill="#0369a1" stroke="#0f1724" stroke-width="4"/>
+    <text x="225" y="235" font-family="monospace" font-size="26" fill="#ffffff" font-weight="bold" text-anchor="middle">0.94</text>
+    
+    <rect x="300" y="150" width="150" height="150" fill="#1e2e42" stroke="#0f1724" stroke-width="4"/>
+    <text x="375" y="235" font-family="monospace" font-size="24" fill="#94a3b8" text-anchor="middle">0.02</text>
+    
+    <rect x="450" y="150" width="150" height="150" fill="#1e2e42" stroke="#0f1724" stroke-width="4"/>
+    <text x="525" y="235" font-family="monospace" font-size="24" fill="#94a3b8" text-anchor="middle">0.01</text>
+
+    <!-- Row 3 -->
+    <rect x="0" y="300" width="150" height="150" fill="#1e2e42" stroke="#0f1724" stroke-width="4"/>
+    <text x="75" y="385" font-family="monospace" font-size="24" fill="#94a3b8" text-anchor="middle">0.01</text>
+    
+    <rect x="150" y="300" width="150" height="150" fill="#1e2e42" stroke="#0f1724" stroke-width="4"/>
+    <text x="225" y="385" font-family="monospace" font-size="24" fill="#94a3b8" text-anchor="middle">0.02</text>
+    
+    <rect x="300" y="300" width="150" height="150" fill="#0284c7" stroke="#0f1724" stroke-width="4"/>
+    <text x="375" y="385" font-family="monospace" font-size="26" fill="#ffffff" font-weight="bold" text-anchor="middle">0.95</text>
+    
+    <rect x="450" y="300" width="150" height="150" fill="#1e2e42" stroke="#0f1724" stroke-width="4"/>
+    <text x="525" y="385" font-family="monospace" font-size="24" fill="#94a3b8" text-anchor="middle">0.02</text>
+
+    <!-- Row 4 -->
+    <rect x="0" y="450" width="150" height="150" fill="#1e2e42" stroke="#0f1724" stroke-width="4"/>
+    <text x="75" y="535" font-family="monospace" font-size="24" fill="#94a3b8" text-anchor="middle">0.02</text>
+    
+    <rect x="150" y="450" width="150" height="150" fill="#1e2e42" stroke="#0f1724" stroke-width="4"/>
+    <text x="225" y="535" font-family="monospace" font-size="24" fill="#94a3b8" text-anchor="middle">0.01</text>
+    
+    <rect x="300" y="450" width="150" height="150" fill="#1e2e42" stroke="#0f1724" stroke-width="4"/>
+    <text x="375" y="535" font-family="monospace" font-size="24" fill="#94a3b8" text-anchor="middle">0.02</text>
+    
+    <rect x="450" y="450" width="150" height="150" fill="#0d9488" stroke="#0f1724" stroke-width="4"/>
+    <text x="525" y="535" font-family="monospace" font-size="26" fill="#ffffff" font-weight="bold" text-anchor="middle">0.95</text>
+  </g>
+  <rect x="850" y="910" width="100" height="40" rx="6" fill="rgba(56,189,248,0.15)" stroke="#38bdf8"/>
+  <text x="900" y="936" font-family="monospace" font-size="14" fill="#38bdf8" font-weight="bold" text-anchor="middle">DEMO</text>
+</svg>

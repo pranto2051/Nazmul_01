@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
+  <rect width="1200" height="630" fill="#080d14"/>
+  <defs>
+    <radialGradient id="ogGlow" cx="80%" cy="20%" r="60%">
+      <stop offset="0%" stop-color="#0284c7" stop-opacity="0.3"/>
+      <stop offset="100%" stop-color="#080d14" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#ogGlow)"/>
+  
+  <rect x="80" y="80" width="64" height="64" rx="16" fill="#0284c7"/>
+  <text x="112" y="124" font-family="monospace" font-size="28" fill="#ffffff" font-weight="bold" text-anchor="middle">NHS</text>
+  
+  <text x="80" y="240" font-family="serif" font-size="54" fill="#ffffff" font-weight="bold">Nazmul Hasan Shouvo</text>
+  <text x="80" y="310" font-family="sans-serif" font-size="28" fill="#38bdf8" font-weight="600">Research Assistant & MSc Candidate · Canterbury Christ Church University (CCCU), UK</text>
+  <text x="80" y="390" font-family="sans-serif" font-size="22" fill="#94a3b8">Specializing in Medical Image Analysis, 3D Pancreatic CT Segmentation & Explainable AI (XAI)</text>
+  
+  <line x1="80" y1="460" x2="1120" y2="460" stroke="#1e2e42" stroke-width="2"/>
+  
+  <text x="80" y="530" font-family="monospace" font-size="20" fill="#2dd4bf">10 Accepted Publications · 3 Book Chapters · 2 Journal Manuscripts</text>
+</svg>

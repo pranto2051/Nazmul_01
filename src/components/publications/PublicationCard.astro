@@ -1,0 +1,497 @@
+---
+/**
+ * ═════════════════════════════════════════════════════════════
+ * [CARD] PublicationCard — Individual Research Publication Card
+ * ─────────────────────────────────────────────────────────────
+ * Purpose     : Paper title, author list (with primary author bolded),
+ *               venue, status pill, action buttons (DOI, PDF, Code, BibTeX), and abstract.
+ * Props       : publication, showThumbnail
+ * Data Source : src/content/publications/publications.yaml
+ * ═════════════════════════════════════════════════════════════
+ */
+
+import StatusPill from './StatusPill.astro';
+import DraftBadge from '../ui/DraftBadge.astro';
+import { formatAuthorsHtml, generateBibtex, type PublicationItem } from '../../lib/publications';
+import { IMG } from '../../data/images';
+
+interface Props {
+  pub: PublicationItem;
+  showThumbnail?: boolean;
+}
+
+const { pub, showThumbnail = false } = Astro.props;
+const authorsHtml = formatAuthorsHtml(pub.authors);
+const bibtexString = generateBibtex(pub);
+const thumbnailImg = pub.thumbnail ? IMG[pub.thumbnail] : undefined;
+---
+
+<article
+  class="publication-card card-surface"
+  id={`pub-${pub.id}`}
+  data-year={pub.year}
+  data-type={pub.type}
+  data-status={pub.status}
+  data-topics={pub.topics.join(',')}
+>
+  <div class="pub-main-row">
+    {showThumbnail && thumbnailImg && (
+      <div class="pub-thumbnail-box">
+        <img
+          src={thumbnailImg.src}
+          alt={thumbnailImg.alt}
+          width={140}
+          height={140}
+          loading="lazy"
+          class="pub-thumbnail-img"
+        />
+      </div>
+    )}
+
+    <div class="pub-content-col">
+      <div class="pub-meta-top">
+        <span class="pub-year font-mono">{pub.year}</span>
+        <span class="meta-dot">·</span>
+        <span class="pub-type-badge font-mono">{pub.type}</span>
+        <StatusPill status={pub.status} />
+        {!pub.verified && <DraftBadge text="Verify info" />}
+      </div>
+
+      <h3 class="paper-title pub-title">
+        {pub.title}
+      </h3>
+
+      <p class="authors-list" set:html={authorsHtml} />
+
+      <div class="pub-venue-row">
+        <span class="venue-name">{pub.venue}</span>
+        {pub.pages && <span class="pub-pages font-mono">pp. {pub.pages}</span>}
+      </div>
+
+      <!-- Topic Chips -->
+      <div class="pub-topics-row">
+        {pub.topics.map((t) => (
+          <a href={`/publications?topic=${encodeURIComponent(t)}`} class="chip pub-topic-chip">
+            {t}
+          </a>
+        ))}
+      </div>
+
+      <!-- Action Buttons (Only render buttons whose data exists!) -->
+      <div class="pub-actions-row">
+        {pub.doi && (
+          <a
+            href={`https://doi.org/${pub.doi}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="btn btn-secondary btn-sm"
+          >
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
+              <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
+            </svg>
+            <span>DOI</span>
+          </a>
+        )}
+
+        {pub.pdfUrl && (
+          <a
+            href={pub.pdfUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="btn btn-secondary btn-sm"
+          >
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+              <polyline points="14 2 14 8 20 8"></polyline>
+              <line x1="16" y1="13" x2="8" y2="13"></line>
+              <line x1="16" y1="17" x2="8" y2="17"></line>
+            </svg>
+            <span>PDF</span>
+          </a>
+        )}
+
+        {pub.codeUrl && (
+          <a
+            href={pub.codeUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="btn btn-secondary btn-sm"
+          >
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="16 18 22 12 16 6"></polyline>
+              <polyline points="8 6 2 12 8 18"></polyline>
+            </svg>
+            <span>Code</span>
+          </a>
+        )}
+
+        <!-- BibTeX Button triggering Dialog -->
+        <button
+          type="button"
+          class="btn btn-secondary btn-sm bibtex-trigger-btn"
+          data-bibtex-target={`bibtex-dialog-${pub.id}`}
+        >
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+            <polyline points="7 10 12 15 17 10"></polyline>
+            <line x1="12" y1="15" x2="12" y2="3"></line>
+          </svg>
+          <span>BibTeX</span>
+        </button>
+      </div>
+
+      <!-- Accessible Abstract Accordion -->
+      {pub.abstract && (
+        <details class="pub-abstract-details">
+          <summary class="pub-abstract-summary">
+            <span>Abstract</span>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="chevron-icon">
+              <polyline points="6 9 12 15 18 9"></polyline>
+            </svg>
+          </summary>
+          <div class="pub-abstract-body">
+            <p>{pub.abstract}</p>
+          </div>
+        </details>
+      )}
+    </div>
+  </div>
+
+  <!-- Native BibTeX Dialog Component Embedded per Paper -->
+  <dialog id={`bibtex-dialog-${pub.id}`} class="bibtex-dialog" aria-labelledby={`bibtex-title-${pub.id}`}>
+    <div class="dialog-content">
+      <div class="dialog-header">
+        <h4 id={`bibtex-title-${pub.id}`} class="dialog-title font-mono">BibTeX Citation</h4>
+        <button type="button" class="dialog-close-btn" aria-label="Close dialog">✕</button>
+      </div>
+      <pre class="bibtex-code-block font-mono"><code>{bibtexString}</code></pre>
+      <div class="dialog-footer">
+        <button type="button" class="btn btn-primary btn-sm copy-bibtex-btn" data-bibtex={bibtexString}>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect>
+            <path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path>
+          </svg>
+          <span class="btn-text">Copy BibTeX</span>
+        </button>
+      </div>
+    </div>
+  </dialog>
+</article>
+
+<style>
+  .publication-card {
+    padding: clamp(1.5rem, 3vw, 2.25rem);
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    border-radius: var(--radius-xl);
+    background: var(--bg-surface);
+    border: 1px solid var(--border-hairline);
+    transition: all var(--transition-smooth);
+  }
+
+  .publication-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-hover);
+    border-color: rgba(56, 189, 248, 0.4);
+  }
+
+  .pub-main-row {
+    display: flex;
+    gap: 1.75rem;
+    align-items: flex-start;
+  }
+
+  .pub-thumbnail-box {
+    width: 150px;
+    height: 150px;
+    flex-shrink: 0;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    background: var(--bg-subtle);
+    border: 1px solid var(--border-hairline);
+    box-shadow: var(--shadow-sm);
+  }
+
+  .pub-thumbnail-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform var(--transition-smooth);
+  }
+
+  .publication-card:hover .pub-thumbnail-img {
+    transform: scale(1.05);
+  }
+
+  .pub-content-col {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .pub-meta-top {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    flex-wrap: wrap;
+    font-size: 0.82rem;
+  }
+
+  .pub-year {
+    font-weight: 700;
+    color: var(--accent);
+    background: var(--accent-subtle);
+    padding: 0.15rem 0.55rem;
+    border-radius: var(--radius-full);
+  }
+
+  .meta-dot {
+    color: var(--text-muted);
+  }
+
+  .pub-type-badge {
+    text-transform: uppercase;
+    font-size: 0.74rem;
+    color: var(--text-muted);
+    letter-spacing: 0.05em;
+    font-weight: 600;
+  }
+
+  .pub-title {
+    font-size: 1.35rem;
+    line-height: 1.35;
+    color: var(--text-primary);
+    font-weight: 700;
+    letter-spacing: -0.015em;
+  }
+
+  .authors-list {
+    font-size: 0.96rem;
+    line-height: 1.5;
+    color: var(--text-secondary);
+  }
+
+  .pub-venue-row {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+    font-size: 0.94rem;
+    color: var(--text-muted);
+  }
+
+  .venue-name {
+    font-weight: 600;
+    color: var(--text-primary);
+  }
+
+  .pub-pages {
+    font-size: 0.84rem;
+    color: var(--text-muted);
+  }
+
+  .pub-topics-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.45rem;
+    margin-top: 0.25rem;
+  }
+
+  .pub-topic-chip {
+    font-size: 0.78rem;
+    padding: 0.25rem 0.75rem;
+  }
+
+  .pub-actions-row {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    flex-wrap: wrap;
+    margin-top: 0.5rem;
+  }
+
+  /* Abstract Accordion */
+  .pub-abstract-details {
+    margin-top: 0.5rem;
+    border-top: 1px dashed var(--border-hairline);
+    padding-top: 0.65rem;
+  }
+
+  .pub-abstract-summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+    cursor: pointer;
+    list-style: none;
+  }
+
+  .pub-abstract-summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .pub-abstract-summary:hover {
+    color: var(--accent);
+  }
+
+  .chevron-icon {
+    transition: transform var(--transition-fast);
+  }
+
+  details[open] .chevron-icon {
+    transform: rotate(180deg);
+  }
+
+  .pub-abstract-body {
+    padding-top: 0.65rem;
+    font-size: 0.95rem;
+    color: var(--text-secondary);
+    line-height: 1.6;
+  }
+
+  /* BibTeX Native Dialog */
+  .bibtex-dialog {
+    margin: auto;
+    border: none;
+    border-radius: var(--radius-lg);
+    background: var(--bg-surface);
+    color: var(--text-primary);
+    box-shadow: var(--shadow-lg);
+    max-width: 600px;
+    width: 90vw;
+    padding: 0;
+  }
+
+  .bibtex-dialog::backdrop {
+    background: rgba(0, 0, 0, 0.65);
+    backdrop-filter: blur(4px);
+  }
+
+  .dialog-content {
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .dialog-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .dialog-title {
+    font-size: 1.1rem;
+    color: var(--accent);
+  }
+
+  .dialog-close-btn {
+    background: transparent;
+    border: none;
+    color: var(--text-secondary);
+    font-size: 1.25rem;
+    cursor: pointer;
+    padding: 0.25rem;
+  }
+
+  .dialog-close-btn:hover {
+    color: var(--accent);
+  }
+
+  .bibtex-code-block {
+    background: var(--bg-subtle);
+    padding: 1rem;
+    border-radius: var(--radius-md);
+    font-size: 0.82rem;
+    white-space: pre-wrap;
+    overflow-x: auto;
+    border: 1px solid var(--border-hairline);
+  }
+
+  .dialog-footer {
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  @media (max-width: 640px) {
+    .pub-main-row {
+      flex-direction: column;
+    }
+
+    .pub-thumbnail-box {
+      width: 100%;
+      height: 160px;
+    }
+  }
+</style>
+
+<script>
+  function setupPublicationCardInteractions() {
+    // BibTeX Dialog Open/Close
+    const triggers = document.querySelectorAll<HTMLButtonElement>('.bibtex-trigger-btn');
+    triggers.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const targetId = btn.getAttribute('data-bibtex-target');
+        if (!targetId) return;
+        const dialog = document.getElementById(targetId) as HTMLDialogElement | null;
+        if (dialog) {
+          dialog.showModal();
+        }
+      });
+    });
+
+    const closeBtns = document.querySelectorAll<HTMLButtonElement>('.dialog-close-btn');
+    closeBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const dialog = btn.closest('dialog');
+        dialog?.close();
+      });
+    });
+
+    // Close on backdrop click
+    const dialogs = document.querySelectorAll<HTMLDialogElement>('.bibtex-dialog');
+    dialogs.forEach(dialog => {
+      dialog.addEventListener('click', (e) => {
+        const rect = dialog.getBoundingClientRect();
+        const isInDialog = (
+          rect.top <= e.clientY &&
+          e.clientY <= rect.top + rect.height &&
+          rect.left <= e.clientX &&
+          e.clientX <= rect.left + rect.width
+        );
+        if (!isInDialog) {
+          dialog.close();
+        }
+      });
+    });
+
+    // Copy BibTeX handler
+    const copyBtns = document.querySelectorAll<HTMLButtonElement>('.copy-bibtex-btn');
+    copyBtns.forEach(btn => {
+      btn.addEventListener('click', async () => {
+        const text = btn.getAttribute('data-bibtex') || '';
+        try {
+          await navigator.clipboard.writeText(text);
+          const textSpan = btn.querySelector('.btn-text');
+          if (textSpan) {
+            const original = textSpan.textContent;
+            textSpan.textContent = 'Copied ✓';
+            setTimeout(() => {
+              textSpan.textContent = original;
+            }, 2000);
+          }
+        } catch (err) {
+          console.error('Failed to copy', err);
+        }
+      });
+    });
+  }
+
+  setupPublicationCardInteractions();
+  document.addEventListener('astro:page-load', setupPublicationCardInteractions);
+</script>

@@ -1,0 +1,78 @@
+---
+/**
+ * ═════════════════════════════════════════════════════════════
+ * [SECTION] SelectedCaseStudies — Featured Research Case Studies
+ * ─────────────────────────────────────────────────────────────
+ * Purpose     : Showcase 3 key deep-dive research case studies on the home page.
+ * Data Source : src/content/research/*.md
+ * [CARD]      ResearchCard
+ * ═════════════════════════════════════════════════════════════
+ */
+
+import SectionHeading from '../ui/SectionHeading.astro';
+import ResearchCard from '../research/ResearchCard.astro';
+
+interface Props {
+  caseStudies: any[];
+}
+
+const { caseStudies } = Astro.props;
+const selected = caseStudies.slice(0, 3);
+---
+
+<section id="selected-research" class="section-padding container">
+  <div class="selected-header-row">
+    <SectionHeading
+      eyebrow="IN-DEPTH INVESTIGATIONS"
+      title="Selected Research Case Studies"
+      subtitle="Detailed methodological breakdowns, architectural schemas, clinical problem formulations, and validation results."
+    />
+    <a href="/research" class="btn btn-secondary view-all-btn">
+      <span>All Research Case Studies</span>
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <line x1="5" y1="12" x2="19" y2="12"></line>
+        <polyline points="12 5 19 12 12 19"></polyline>
+      </svg>
+    </a>
+  </div>
+
+  <div class="case-studies-grid">
+    {/* [CARD:ResearchCard] case studies grid */}
+    {selected.map((item) => (
+      <ResearchCard caseStudy={item} />
+    ))}
+  </div>
+</section>
+
+<style>
+  .selected-header-row {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+    margin-bottom: 2rem;
+  }
+
+  .view-all-btn {
+    margin-bottom: 2.5rem;
+  }
+
+  .case-studies-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.75rem;
+  }
+
+  @media (max-width: 1024px) {
+    .case-studies-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (max-width: 640px) {
+    .case-studies-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

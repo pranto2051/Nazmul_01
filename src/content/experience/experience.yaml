@@ -1,0 +1,59 @@
+# ═════════════════════════════════════════════════════════════
+# [CARD] Experience — Research & Professional Experience
+# ─────────────────────────────────────────────────────────────
+# [DATA]    Research and industry appointments
+# [MANUAL-UPDATE] Duplicate or edit entries below to add roles.
+# ═════════════════════════════════════════════════════════════
+
+- id: cccu-research-placement-2026
+  role: "Research Assistant — Placement"
+  organisation: "Canterbury Christ Church University"
+  location: "Canterbury, Kent, United Kingdom"
+  period: "2026 – Present"
+  type: "research"
+  current: true
+  bullets:
+    - "Conducting applied artificial intelligence and deep-learning research focused on medical imaging and healthcare data informatics."
+    - "Investigating 3D volumetric pancreas segmentation on clinical abdominal CT scans using Vision Transformers and MONAI."
+    - "Performing systematic literature reviews, clinical dataset curation, and model evaluation against radiological ground truths."
+    - "Drafting peer-reviewed scientific manuscripts for international conference and journal dissemination."
+  verified: true
+
+- id: miyan-research-assistant-2023
+  role: "Student Research Assistant"
+  organisation: "Miyan Research Institute, IUBAT"
+  location: "Dhaka, Bangladesh"
+  period: "Jan 2023 – Sep 2023"
+  type: "research"
+  current: false
+  bullets:
+    - "Conducted comprehensive literature reviews in telecommunication QoS metrics and supervised machine learning."
+    - "Assisted senior faculty with experimental benchmark data collection and algorithmic simulation."
+    - "Supported drafting and revision of IEEE conference paper submissions."
+  verified: true
+
+- id: jamuna-tv-network-engineer-2024
+  role: "Network Support Engineer"
+  organisation: "Jamuna Television Ltd"
+  location: "Dhaka, Bangladesh"
+  period: "Jan 2024 – Feb 2024"
+  type: "professional"
+  current: false
+  bullets:
+    - "Managed round-the-clock enterprise network infrastructure and live television broadcast streaming pipelines."
+    - "Monitored mission-critical transmission routers, managed switches, and enterprise firewall access control lists."
+    - "Rapidly troubleshot packet loss, link latency, and network hardware issues under tight broadcast deadlines."
+  verified: true
+
+- id: jamuna-tv-intern-2023
+  role: "IT & Networking Intern"
+  organisation: "Jamuna Television Ltd"
+  location: "Dhaka, Bangladesh"
+  period: "Sep 2023 – Dec 2023"
+  type: "professional"
+  current: false
+  bullets:
+    - "Assisted senior system administrators with server room hardware rack installations, structured cabling, and patch panels."
+    - "Configured enterprise IPv4 subnetting, VLAN segmentations, and peripheral workstations."
+    - "Documented network topology diagrams and workstation maintenance schedules."
+  verified: true

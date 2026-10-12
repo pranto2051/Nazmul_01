@@ -1,0 +1,216 @@
+---
+/**
+ * ═════════════════════════════════════════════════════════════
+ * [SECTION] TimelinePreview — Academic & Professional Journey Preview
+ * ─────────────────────────────────────────────────────────────
+ * Purpose     : Clean chronological preview of current placement and key degrees.
+ * Data Source : src/content/education/ & src/content/experience/
+ * ═════════════════════════════════════════════════════════════
+ */
+
+import SectionHeading from '../ui/SectionHeading.astro';
+
+interface TimelineEntry {
+  period: string;
+  roleOrDegree: string;
+  institution: string;
+  location: string;
+  badge: string;
+  highlight: string;
+}
+
+const entries: TimelineEntry[] = [
+  {
+    period: '2026 – Present',
+    roleOrDegree: 'Research Assistant (Placement)',
+    institution: 'Canterbury Christ Church University (CCCU)',
+    location: 'Canterbury, Kent, UK',
+    badge: 'Current Research',
+    highlight: 'Pancreatic CT image analysis, 3D Vision Transformers segmentation, and clinical AI modeling.',
+  },
+  {
+    period: '2025/26 – Present',
+    roleOrDegree: 'MSc Data Intelligence with Placement',
+    institution: 'Canterbury Christ Church University (CCCU)',
+    location: 'Canterbury, Kent, UK',
+    badge: 'Postgraduate',
+    highlight: 'Maintaining 70% (First-Class Distinction) across advanced machine learning & big data modules.',
+  },
+  {
+    period: 'Graduated Fall 2023',
+    roleOrDegree: 'BSc in Computer Science and Engineering',
+    institution: 'IUBAT — International University of Business Agriculture and Technology',
+    location: 'Dhaka, Bangladesh',
+    badge: 'Undergraduate',
+    highlight: 'CGPA 3.84/4.00 · Undergraduate thesis published in 27th IEEE ICCIT 2024 proceedings.',
+  },
+];
+---
+
+<section id="journey-preview" class="section-padding container">
+  <div class="timeline-header-row">
+    <SectionHeading
+      eyebrow="ACADEMIC TRAJECTORY"
+      title="Research Journey & Milestones"
+      subtitle="A chronological path bridging high-distinction computer science training to advanced biomedical intelligence in the UK."
+    />
+    <a href="/experience" class="btn btn-secondary view-all-btn">
+      <span>Full Academic & Industry History</span>
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <line x1="5" y1="12" x2="19" y2="12"></line>
+        <polyline points="12 5 19 12 12 19"></polyline>
+      </svg>
+    </a>
+  </div>
+
+  <div class="timeline-track">
+    {entries.map((entry, index) => (
+      <div class="timeline-node">
+        <div class="node-marker-col">
+          <div class="node-bullet">
+            <span class="bullet-inner"></span>
+          </div>
+          {index < entries.length - 1 && <div class="node-line"></div>}
+        </div>
+        <div class="node-content-card card-surface">
+          <div class="node-meta">
+            <span class="node-period font-mono">{entry.period}</span>
+            <span class="node-badge font-mono">{entry.badge}</span>
+          </div>
+          <h3 class="node-title">{entry.roleOrDegree}</h3>
+          <p class="node-inst">
+            <strong>{entry.institution}</strong> · {entry.location}
+          </p>
+          <p class="node-highlight">{entry.highlight}</p>
+        </div>
+      </div>
+    ))}
+  </div>
+</section>
+
+<style>
+  .timeline-header-row {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+    margin-bottom: 2.5rem;
+  }
+
+  .view-all-btn {
+    margin-bottom: 2.5rem;
+  }
+
+  .timeline-track {
+    display: flex;
+    flex-direction: column;
+    max-width: 860px;
+    margin: 0 auto;
+  }
+
+  .timeline-node {
+    display: flex;
+    gap: 1.75rem;
+    position: relative;
+  }
+
+  .node-marker-col {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 28px;
+    flex-shrink: 0;
+  }
+
+  .node-bullet {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: var(--bg-surface);
+    border: 2px solid var(--accent);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 1.75rem;
+    z-index: 2;
+    box-shadow: 0 0 12px var(--accent-glow);
+  }
+
+  .bullet-inner {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 8px var(--accent);
+  }
+
+  .node-line {
+    width: 2px;
+    background: linear-gradient(180deg, var(--accent) 0%, var(--border-hairline) 100%);
+    flex: 1;
+    margin: 0.5rem 0;
+  }
+
+  .node-content-card {
+    flex: 1;
+    padding: 1.75rem;
+    margin-bottom: 1.75rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.65rem;
+    border-radius: var(--radius-xl);
+    background: var(--bg-surface);
+    border: 1px solid var(--border-hairline);
+    box-shadow: var(--shadow-card);
+    transition: all var(--transition-smooth);
+  }
+
+  .node-content-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-hover);
+    border-color: rgba(56, 189, 248, 0.4);
+  }
+
+  .node-meta {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-size: 0.82rem;
+  }
+
+  .node-period {
+    color: var(--accent);
+    font-weight: 700;
+  }
+
+  .node-badge {
+    padding: 0.2rem 0.65rem;
+    background: var(--accent-subtle);
+    border-radius: var(--radius-full);
+    color: var(--accent);
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    border: 1px solid var(--border-hairline);
+  }
+
+  .node-title {
+    font-size: 1.25rem;
+    color: var(--text-primary);
+    font-weight: 700;
+    letter-spacing: -0.015em;
+  }
+
+  .node-inst {
+    font-size: 0.96rem;
+    color: var(--text-secondary);
+  }
+
+  .node-highlight {
+    font-size: 0.94rem;
+    color: var(--text-muted);
+    line-height: 1.55;
+  }
+</style>

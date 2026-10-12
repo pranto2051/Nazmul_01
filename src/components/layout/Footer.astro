@@ -1,0 +1,231 @@
+---
+/**
+ * ═════════════════════════════════════════════════════════════
+ * [COMPONENT] Footer — Site Footer Section
+ * ─────────────────────────────────────────────────────────────
+ * Purpose     : Institutional affiliation, contact links, navigation, and copyright.
+ * Props       : None
+ * Data Source : src/content/site/profile.yaml
+ * Used in     : src/layouts/BaseLayout.astro
+ * How to Edit : Update social links or copyright text below.
+ * ═════════════════════════════════════════════════════════════
+ */
+
+const currentYear = new Date().getFullYear();
+const lastUpdated = "October 2026";
+---
+
+<footer class="site-footer">
+  <div class="container footer-inner">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <div class="footer-brand-header">
+          <span class="footer-monogram">NHS</span>
+          <h3 class="footer-title">Nazmul Hasan Shouvo</h3>
+        </div>
+        <p class="footer-affiliation">
+          Research Assistant (Placement) & MSc Data Intelligence<br />
+          Canterbury Christ Church University (CCCU), United Kingdom
+        </p>
+        <p class="footer-positioning">
+          Advancing clinically reliable, explainable deep learning models for 3D medical image segmentation.
+        </p>
+      </div>
+
+      <div class="footer-links-group">
+        <h4 class="footer-heading">Navigation</h4>
+        <ul class="footer-links-list">
+          <li><a href="/">Home</a></li>
+          <li><a href="/research">Research</a></li>
+          <li><a href="/publications">Publications</a></li>
+          <li><a href="/experience">Experience</a></li>
+          <li><a href="/cv">Web CV</a></li>
+          <li><a href="/research-statement">Research Statement</a></li>
+          <li><a href="/contact">Contact</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-links-group">
+        <h4 class="footer-heading">Scholarly Profiles</h4>
+        <ul class="footer-links-list">
+          <li>
+            <a href="https://www.linkedin.com/in/nazmul-hasan-shouvo" target="_blank" rel="noopener noreferrer" class="profile-link">
+              <span>LinkedIn Profile</span>
+              <span class="ext-arrow">↗</span>
+            </a>
+          </li>
+          <li>
+            <a href="mailto:mdnazmulhasanshouv@gmail.com" class="profile-link">
+              <span>mdnazmulhasanshouv@gmail.com</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <p class="footer-copyright">
+        © {currentYear} Nazmul Hasan Shouvo. Prepared for academic admissions & research collaboration.
+      </p>
+      <div class="footer-meta">
+        <span class="last-updated">Last updated: {lastUpdated}</span>
+        <a href="#site-header" class="footer-back-to-top">
+          <span>Back to top</span>
+          <span>↑</span>
+        </a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    background-color: var(--bg-surface);
+    border-top: 1px solid var(--border-hairline);
+    padding-top: clamp(3.5rem, 6vw, 5.5rem);
+    padding-bottom: 2.75rem;
+    margin-top: auto;
+    position: relative;
+  }
+
+  .site-footer::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 20%;
+    right: 20%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--accent), transparent);
+    opacity: 0.6;
+  }
+
+  .footer-inner {
+    display: flex;
+    flex-direction: column;
+    gap: 3.5rem;
+  }
+
+  .footer-top {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1.5fr;
+    gap: 3rem;
+  }
+
+  .footer-brand {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .footer-brand-header {
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+  }
+
+  .footer-monogram {
+    width: 32px;
+    height: 32px;
+    border-radius: var(--radius-sm);
+    background: var(--gradient-accent);
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-mono);
+    font-weight: 800;
+    font-size: 0.8rem;
+    box-shadow: 0 2px 8px rgba(37, 99, 235, 0.3);
+  }
+
+  .footer-title {
+    font-size: 1.35rem;
+    font-weight: 700;
+    letter-spacing: -0.015em;
+    color: var(--text-primary);
+  }
+
+  .footer-affiliation {
+    font-size: 0.95rem;
+    color: var(--text-secondary);
+    line-height: 1.55;
+  }
+
+  .footer-positioning {
+    font-size: 0.88rem;
+    color: var(--text-muted);
+    font-style: italic;
+    line-height: 1.5;
+  }
+
+  .footer-heading {
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--accent);
+    margin-bottom: 1.25rem;
+  }
+
+  .footer-links-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+  }
+
+  .footer-links-list a {
+    font-size: 0.92rem;
+    color: var(--text-secondary);
+    text-decoration: none;
+    transition: all var(--transition-fast);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+  }
+
+  .footer-links-list a:hover {
+    color: var(--accent);
+    transform: translateX(3px);
+  }
+
+  .footer-bottom {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 1.75rem;
+    border-top: 1px solid var(--border-hairline);
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    flex-wrap: wrap;
+    gap: 1.25rem;
+  }
+
+  .footer-meta {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+  }
+
+  .footer-back-to-top {
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    transition: transform var(--transition-fast);
+  }
+
+  .footer-back-to-top:hover {
+    transform: translateY(-2px);
+  }
+
+  @media (max-width: 768px) {
+    .footer-top {
+      grid-template-columns: 1fr;
+      gap: 2.25rem;
+    }
+  }
+</style>

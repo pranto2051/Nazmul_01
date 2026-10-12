@@ -1,0 +1,128 @@
+---
+/**
+ * ═════════════════════════════════════════════════════════════
+ * [COMPONENT] ThemeToggle — Light / Dark Theme Switcher Button
+ * ─────────────────────────────────────────────────────────────
+ * Purpose     : Toggle between Paper (Light) and PACS console (Dark) themes.
+ * Props       : id, className
+ * Data Source : localStorage['theme'] and window.matchMedia('(prefers-color-scheme: dark)')
+ * Used in     : src/components/layout/Header.astro
+ * How to Edit : Adjust icons or SVG styling below.
+ * ═════════════════════════════════════════════════════════════
+ */
+
+interface Props {
+  id?: string;
+  className?: string;
+}
+
+const { id = 'theme-toggle-btn', className = '' } = Astro.props;
+---
+
+<button
+  type="button"
+  id={id}
+  class={`theme-toggle ${className}`}
+  aria-label="Toggle light and dark mode"
+  title="Switch theme (Paper / PACS console)"
+>
+  <span class="sr-only">Toggle theme</span>
+  <!-- Sun Icon (shows in Dark mode to switch to Light) -->
+  <svg class="theme-icon icon-sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+    <circle cx="12" cy="12" r="4"></circle>
+    <path d="M12 2v2"></path>
+    <path d="M12 20v2"></path>
+    <path d="m4.93 4.93 1.41 1.41"></path>
+    <path d="m17.66 17.66 1.41 1.41"></path>
+    <path d="M2 12h2"></path>
+    <path d="M20 12h2"></path>
+    <path d="m6.34 17.66-1.41 1.41"></path>
+    <path d="m19.07 4.93-1.41 1.41"></path>
+  </svg>
+  <!-- Moon Icon (shows in Light mode to switch to Dark) -->
+  <svg class="theme-icon icon-moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+    <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path>
+  </svg>
+</button>
+
+<style>
+  .theme-toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    padding: 0;
+    border-radius: var(--radius-md);
+    background: var(--bg-subtle);
+    border: 1px solid var(--border-hairline);
+    color: var(--text-primary);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+  }
+
+  .theme-toggle:hover {
+    background: var(--bg-surface);
+    border-color: var(--accent);
+    color: var(--accent);
+    transform: translateY(-1px);
+  }
+
+  .theme-icon {
+    transition: transform var(--transition-base), opacity var(--transition-base);
+  }
+
+  /* In light theme, show moon icon to switch to dark */
+  :global([data-theme="light"]) .icon-sun {
+    display: none;
+  }
+  :global([data-theme="light"]) .icon-moon {
+    display: block;
+  }
+
+  /* In dark theme, show sun icon to switch to light */
+  :global([data-theme="dark"]) .icon-sun {
+    display: block;
+  }
+  :global([data-theme="dark"]) .icon-moon {
+    display: none;
+  }
+
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+</style>
+
+<script>
+  function setupThemeToggle() {
+    const toggles = document.querySelectorAll('.theme-toggle');
+    toggles.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const current = document.documentElement.getAttribute('data-theme') || 'light';
+        const next = current === 'dark' ? 'light' : 'dark';
+        
+        document.documentElement.setAttribute('data-theme', next);
+        document.documentElement.style.colorScheme = next;
+        try {
+          localStorage.setItem('theme', next);
+        } catch (e) {
+          // localStorage disabled
+        }
+
+        // Update aria label
+        btn.setAttribute('aria-label', next === 'dark' ? 'Switch to light mode' : 'Switch to dark mode');
+      });
+    });
+  }
+
+  setupThemeToggle();
+  document.addEventListener('astro:page-load', setupThemeToggle);
+</script>

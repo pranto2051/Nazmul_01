@@ -1,0 +1,30 @@
+{
+  "name": "academic-research-portfolio",
+  "version": "1.0.0",
+  "description": "Production-ready static academic research portfolio for Nazmul Hasan Shouvo",
+  "type": "module",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "check": "astro check",
+    "check:content": "node scripts/check-content.mjs",
+    "check:content:strict": "node scripts/check-content.mjs --strict",
+    "check:images": "node scripts/check-images.mjs",
+    "prebuild": "npm run check:content"
+  },
+  "dependencies": {
+    "@astrojs/check": "^0.9.4",
+    "@astrojs/sitemap": "^3.7.4",
+    "@fontsource/jetbrains-mono": "^5.3.0",
+    "@fontsource/newsreader": "^5.3.0",
+    "@fontsource/plus-jakarta-sans": "^5.3.0",
+    "astro": "^7.3.8",
+    "js-yaml": "^4.1.0",
+    "typescript": "^5.8.0"
+  },
+  "devDependencies": {
+    "@types/js-yaml": "^4.0.9",
+    "@types/node": "^22.13.0"
+  }
+}

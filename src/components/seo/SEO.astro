@@ -1,0 +1,63 @@
+---
+/**
+ * ═════════════════════════════════════════════════════════════
+ * [COMPONENT] SEO — Metadata & Open Graph Tags Manager
+ * ─────────────────────────────────────────────────────────────
+ * Purpose     : Standardized SEO, canonical URLs, Twitter cards,
+ *               Open Graph social sharing metadata, and search engine directives.
+ * Props       : title, description, ogImage, canonicalUrl, noindex
+ * Data Source : Page props and environment settings (site URL)
+ * Used In     : src/layouts/BaseLayout.astro
+ * How to Edit : Adjust default fallback metadata or social card values below.
+ * ═════════════════════════════════════════════════════════════
+ */
+
+interface Props {
+  title?: string;
+  description?: string;
+  ogImage?: string;
+  canonicalUrl?: string;
+  noindex?: boolean;
+}
+
+const {
+  title = 'Nazmul Hasan Shouvo | Academic Research Portfolio · Medical AI',
+  description = 'Academic research portfolio of Nazmul Hasan Shouvo — Research Assistant at Canterbury Christ Church University (CCCU), UK. Specializing in Pancreatic CT Segmentation, Deep Learning, and Explainable AI.',
+  ogImage = '/og/og-default.jpg',
+  canonicalUrl = Astro.url.href,
+  noindex = false,
+} = Astro.props;
+
+// Absolute image URL resolution for Open Graph
+const siteUrl = import.meta.env.PUBLIC_SITE_URL || 'https://nazmul-hasan-shouvo.vercel.app';
+const fullOgImageUrl = ogImage.startsWith('http') ? ogImage : `${siteUrl}${ogImage.startsWith('/') ? '' : '/'}${ogImage}`;
+---
+
+<!-- Essential Page Metadata -->
+<title>{title}</title>
+<meta name="description" content={description} />
+<link rel="canonical" href={canonicalUrl} />
+
+{noindex && <meta name="robots" content="noindex, nofollow" />}
+
+<!-- Open Graph / Social Media -->
+<meta property="og:site_name" content="Nazmul Hasan Shouvo — Academic Portfolio" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content={canonicalUrl} />
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+<meta property="og:image" content={fullOgImageUrl} />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:image:alt" content="Nazmul Hasan Shouvo — Medical AI & Deep Learning Research Portfolio" />
+
+<!-- Twitter Meta -->
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:url" content={canonicalUrl} />
+<meta name="twitter:title" content={title} />
+<meta name="twitter:description" content={description} />
+<meta name="twitter:image" content={fullOgImageUrl} />
+
+<!-- Academic Identity & Indexing -->
+<meta name="author" content="Nazmul Hasan Shouvo" />
+<meta name="keywords" content="Nazmul Hasan Shouvo, Medical Image Segmentation, Pancreatic CT, Deep Learning, Explainable AI, XAI, Vision Transformers, Canterbury Christ Church University, CCCU" />

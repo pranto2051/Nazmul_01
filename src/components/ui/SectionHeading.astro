@@ -1,0 +1,89 @@
+---
+/**
+ * ═════════════════════════════════════════════════════════════
+ * [COMPONENT] SectionHeading — Section Eyebrow, Title & Subtitle
+ * ─────────────────────────────────────────────────────────────
+ * Purpose     : Standardized academic section heading with eyebrow badges and subtitles.
+ * Props       : eyebrow, title, subtitle, align ('left' | 'center')
+ * Used In     : Home and all core content section headers
+ * ═════════════════════════════════════════════════════════════
+ */
+
+interface Props {
+  eyebrow?: string;
+  title: string;
+  subtitle?: string;
+  align?: 'left' | 'center';
+  id?: string;
+}
+
+const { eyebrow, title, subtitle, align = 'left', id } = Astro.props;
+---
+
+<div class={`section-heading align-${align}`} id={id}>
+  {eyebrow && (
+    <div class="eyebrow-badge">
+      <span class="eyebrow-dot" aria-hidden="true"></span>
+      <span>{eyebrow}</span>
+    </div>
+  )}
+  <h2 class="section-title text-title-1">{title}</h2>
+  {subtitle && <p class="section-subtitle">{subtitle}</p>}
+</div>
+
+<style>
+  .section-heading {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    margin-bottom: 2.75rem;
+  }
+
+  .align-center {
+    align-items: center;
+    text-align: center;
+  }
+
+  .align-left {
+    align-items: flex-start;
+    text-align: left;
+  }
+
+  .eyebrow-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: var(--font-mono);
+    font-size: 0.76rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--accent);
+    background: var(--accent-subtle);
+    padding: 0.3rem 0.85rem;
+    border-radius: var(--radius-full);
+    border: 1px solid var(--border-hairline);
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
+  }
+
+  .eyebrow-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 8px var(--accent);
+  }
+
+  .section-title {
+    color: var(--text-primary);
+    font-weight: 700;
+    letter-spacing: -0.025em;
+  }
+
+  .section-subtitle {
+    max-width: 65ch;
+    font-size: 1.125rem;
+    color: var(--text-secondary);
+    line-height: 1.65;
+  }
+</style>

@@ -1,0 +1,159 @@
+# ═════════════════════════════════════════════════════════════
+# [CARD] Gallery — Medical Scans, Architecture & Figures Gallery
+# ─────────────────────────────────────────────────────────────
+# [DATA]    Categories: Segmentation, Architecture, XAI, Results, Talks & Events, Certificates
+# [MANUAL-UPDATE] Duplicate or edit entries below to add visual assets.
+# ═════════════════════════════════════════════════════════════
+
+- id: fig-pancreatic-ct
+  title: "Axial Abdominal CT Slice"
+  category: "Segmentation"
+  imageKey: "pancreaticCtScan"
+  aspect: "square"
+  caption: "Contrast-enhanced axial slice displaying low soft-tissue contrast at the pancreatic parenchymal interface."
+  credit: "Clinical Research Dataset (Anonymised) [DEMO]"
+  verified: false
+
+- id: fig-pancreatic-mask
+  title: "3D Pancreatic Segmentation Mask"
+  category: "Segmentation"
+  imageKey: "pancreaticSegmentationMask"
+  aspect: "square"
+  caption: "Predicted volumetric segmentation overlay isolating organ boundaries from adjacent vascular structures."
+  credit: "Research Prototype Pipeline [DEMO]"
+  verified: false
+
+- id: fig-pancreatic-mesh
+  title: "3D Anatomical Surface Mesh"
+  category: "Segmentation"
+  imageKey: "pancreatic3dMesh"
+  aspect: "square"
+  caption: "Reconstructed 3D stereolithographic mesh of pancreas geometry rendered for surgical trajectory inspection."
+  credit: "3D Slicer Reconstruction [DEMO]"
+  verified: false
+
+- id: fig-vit-architecture
+  title: "Swin-3D & ViT Hybrid Architecture"
+  category: "Architecture"
+  imageKey: "pancreaticVitArchitecture"
+  aspect: "wide"
+  caption: "Encoder-decoder topology integrating shifted-window 3D self-attention with residual skip connections."
+  credit: "Research Methodology Diagram [DEMO]"
+  verified: false
+
+- id: fig-guava-arch
+  title: "Class-Weighted ResNet50 Pipeline"
+  category: "Architecture"
+  imageKey: "guavaArchitecture"
+  aspect: "wide"
+  caption: "Modified residual network incorporating dynamic frequency loss weighting and spatial feature pooling."
+  credit: "IEEE QPAIN 2026 (Accepted) [DEMO]"
+  verified: false
+
+- id: fig-applenet-arch
+  title: "AppleNet-B1 Feature Pyramid"
+  category: "Architecture"
+  imageKey: "appleNetArchitecture"
+  aspect: "wide"
+  caption: "Compound scaled convolutional architecture with squeeze-and-excitation channel calibration."
+  credit: "IEEE QPAIN 2026 (Accepted) [DEMO]"
+  verified: false
+
+- id: fig-mangonet-arch
+  title: "MangoNet-SA Attention Pipeline"
+  category: "Architecture"
+  imageKey: "mangoNetSaArchitecture"
+  aspect: "wide"
+  caption: "MobileNetV2 inverted residual blocks enhanced with spatial attention gates for edge deployment."
+  credit: "IEEE QPAIN 2026 (Accepted) [DEMO]"
+  verified: false
+
+- id: fig-guava-gradcam
+  title: "Grad-CAM Saliency Localization"
+  category: "XAI"
+  imageKey: "guavaGradcam"
+  aspect: "square"
+  caption: "Visual gradient attribution highlighting distinct necrotic lesion margins on foliar pathology."
+  credit: "IEEE QPAIN 2026 (Accepted) [DEMO]"
+  verified: false
+
+- id: fig-applenet-heatmap
+  title: "Self-Attention Feature Heatmap"
+  category: "XAI"
+  imageKey: "appleNetAttentionHeatmap"
+  aspect: "square"
+  caption: "Spatial attention coefficient distribution confirming localized activation over fungal lesions."
+  credit: "IEEE QPAIN 2026 (Accepted) [DEMO]"
+  verified: false
+
+- id: fig-liver-shap
+  title: "SHAP Summary Feature Importance"
+  category: "XAI"
+  imageKey: "liverShapSummary"
+  aspect: "wide"
+  caption: "Shapley additive explanations ranking clinical biomarker impact across stacked ensemble predictions."
+  credit: "PECCII / IEEE ICECTE 2026 [DEMO]"
+  verified: false
+
+- id: fig-guava-confusion
+  title: "Multi-Class Confusion Matrix"
+  category: "Results"
+  imageKey: "guavaConfusionMatrix"
+  aspect: "square"
+  caption: "Normalized classification matrix demonstrating balanced class sensitivity across rare infection categories."
+  credit: "IEEE QPAIN 2026 [DEMO]"
+  verified: false
+
+- id: fig-heart-stroke-roc
+  title: "Multi-Class ROC-AUC Trajectories"
+  category: "Results"
+  imageKey: "heartStrokeRocCurves"
+  aspect: "square"
+  caption: "Receiver operating characteristic curves evaluating stratified cardiovascular and stroke risk scoring."
+  credit: "AI-Scientist-UK 2025 [DEMO]"
+  verified: false
+
+- id: fig-aids-threshold
+  title: "Threshold Optimization Sensitivity Tradeoff"
+  category: "Results"
+  imageKey: "aidsThresholdOptimization"
+  aspect: "square"
+  caption: "Precision-recall curves identifying optimal Youden threshold for false-negative minimization."
+  credit: "IEEE QPAIN 2026 [DEMO]"
+  verified: false
+
+- id: fig-cccu-lecture
+  title: "Invited Lecture on AI in Healthcare"
+  category: "Talks & Events"
+  imageKey: "cccuGuestLecturePhoto"
+  aspect: "wide"
+  caption: "Delivering an invited guest lecture on applied machine learning and data intelligence at CCCU."
+  credit: "Canterbury Christ Church University (March 2026) [DEMO]"
+  verified: false
+
+- id: fig-qpain-presentation
+  title: "IEEE Conference Research Presentation"
+  category: "Talks & Events"
+  imageKey: "conferencePresentationQpain"
+  aspect: "wide"
+  caption: "Presenting accepted research papers at an international academic conference."
+  credit: "Conference Photo [DEMO]"
+  verified: false
+
+- id: fig-ccna-cert
+  title: "Cisco CCNA Certification Credential"
+  category: "Certificates"
+  imageKey: "ccnaCertificate"
+  aspect: "wide"
+  caption: "Official Cisco Certified Network Associate verification credential."
+  credit: "Cisco Systems [DEMO]"
+  verified: false
+
+- id: fig-iccit-cert
+  title: "IEEE ICCIT 2024 Presentation Certificate"
+  category: "Certificates"
+  imageKey: "ieeeIccitCertificate"
+  aspect: "wide"
+  caption: "Certificate of paper presentation at the 27th IEEE ICCIT 2024 international conference."
+  credit: "IEEE ICCIT 2024 Committee [DEMO]"
+  verified: false

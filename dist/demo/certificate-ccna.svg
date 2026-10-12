@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 1100" width="1600" height="1100">
+  <rect width="1600" height="1100" fill="#0f1724"/>
+  <rect x="40" y="40" width="1520" height="1020" rx="20" fill="#172234" stroke="#0284c7" stroke-width="4"/>
+  <rect x="70" y="70" width="1460" height="960" rx="12" fill="none" stroke="#1e2e42" stroke-width="2"/>
+  
+  <text x="800" y="240" font-family="serif" font-size="52" fill="#38bdf8" font-weight="bold" text-anchor="middle">CISCO SYSTEMS</text>
+  <text x="800" y="320" font-family="sans-serif" font-size="28" fill="#94a3b8" letter-spacing="4" text-anchor="middle">THIS IS TO CERTIFY THAT</text>
+  
+  <text x="800" y="460" font-family="serif" font-size="64" fill="#ffffff" font-weight="bold" text-anchor="middle">Nazmul Hasan Shouvo</text>
+  
+  <text x="800" y="560" font-family="sans-serif" font-size="28" fill="#94a3b8" text-anchor="middle">HAS SUCCESSFULLY COMPLETED ALL REQUIREMENTS TO BE RECOGNIZED AS A</text>
+  <text x="800" y="640" font-family="serif" font-size="44" fill="#2dd4bf" font-weight="bold" text-anchor="middle">Cisco Certified Network Associate (CCNA)</text>
+  
+  <line x1="400" y1="820" x2="700" y2="820" stroke="#475569" stroke-width="2"/>
+  <text x="550" y="860" font-family="sans-serif" font-size="18" fill="#94a3b8" text-anchor="middle">VERIFIED CREDENTIAL</text>
+  
+  <line x1="900" y1="820" x2="1200" y2="820" stroke="#475569" stroke-width="2"/>
+  <text x="1050" y="860" font-family="sans-serif" font-size="18" fill="#94a3b8" text-anchor="middle">CISCO CERTIFIED PROFESSIONAL</text>
+  
+  <rect x="1400" y="990" width="120" height="40" rx="6" fill="rgba(56,189,248,0.15)" stroke="#38bdf8"/>
+  <text x="1460" y="1016" font-family="monospace" font-size="14" fill="#38bdf8" font-weight="bold" text-anchor="middle">DEMO CERT</text>
+</svg>

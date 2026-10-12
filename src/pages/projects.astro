@@ -1,0 +1,107 @@
+---
+/**
+ * ═════════════════════════════════════════════════════════════
+ * [SECTION] Projects Page (`/projects`)
+ * ─────────────────────────────────────────────────────────────
+ * Purpose     : Academic & software engineering project showcase with filtering.
+ * Data Source : src/content/projects/projects.yaml
+ * ═════════════════════════════════════════════════════════════
+ */
+
+import { getCollection } from 'astro:content';
+import PageLayout from '../layouts/PageLayout.astro';
+import SectionHeading from '../components/ui/SectionHeading.astro';
+import ProjectCard from '../components/projects/ProjectCard.astro';
+
+const rawProjects = await getCollection('projects');
+const projects = rawProjects.map((p) => p.data);
+
+const categories = ['All', 'Databases', 'Big Data', 'Networking', 'Web'];
+---
+
+<PageLayout
+  title="Projects & Engineering Systems | Nazmul Hasan Shouvo"
+  description="Academic engineering projects in NoSQL distributed databases, big data spatial telematics, enterprise network routing, and verification software."
+  activeHref="/projects"
+>
+  <section class="section-padding container">
+    <SectionHeading
+      eyebrow="ENGINEERING & SYSTEMS"
+      title="Academic & Engineering Projects"
+      subtitle="Selected course capstones and system implementations spanning distributed databases, autonomous routing graphs, and enterprise Cisco topologies."
+    />
+
+    <!-- Filter Buttons -->
+    <div class="projects-filter-bar">
+      {categories.map((cat, idx) => (
+        <button
+          type="button"
+          class={`filter-pill project-filter-pill ${idx === 0 ? 'active' : ''}`}
+          data-category-target={cat}
+        >
+          {cat}
+        </button>
+      ))}
+    </div>
+
+    <!-- Projects Grid -->
+    <div class="projects-grid-layout" id="projects-grid">
+      {projects.map((proj) => (
+        <ProjectCard project={proj} />
+      ))}
+    </div>
+  </section>
+</PageLayout>
+
+<style>
+  .projects-filter-bar {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    margin-bottom: 2.5rem;
+  }
+
+  .project-filter-pill {
+    padding: 0.4rem 1rem;
+    font-size: 0.88rem;
+    cursor: pointer;
+  }
+
+  .projects-grid-layout {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2rem;
+  }
+
+  @media (max-width: 768px) {
+    .projects-grid-layout {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
+
+<script>
+  function setupProjectsFilter() {
+    const buttons = document.querySelectorAll<HTMLButtonElement>('[data-category-target]');
+    const cards = document.querySelectorAll<HTMLElement>('.project-card');
+
+    buttons.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const cat = btn.getAttribute('data-category-target') || 'All';
+        buttons.forEach((b) => b.classList.toggle('active', b === btn));
+
+        cards.forEach((card) => {
+          const cardCat = card.getAttribute('data-category') || '';
+          if (cat === 'All' || cardCat === cat) {
+            card.style.display = 'flex';
+          } else {
+            card.style.display = 'none';
+          }
+        });
+      });
+    });
+  }
+
+  setupProjectsFilter();
+  document.addEventListener('astro:page-load', setupProjectsFilter);
+</script>

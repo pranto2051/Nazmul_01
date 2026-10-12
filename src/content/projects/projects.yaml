@@ -1,0 +1,87 @@
+# ═════════════════════════════════════════════════════════════
+# [CARD] Projects — Academic & Software Engineering Projects
+# ─────────────────────────────────────────────────────────────
+# [DATA]    Core curriculum projects from MSc and BSc degrees
+# [MANUAL-UPDATE] Duplicate or edit entries below to add projects.
+# ═════════════════════════════════════════════════════════════
+
+- id: newsportal-mongodb-cms
+  title: "NewsPortal: High-Throughput NoSQL Database Architecture for Media CMS"
+  context: "MSc Module — Big Data Database Development (Group Lead)"
+  period: "2025"
+  category: "Databases"
+  description: "Designed a production-grade document-oriented MongoDB database schema supporting high concurrent article reads, dynamic category indexing, and complex editorial workflows."
+  stack:
+    - "MongoDB"
+    - "NoSQL"
+    - "Python"
+    - "Aggregation Pipelines"
+    - "JSON Schema"
+  bullets:
+    - "Engineered compound and text indexes to achieve sub-10ms query execution times across 500,000+ mock news records."
+    - "Constructed multi-stage aggregation pipelines for real-time trending analytics and automated author attribution."
+    - "Enforced rigorous JSON Schema validation rules to prevent malformed editorial payload injections."
+  repoUrl: ""
+  demoUrl: ""
+  verified: true
+
+- id: autonomous-vehicle-routing
+  title: "Big Data Framework for Autonomous Vehicle Spatial Route Optimisation"
+  context: "MSc Module — Data in Action"
+  period: "2025"
+  category: "Big Data"
+  description: "Built a scalable spatial graph analytics pipeline ingesting vehicle telematics and road congestion datasets to model optimal energy-efficient transit corridors."
+  stack:
+    - "Python"
+    - "Pandas"
+    - "NetworkX"
+    - "Spatial Telematics"
+    - "Seaborn"
+  bullets:
+    - "Processed geospatial GPS coordinate streams, handling missing telemetry via spatial interpolation."
+    - "Simulated shortest-path and congestion-aware routing dynamics using Dijkstra and A* heuristics on topological graphs."
+    - "Generated comprehensive analytical heatmaps illustrating battery drain variances against elevation gradients."
+  repoUrl: ""
+  demoUrl: ""
+  verified: true
+
+- id: enterprise-network-redesign
+  title: "Resilient Multi-Campus Enterprise Network Infrastructure"
+  context: "BSc Practicum & CCNA Capstone"
+  period: "2023"
+  category: "Networking"
+  description: "Engineered and simulated a fault-tolerant multi-tier enterprise network topology with redundancy protocols and strict security access controls."
+  stack:
+    - "Cisco Packet Tracer"
+    - "VLANs"
+    - "HSRP"
+    - "ACLs"
+    - "VLSM"
+    - "OSPF"
+  bullets:
+    - "Configured Hot Standby Router Protocol (HSRP) ensuring seamless sub-second gateway failover."
+    - "Implemented hierarchical VLAN segmentation and extended Access Control Lists (ACLs) isolating guest and corporate traffic."
+    - "Optimized IPv4 address allocation using Variable Length Subnet Masking (VLSM) and multi-area OSPF routing."
+  repoUrl: ""
+  demoUrl: ""
+  verified: true
+
+- id: dynamic-qr-verification
+  title: "Dynamic QR Code Management & Verification Platform"
+  context: "BSc Software Engineering Capstone"
+  period: "2023"
+  category: "Web"
+  description: "Developed a full-stack secure identity and digital verification system featuring dynamic time-sensitive QR code validation."
+  stack:
+    - "TypeScript"
+    - "Node.js"
+    - "SQL"
+    - "REST APIs"
+    - "JWT"
+  bullets:
+    - "Implemented cryptographically signed token payloads embedded in dynamic SVG QR graphics."
+    - "Constructed relational database schemas tracking verification audit logs and role-based permissions."
+    - "Designed responsive client dashboards with instant scan feedback and camera stream integration."
+  repoUrl: ""
+  demoUrl: ""
+  verified: true

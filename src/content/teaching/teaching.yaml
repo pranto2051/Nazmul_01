@@ -1,0 +1,36 @@
+# ═════════════════════════════════════════════════════════════
+# [CARD] Teaching — Teaching, Mentoring & Invited Talks
+# ─────────────────────────────────────────────────────────────
+# [DATA]    Guest lectures and teaching assistantships
+# [MANUAL-UPDATE] To add talks or courses, edit or duplicate an entry below.
+# ═════════════════════════════════════════════════════════════
+
+- id: cccu-guest-lecture-2026
+  role: "Guest Lecturer / Invited Speaker"
+  institution: "Canterbury Christ Church University (CCCU)"
+  location: "Canterbury, UK"
+  period: "March 2026"
+  title: "Applied Artificial Intelligence & Data Intelligence in Healthcare"
+  description: "Delivered an invited lecture to graduate data intelligence students covering medical image preprocessing, CNN/ViT architectures, and clinical interpretability using Grad-CAM."
+  photoKey: "cccuGuestLecturePhoto"
+  verified: true
+
+- id: cccu-teaching-assistant-2026
+  role: "Teaching Assistant"
+  institution: "Canterbury Christ Church University (CCCU)"
+  location: "Canterbury, UK"
+  period: "2026 – Present"
+  title: "Graduate Lab Demonstrator"
+  description: "Providing laboratory mentoring and practical coding support in Python programming, NumPy matrix operations, linear algebra for machine learning, and applied probability."
+  photoKey: ""
+  verified: true
+
+- id: iubat-academic-mentor-2022
+  role: "Academic Peer Mentor"
+  institution: "IUBAT — International University of Business Agriculture and Technology"
+  location: "Dhaka, Bangladesh"
+  period: "Jul 2022 – Sep 2022"
+  title: "Undergraduate Peer Mentorship Program"
+  description: "Mentored junior computer science students in core Object-Oriented Programming (C++/Java), dynamic data structures, and algorithmic complexity analysis."
+  photoKey: ""
+  verified: true

@@ -1,0 +1,46 @@
+# ═════════════════════════════════════════════════════════════
+# [CARD] Awards & Certifications — Honors & Credentials
+# ─────────────────────────────────────────────────────────────
+# [DATA]    CCNA, IEEE presentations, and research appointment recognition
+# [MANUAL-UPDATE] To add certifications, duplicate an entry below.
+# ═════════════════════════════════════════════════════════════
+
+- id: award-ccna-cisco
+  title: "Cisco Certified Network Associate (CCNA)"
+  issuer: "Cisco Systems"
+  year: "2023"
+  description: "Industry-standard professional credential demonstrating proficiency in network fundamentals, IP connectivity, security fundamentals, and network automation."
+  certificateKey: "ccnaCertificate"
+  verified: true
+
+- id: award-ten-publications
+  title: "Author / Co-Author of 10 Accepted International Peer-Reviewed Publications"
+  issuer: "IEEE & International Academic Conferences"
+  year: "2024–2026"
+  description: "Recognized for significant scientific contributions across international peer-reviewed conferences (IEEE QPAIN, IEEE ICCIT, IEEE ICECTE, PECCII, AI-Scientist-UK)."
+  certificateKey: "conferencePresentationQpain"
+  verified: true
+
+- id: award-three-book-chapters
+  title: "Author / Co-Author of 3 Accepted Book Chapters"
+  issuer: "Bentham Science Publishers"
+  year: "2026 (In Press)"
+  description: "Authored peer-reviewed scholarly book chapters on energy-aware machine learning, aquatic pollution AI monitoring, and sustainable carbon-conscious AI."
+  certificateKey: ""
+  verified: true
+
+- id: award-ieee-iccit-presentation
+  title: "Published & Presented at 27th IEEE ICCIT 2024"
+  issuer: "IEEE Bangladesh Section / ICCIT"
+  year: "December 2024"
+  description: "Presented undergraduate thesis research on 5G real-time QoS scheduling algorithms, published in IEEE Xplore proceedings (pp. 2014–2019)."
+  certificateKey: "ieeeIccitCertificate"
+  verified: true
+
+- id: award-cccu-placement
+  title: "Appointed Research Placement Researcher"
+  issuer: "Canterbury Christ Church University (CCCU)"
+  year: "2026 – Present"
+  description: "Competitively selected for a funded postgraduate research placement contributing to ongoing biomedical artificial intelligence projects."
+  certificateKey: "cccuPlacementBadge"
+  verified: true

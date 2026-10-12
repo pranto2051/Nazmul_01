@@ -1,0 +1,23 @@
+---
+/**
+ * ═════════════════════════════════════════════════════════════
+ * [COMPONENT] SkipLink — Keyboard Accessibility Skip Link
+ * ─────────────────────────────────────────────────────────────
+ * Purpose     : Direct jump-to-content accessibility link (WCAG 2.2 AA).
+ * Props       : targetId (default: 'main-content')
+ * Data Source : Local props
+ * Used in     : src/layouts/BaseLayout.astro
+ * How to Edit : Adjust text or target ID below.
+ * ═════════════════════════════════════════════════════════════
+ */
+
+interface Props {
+  targetId?: string;
+}
+
+const { targetId = 'main-content' } = Astro.props;
+---
+
+<a href={`#${targetId}`} class="skip-link">
+  Skip to main content
+</a>

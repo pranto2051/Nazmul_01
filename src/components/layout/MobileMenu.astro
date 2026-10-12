@@ -1,0 +1,333 @@
+---
+/**
+ * ═════════════════════════════════════════════════════════════
+ * [COMPONENT] MobileMenu — Mobile Navigation Drawer
+ * ─────────────────────────────────────────────────────────────
+ * Purpose     : Accessible full-viewport slide-in navigation drawer for mobile
+ *               devices, isolated from header stacking contexts.
+ * Props       : navLinks (Array: { href, label }), cvUrl, activeHref
+ * Data Source : src/components/layout/Header.astro
+ * Used in     : src/components/layout/Header.astro
+ * How to Edit : Adjust links or drawer styling below.
+ * ═════════════════════════════════════════════════════════════
+ */
+
+interface NavItem {
+  href: string;
+  label: string;
+}
+
+interface Props {
+  navLinks: NavItem[];
+  cvUrl?: string;
+  activeHref?: string;
+}
+
+const { navLinks, cvUrl = '/cv', activeHref = '/' } = Astro.props;
+---
+
+<div
+  id="mobile-menu-drawer"
+  class="mobile-drawer"
+  aria-hidden="true"
+  role="dialog"
+  aria-modal="true"
+  aria-label="Mobile Navigation Drawer"
+>
+  <!-- Backdrop Overlay -->
+  <div class="mobile-drawer-backdrop" id="mobile-drawer-backdrop"></div>
+
+  <!-- Slide-in Drawer Container -->
+  <div class="mobile-drawer-content" id="mobile-drawer-content">
+    <div class="mobile-drawer-header">
+      <div class="brand-badge-group">
+        <span class="monogram-badge">NHS</span>
+        <span class="mobile-brand">Nazmul Hasan Shouvo</span>
+      </div>
+      <button
+        type="button"
+        id="mobile-drawer-close"
+        class="close-btn"
+        aria-label="Close navigation menu"
+      >
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+      </button>
+    </div>
+
+    <!-- Nav Links List -->
+    <nav class="mobile-nav-links" aria-label="Mobile Nav Links">
+      {navLinks.map((link) => {
+        const isActive = activeHref === link.href || (link.href !== '/' && activeHref.startsWith(link.href));
+        return (
+          <a
+            href={link.href}
+            class={`mobile-nav-item ${isActive ? 'active' : ''}`}
+            aria-current={isActive ? 'page' : undefined}
+          >
+            <span class="nav-text">{link.label}</span>
+            {isActive && <span class="active-dot" aria-hidden="true">•</span>}
+          </a>
+        );
+      })}
+    </nav>
+
+    <!-- Drawer Footer Actions -->
+    <div class="mobile-drawer-footer">
+      <a href={cvUrl} class="btn btn-primary btn-cv-mobile">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+          <polyline points="7 10 12 15 17 10"></polyline>
+          <line x1="12" y1="15" x2="12" y2="3"></line>
+        </svg>
+        <span>Download Academic CV (PDF)</span>
+      </a>
+      <p class="drawer-credit">Canterbury Christ Church University · Medical AI</p>
+    </div>
+  </div>
+</div>
+
+<style>
+  /* Fixed full-viewport drawer overlay (Outside header containing block) */
+  .mobile-drawer {
+    position: fixed;
+    inset: 0;
+    width: 100vw;
+    height: 100vh;
+    height: 100dvh;
+    z-index: 99999;
+    visibility: hidden;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 250ms ease, visibility 250ms ease;
+  }
+
+  .mobile-drawer.open {
+    visibility: visible;
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  /* Dimmed Blur Backdrop */
+  .mobile-drawer-backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.65);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    z-index: 1;
+  }
+
+  /* Sliding Panel */
+  .mobile-drawer-content {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: min(85vw, 360px);
+    height: 100%;
+    background: var(--bg-surface);
+    border-left: 1px solid var(--border-hairline);
+    padding: 1.5rem 1.25rem;
+    display: flex;
+    flex-direction: column;
+    box-shadow: -8px 0 32px rgba(0, 0, 0, 0.35);
+    z-index: 2;
+    transform: translateX(100%);
+    transition: transform 300ms cubic-bezier(0.16, 1, 0.3, 1);
+    box-sizing: border-box;
+  }
+
+  .mobile-drawer.open .mobile-drawer-content {
+    transform: translateX(0);
+  }
+
+  .mobile-drawer-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-bottom: 1.25rem;
+    border-bottom: 1px solid var(--border-hairline);
+  }
+
+  .brand-badge-group {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+  }
+
+  .monogram-badge {
+    width: 32px;
+    height: 32px;
+    border-radius: var(--radius-sm);
+    background: linear-gradient(135deg, var(--accent), var(--accent-2));
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-mono);
+    font-weight: 700;
+    font-size: 0.75rem;
+    letter-spacing: 0.05em;
+  }
+
+  .mobile-brand {
+    font-family: var(--font-serif);
+    font-weight: 600;
+    font-size: 1.05rem;
+    color: var(--text-primary);
+  }
+
+  .close-btn {
+    background: var(--bg-subtle);
+    border: 1px solid var(--border-hairline);
+    color: var(--text-secondary);
+    cursor: pointer;
+    width: 40px;
+    height: 40px;
+    border-radius: var(--radius-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all var(--transition-fast);
+  }
+
+  .close-btn:hover,
+  .close-btn:focus-visible {
+    color: var(--accent);
+    border-color: var(--accent);
+    background: var(--accent-subtle);
+  }
+
+  .mobile-nav-links {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    margin-top: 1.25rem;
+    flex: 1;
+    overflow-y: auto;
+    padding-right: 0.25rem;
+  }
+
+  .mobile-nav-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 1.05rem;
+    font-weight: 500;
+    color: var(--text-primary);
+    text-decoration: none;
+    padding: 0.75rem 0.85rem;
+    border-radius: var(--radius-md);
+    transition: background-color var(--transition-fast), color var(--transition-fast);
+  }
+
+  .mobile-nav-item:hover,
+  .mobile-nav-item:focus-visible {
+    background: var(--bg-subtle);
+    color: var(--accent);
+  }
+
+  .mobile-nav-item.active {
+    background: var(--accent-subtle);
+    color: var(--accent);
+    font-weight: 600;
+  }
+
+  .active-dot {
+    color: var(--accent);
+    font-size: 1.2rem;
+    line-height: 1;
+  }
+
+  .mobile-drawer-footer {
+    padding-top: 1.25rem;
+    border-top: 1px solid var(--border-hairline);
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .btn-cv-mobile {
+    width: 100%;
+    justify-content: center;
+    padding: 0.75rem 1rem;
+    font-size: 0.95rem;
+  }
+
+  .drawer-credit {
+    font-size: 0.75rem;
+    font-family: var(--font-mono);
+    color: var(--text-muted);
+    text-align: center;
+    margin: 0;
+  }
+</style>
+
+<script>
+  function setupMobileMenu() {
+    const trigger = document.getElementById('mobile-menu-trigger');
+    const drawer = document.getElementById('mobile-menu-drawer');
+    const closeBtn = document.getElementById('mobile-drawer-close');
+    const backdrop = document.getElementById('mobile-drawer-backdrop');
+    const links = drawer?.querySelectorAll('a');
+
+    if (!trigger || !drawer) return;
+
+    // Prevent duplicate listener attachments on View Transitions
+    if (trigger.dataset.menuAttached === 'true') return;
+    trigger.dataset.menuAttached = 'true';
+
+    function openMenu() {
+      drawer?.classList.add('open');
+      drawer?.setAttribute('aria-hidden', 'false');
+      trigger?.setAttribute('aria-expanded', 'true');
+      document.body.style.overflow = 'hidden';
+      document.documentElement.style.overflow = 'hidden';
+      setTimeout(() => closeBtn?.focus(), 50);
+    }
+
+    function closeMenu() {
+      drawer?.classList.remove('open');
+      drawer?.setAttribute('aria-hidden', 'true');
+      trigger?.setAttribute('aria-expanded', 'false');
+      document.body.style.overflow = '';
+      document.documentElement.style.overflow = '';
+      trigger?.focus();
+    }
+
+    trigger.addEventListener('click', (e) => {
+      e.stopPropagation();
+      if (drawer.classList.contains('open')) {
+        closeMenu();
+      } else {
+        openMenu();
+      }
+    });
+
+    closeBtn?.addEventListener('click', closeMenu);
+    backdrop?.addEventListener('click', closeMenu);
+
+    links?.forEach((link) => {
+      link.addEventListener('click', closeMenu);
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && drawer.classList.contains('open')) {
+        closeMenu();
+      }
+    });
+
+    window.addEventListener('resize', () => {
+      if (window.innerWidth > 960 && drawer.classList.contains('open')) {
+        closeMenu();
+      }
+    });
+  }
+
+  // Initial and Astro 7 View Transition hooks
+  setupMobileMenu();
+  document.addEventListener('astro:page-load', setupMobileMenu);
+</script>

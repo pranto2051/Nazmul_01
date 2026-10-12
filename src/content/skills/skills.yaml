@@ -1,0 +1,68 @@
+# ═════════════════════════════════════════════════════════════
+# [CARD] Skills — Technical & Academic Competencies
+# ─────────────────────────────────────────────────────────────
+# [DATA]    Categorized skill sets (no arbitrary percentage bars)
+# [MANUAL-UPDATE] To add skills, append items under the relevant category.
+# ═════════════════════════════════════════════════════════════
+
+- id: programming-languages
+  category: "Programming & Languages"
+  order: 1
+  skills:
+    - "Python (Pandas, NumPy, Scikit-learn)"
+    - "SQL"
+    - "MongoDB (NoSQL)"
+    - "TypeScript / JavaScript"
+    - "C & C++"
+    - "Java"
+    - "C#"
+  verified: true
+
+- id: ai-data-analysis
+  category: "AI & Data Analysis"
+  order: 2
+  skills:
+    - "Machine Learning"
+    - "Deep Learning (CNNs, ResNet, EfficientNet)"
+    - "Vision Transformers (ViT, Swin-3D)"
+    - "Medical Image Analysis (MONAI, SimpleITK)"
+    - "Explainable AI (Grad-CAM, SHAP, LIME)"
+    - "Statistical Analysis & Hypothesis Testing"
+    - "Model Evaluation & Threshold Optimization"
+    - "Data Visualisation (Matplotlib, Seaborn)"
+  verified: true
+
+- id: research-methods
+  category: "Research Methods"
+  order: 3
+  skills:
+    - "Systematic Literature Review"
+    - "Scientific Documentation & Protocol Design"
+    - "Quantitative & Empirical Experimental Validation"
+    - "Technical Paper Writing (LaTeX / Overleaf)"
+    - "Peer-Review Preparation & Response Letters"
+  verified: true
+
+- id: data-handling
+  category: "Data Handling & Preprocessing"
+  order: 4
+  skills:
+    - "DICOM & NIfTI Medical Imaging Processing"
+    - "Hounsfield Unit (HU) Windowing & Anisotropic Resampling"
+    - "Missing Data Imputation & Normalisation"
+    - "Parquet, CSV, JSON Pipeline Automation"
+    - "Model Versioning & Experiment Tracking"
+  verified: true
+
+- id: tools-infrastructure
+  category: "Tools & Infrastructure"
+  order: 5
+  skills:
+    - "3D Slicer"
+    - "Jupyter & Google Colab"
+    - "Git & GitHub"
+    - "VS Code"
+    - "Linux / Bash Environment"
+    - "Cisco Packet Tracer"
+    - "MATLAB"
+  verified: true

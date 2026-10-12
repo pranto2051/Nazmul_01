@@ -1,0 +1,115 @@
+---
+/**
+ * ═════════════════════════════════════════════════════════════
+ * [CARD] TeachingCard — Teaching & Invited Talks Card
+ * ─────────────────────────────────────────────────────────────
+ * Purpose     : Displays invited lectures, guest talks, and teaching appointments.
+ * Props       : item (role, institution, period, title, description, photoKey)
+ * Data Source : src/content/teaching/teaching.yaml
+ * ═════════════════════════════════════════════════════════════
+ */
+
+import { IMG } from '../../data/images';
+import Figure from '../media/Figure.astro';
+
+interface Props {
+  item: {
+    id: string;
+    role: string;
+    institution: string;
+    location: string;
+    period: string;
+    title: string;
+    description: string;
+    photoKey?: string;
+  };
+}
+
+const { item } = Astro.props;
+const photo = item.photoKey ? IMG[item.photoKey] : undefined;
+---
+
+<article class="teaching-card card-surface" id={`teaching-${item.id}`}>
+  <div class="teaching-text-col">
+    <div class="teaching-meta">
+      <span class="teaching-period font-mono">{item.period}</span>
+      <span class="meta-dot">·</span>
+      <span class="teaching-role font-mono">{item.role}</span>
+    </div>
+
+    <h3 class="paper-title teaching-title">{item.title}</h3>
+    <p class="teaching-inst">
+      <strong>{item.institution}</strong> · {item.location}
+    </p>
+    <p class="teaching-desc">{item.description}</p>
+  </div>
+
+  {photo && (
+    <div class="teaching-photo-col">
+      <Figure
+        imageKey={item.photoKey}
+        caption="Guest lecture session"
+        lightboxId={`photo-${item.id}`}
+      />
+    </div>
+  )}
+</article>
+
+<style>
+  .teaching-card {
+    padding: 1.75rem;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+    border-left: 4px solid var(--accent-2);
+  }
+
+  .teaching-text-col {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .teaching-meta {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.82rem;
+  }
+
+  .teaching-period {
+    font-weight: 700;
+    color: var(--accent-2);
+  }
+
+  .teaching-role {
+    color: var(--text-muted);
+  }
+
+  .teaching-title {
+    font-size: 1.25rem;
+    color: var(--text-primary);
+  }
+
+  .teaching-inst {
+    font-size: 0.95rem;
+    color: var(--text-secondary);
+  }
+
+  .teaching-desc {
+    font-size: 0.95rem;
+    color: var(--text-secondary);
+    line-height: 1.6;
+  }
+
+  .teaching-photo-col {
+    max-width: 420px;
+  }
+
+  @media (min-width: 768px) {
+    .teaching-card:has(.teaching-photo-col) {
+      grid-template-columns: 1.2fr 1fr;
+      align-items: center;
+    }
+  }
+</style>

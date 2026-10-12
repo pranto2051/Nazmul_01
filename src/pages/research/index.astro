@@ -1,0 +1,58 @@
+---
+/**
+ * ═════════════════════════════════════════════════════════════
+ * [SECTION] Research Index Page (`/research`)
+ * ─────────────────────────────────────────────────────────────
+ * Purpose     : Overview grid of 4 core research case studies.
+ * Data Source : src/content/research/*.md
+ * ═════════════════════════════════════════════════════════════
+ */
+
+import { getCollection } from 'astro:content';
+import PageLayout from '../../layouts/PageLayout.astro';
+import SectionHeading from '../../components/ui/SectionHeading.astro';
+import ResearchCard from '../../components/research/ResearchCard.astro';
+
+const caseStudies = await getCollection('research');
+
+// Sort by active / featured first
+caseStudies.sort((a, b) => {
+  if (a.data.status === 'ongoing' && b.data.status !== 'ongoing') return -1;
+  if (a.data.status !== 'ongoing' && b.data.status === 'ongoing') return 1;
+  return 0;
+});
+---
+
+<PageLayout
+  title="Research & In-Depth Case Studies | Nazmul Hasan Shouvo"
+  description="Deep-dive academic research case studies in 3D Pancreatic CT Segmentation, Class-Weighted ResNet50, Heterogeneous Ensembles, and Explainable AI."
+  activeHref="/research"
+>
+  <section class="section-padding container">
+    <SectionHeading
+      eyebrow="INVESTIGATIONS & CASE STUDIES"
+      title="Research Projects & Deep Dives"
+      subtitle="Comprehensive breakdowns of medical imaging problems, algorithmic pipelines, training methodologies, and clinical interpretability audits."
+    />
+
+    <div class="research-index-grid">
+      {caseStudies.map((cs) => (
+        <ResearchCard caseStudy={cs} />
+      ))}
+    </div>
+  </section>
+</PageLayout>
+
+<style>
+  .research-index-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2rem;
+  }
+
+  @media (max-width: 768px) {
+    .research-index-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

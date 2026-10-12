@@ -1,0 +1,73 @@
+---
+/**
+ * ═════════════════════════════════════════════════════════════
+ * [SECTION] Home Page — "The 10-Second Pitch"
+ * ─────────────────────────────────────────────────────────────
+ * Purpose     : 10-second overview of research identity, current focus,
+ *               metrics bento, featured papers, case studies, and contact CTA.
+ * Data Source : src/content/** (Astro 7 Content Collections)
+ * ═════════════════════════════════════════════════════════════
+ */
+
+import { getCollection } from 'astro:content';
+import PageLayout from '../layouts/PageLayout.astro';
+import Hero from '../components/home/Hero.astro';
+import StatsBento from '../components/home/StatsBento.astro';
+import ResearchSpotlight from '../components/home/ResearchSpotlight.astro';
+import ResearchInterests from '../components/home/ResearchInterests.astro';
+import FeaturedPublications from '../components/home/FeaturedPublications.astro';
+import SelectedCaseStudies from '../components/home/SelectedCaseStudies.astro';
+import TimelinePreview from '../components/home/TimelinePreview.astro';
+import VenuesStrip from '../components/home/VenuesStrip.astro';
+import CtaBand from '../components/home/CtaBand.astro';
+import { computePublicationMetrics, type PublicationItem } from '../lib/publications';
+
+// Fetch collection data
+const siteEntries = await getCollection('site');
+const profile = siteEntries[0]?.data;
+
+const rawPublications = await getCollection('publications');
+const publications: PublicationItem[] = rawPublications.map((p) => p.data);
+const metrics = computePublicationMetrics(publications);
+
+const rawResearch = await getCollection('research');
+// Featured case studies prioritized
+const sortedResearch = [...rawResearch].sort((a, b) => {
+  if (a.data.featured && !b.data.featured) return -1;
+  if (!a.data.featured && b.data.featured) return 1;
+  return 0;
+});
+---
+
+<PageLayout
+  title={`${profile.name} | Academic Research Portfolio · Medical AI`}
+  description={`${profile.name} — ${profile.currentRole} at ${profile.institution}. Specializing in 3D Pancreatic CT Segmentation, Deep Learning, and Explainable AI (XAI).`}
+  activeHref="/"
+>
+  {/* [SECTION] Hero — Researcher Identity, Role & PACS Scan Viewport */}
+  <Hero profile={profile} />
+
+  {/* [SECTION] StatsBento — Academic Metrics & Count-up Bento Grid */}
+  <StatsBento metrics={metrics} />
+
+  {/* [SECTION] VenuesStrip — Publication & Acceptance Venues */}
+  <VenuesStrip />
+
+  {/* [SECTION] ResearchSpotlight — Current Research Focus & Before/After Comparison */}
+  <ResearchSpotlight focus={profile.currentFocus} />
+
+  {/* [SECTION] ResearchInterests — Core Research Topics & Vocabulary Cloud */}
+  <ResearchInterests interests={profile.researchInterests} />
+
+  {/* [SECTION] FeaturedPublications — Selected Flagship Publications */}
+  <FeaturedPublications publications={publications} />
+
+  {/* [SECTION] SelectedCaseStudies — Deep-dive Research Case Studies */}
+  <SelectedCaseStudies caseStudies={sortedResearch} />
+
+  {/* [SECTION] TimelinePreview — Academic Journey & Current Placement */}
+  <TimelinePreview />
+
+  {/* [SECTION] CtaBand — Collaboration & Supervision Outreach */}
+  <CtaBand />
+</PageLayout>

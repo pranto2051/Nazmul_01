@@ -1,0 +1,188 @@
+---
+/**
+ * ═════════════════════════════════════════════════════════════
+ * [SECTION] ResearchSpotlight — Current Research Spotlight
+ * ─────────────────────────────────────────────────────────────
+ * Purpose     : Highlights current research focus (Pancreatic CT & 3D Segmentation)
+ *               and interactive Before/After segmentation comparison slider.
+ * Data Source : src/content/site/profile.yaml & src/content/research/
+ * ═════════════════════════════════════════════════════════════
+ */
+
+import SectionHeading from "../ui/SectionHeading.astro";
+import BeforeAfter from "../media/BeforeAfter.astro";
+
+interface Props {
+  focus: {
+    title: string;
+    description: string;
+    highlights: string[];
+  };
+}
+
+const { focus } = Astro.props;
+---
+
+<section id="research-spotlight" class="section-padding spotlight-section">
+  <div class="container spotlight-container">
+    <div class="spotlight-text">
+      <SectionHeading
+        eyebrow="CURRENT RESEARCH FOCUS"
+        title={focus.title}
+        subtitle={focus.description}
+      />
+
+      <ul class="spotlight-highlights-list">
+        {
+          focus.highlights.map((item) => (
+            <li class="highlight-item">
+              <span class="highlight-check">
+                <svg
+                  width="18"
+                  height="18"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <polyline points="20 6 9 17 4 12" />
+                </svg>
+              </span>
+              <span class="highlight-content">{item}</span>
+            </li>
+          ))
+        }
+      </ul>
+
+      <div class="spotlight-actions">
+        <a href="/research/pancreatic-ct-segmentation" class="btn btn-primary">
+          <span>Read Case Study</span>
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <line x1="5" y1="12" x2="19" y2="12"></line>
+            <polyline points="12 5 19 12 12 19"></polyline>
+          </svg>
+        </a>
+
+        <a href="/research" class="btn btn-secondary">
+          <span>Explore All 4 Case Studies</span>
+        </a>
+      </div>
+    </div>
+
+    <div class="spotlight-interactive">
+      <BeforeAfter
+        beforeImageKey="pancreaticCtScan"
+        afterImageKey="pancreaticSegmentationMask"
+        beforeLabel="Raw Axial CT Slice"
+        afterLabel="Predicted 3D Mask"
+      />
+    </div>
+  </div>
+</section>
+
+<style>
+  .spotlight-section {
+    background: var(--bg-surface);
+    border-top: 1px solid var(--border-hairline);
+    border-bottom: 1px solid var(--border-hairline);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .spotlight-section::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: -10%;
+    width: 500px;
+    height: 500px;
+    background: radial-gradient(circle, var(--accent) 0%, transparent 70%);
+    opacity: 0.06;
+    filter: blur(80px);
+    pointer-events: none;
+    transform: translateY(-50%);
+  }
+
+  .spotlight-container {
+    display: grid;
+    grid-template-columns: 1.1fr 1fr;
+    gap: clamp(2.5rem, 5vw, 5rem);
+    align-items: center;
+    position: relative;
+    z-index: 1;
+  }
+
+  .spotlight-text {
+    display: flex;
+    flex-direction: column;
+    gap: 1.75rem;
+  }
+
+  .spotlight-highlights-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .highlight-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    padding: 0.85rem 1.15rem;
+    background: var(--bg-subtle);
+    border-radius: var(--radius-md);
+    border: 1px solid var(--border-hairline);
+    transition: all var(--transition-fast);
+  }
+
+  .highlight-item:hover {
+    background: var(--bg-surface-elevated);
+    border-color: var(--accent);
+    transform: translateX(4px);
+  }
+
+  .highlight-check {
+    color: var(--accent);
+    background: var(--accent-subtle);
+    width: 28px;
+    height: 28px;
+    border-radius: var(--radius-sm);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    margin-top: 0.1rem;
+  }
+
+  .highlight-content {
+    font-size: 0.98rem;
+    color: var(--text-secondary);
+    line-height: 1.55;
+  }
+
+  .spotlight-actions {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-top: 0.5rem;
+  }
+
+  @media (max-width: 960px) {
+    .spotlight-container {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

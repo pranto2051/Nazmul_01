@@ -1,0 +1,39 @@
+---
+/**
+ * ═════════════════════════════════════════════════════════════
+ * [COMPONENT] StatusPill — Publication Status Badge
+ * ─────────────────────────────────────────────────────────────
+ * Purpose     : Displays publication status (Published, Accepted, In Press, Under Review)
+ *               with accessible semantic color indicators.
+ * Props       : status ('published' | 'accepted' | 'in-press' | 'under-review')
+ * ═════════════════════════════════════════════════════════════
+ */
+
+interface Props {
+  status: 'published' | 'accepted' | 'in-press' | 'under-review';
+  className?: string;
+}
+
+const { status, className = '' } = Astro.props;
+
+const labels: Record<string, string> = {
+  published: 'Published',
+  accepted: 'Accepted / In Press',
+  'in-press': 'In Press',
+  'under-review': 'Under Review',
+};
+---
+
+<span class={`status-pill ${status} ${className}`}>
+  <span class="status-dot"></span>
+  <span>{labels[status] || status}</span>
+</span>
+
+<style>
+  .status-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background-color: currentColor;
+  }
+</style>

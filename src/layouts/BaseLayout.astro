@@ -1,0 +1,136 @@
+---
+/**
+ * ═════════════════════════════════════════════════════════════
+ * [LAYOUT] BaseLayout — Primary Base Shell
+ * ─────────────────────────────────────────────────────────────
+ * Purpose     : Root HTML document frame: zero-flash blocking theme script,
+ *               self-hosted fonts, SEO meta tags, ClientRouter view transitions,
+ *               and accessibility primitives.
+ * Props       : title, description, ogImage, canonicalUrl
+ * Data Source : Page props
+ * Used in     : All pages and specialized layouts
+ * How to Edit : Update global meta tags or head scripts below.
+ * ═════════════════════════════════════════════════════════════
+ */
+
+import { ClientRouter } from 'astro:transitions';
+import SkipLink from '../components/layout/SkipLink.astro';
+import ScrollProgress from '../components/layout/ScrollProgress.astro';
+import BackToTop from '../components/layout/BackToTop.astro';
+import SEO from '../components/seo/SEO.astro';
+import JsonLdPerson from '../components/seo/JsonLdPerson.astro';
+
+// Self-hosted fonts (zero external render-blocking font requests)
+import '@fontsource/newsreader/500.css';
+import '@fontsource/newsreader/600.css';
+import '@fontsource/plus-jakarta-sans/400.css';
+import '@fontsource/plus-jakarta-sans/500.css';
+import '@fontsource/plus-jakarta-sans/600.css';
+import '@fontsource/plus-jakarta-sans/700.css';
+import '@fontsource/jetbrains-mono/400.css';
+import '@fontsource/jetbrains-mono/500.css';
+
+// Global Styles & Tokens
+import '../styles/tokens.css';
+import '../styles/base.css';
+import '../styles/typography.css';
+import '../styles/utilities.css';
+import '../styles/print.css';
+
+interface Props {
+  title?: string;
+  description?: string;
+  ogImage?: string;
+  canonicalUrl?: string;
+}
+
+const {
+  title = 'Nazmul Hasan Shouvo | Academic Research Portfolio · Medical AI',
+  description = 'Academic research portfolio of Nazmul Hasan Shouvo — Research Assistant at Canterbury Christ Church University (CCCU), UK. Specializing in Pancreatic CT Segmentation, Deep Learning, and Explainable AI.',
+  ogImage = '/og/og-default.jpg',
+  canonicalUrl = Astro.url.href,
+} = Astro.props;
+---
+
+<!doctype html>
+<html lang="en" data-theme="light">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- SEO & Social Metadata -->
+    <SEO
+      title={title}
+      description={description}
+      ogImage={ogImage}
+      canonicalUrl={canonicalUrl}
+    />
+
+    <!-- Favicon & Icons -->
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <meta name="theme-color" content="#f8fafc" id="theme-color-meta" />
+
+    <!-- Schema.org Person JSON-LD -->
+    <JsonLdPerson />
+
+    <!-- Zero-Flash Blocking Theme Script (Runs synchronously before first paint) -->
+    <script is:inline>
+      (function() {
+        try {
+          const stored = localStorage.getItem('theme');
+          const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+          const theme = stored ? stored : (prefersDark ? 'dark' : 'light');
+          document.documentElement.setAttribute('data-theme', theme);
+          document.documentElement.style.colorScheme = theme;
+          
+          const meta = document.getElementById('theme-color-meta');
+          if (meta) {
+            meta.setAttribute('content', theme === 'dark' ? '#080d14' : '#f8fafc');
+          }
+        } catch (e) {
+          document.documentElement.setAttribute('data-theme', 'light');
+        }
+      })();
+    </script>
+
+    <!-- Astro 7 Client Router for seamless transitions -->
+    <ClientRouter />
+
+    <slot name="head" />
+  </head>
+
+  <body>
+    <!-- Ambient Fluid Aurora Glow (Zero square grid lines) -->
+    <div class="aurora-bg" aria-hidden="true">
+      <div class="aurora-blob-1"></div>
+      <div class="aurora-blob-2"></div>
+      <div class="aurora-blob-3"></div>
+    </div>
+
+    <SkipLink />
+    <ScrollProgress />
+
+    <slot />
+
+    <BackToTop />
+
+    <!-- Theme Re-apply Hook on Client-Side Navigation -->
+    <script>
+      function reapplyTheme() {
+        try {
+          const stored = localStorage.getItem('theme');
+          const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+          const theme = stored ? stored : (prefersDark ? 'dark' : 'light');
+          document.documentElement.setAttribute('data-theme', theme);
+          document.documentElement.style.colorScheme = theme;
+          const meta = document.getElementById('theme-color-meta');
+          if (meta) {
+            meta.setAttribute('content', theme === 'dark' ? '#080d14' : '#f8fafc');
+          }
+        } catch (e) {}
+      }
+
+      document.addEventListener('astro:after-swap', reapplyTheme);
+    </script>
+  </body>
+</html>

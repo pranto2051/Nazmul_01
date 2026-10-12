@@ -1,0 +1,256 @@
+---
+/**
+ * ═════════════════════════════════════════════════════════════
+ * [SECTION] Experience Page (`/experience`)
+ * ─────────────────────────────────────────────────────────────
+ * Purpose     : Comprehensive academic profile page covering Education,
+ *               Experience, Teaching, Awards, and Skills with sticky scroll-spy.
+ * Data Source : education.yaml, experience.yaml, teaching.yaml, awards.yaml, skills.yaml
+ * ═════════════════════════════════════════════════════════════
+ */
+
+import { getCollection } from 'astro:content';
+import PageLayout from '../layouts/PageLayout.astro';
+import SectionHeading from '../components/ui/SectionHeading.astro';
+import EducationCard from '../components/experience/EducationCard.astro';
+import TimelineItem from '../components/experience/TimelineItem.astro';
+import TeachingCard from '../components/experience/TeachingCard.astro';
+import AwardCard from '../components/experience/AwardCard.astro';
+import SkillGroup from '../components/experience/SkillGroup.astro';
+
+const rawEducation = await getCollection('education');
+const educationList = rawEducation.map((e) => e.data);
+
+const rawExperience = await getCollection('experience');
+const experienceList = rawExperience.map((e) => e.data);
+
+const rawTeaching = await getCollection('teaching');
+const teachingList = rawTeaching.map((t) => t.data);
+
+const rawAwards = await getCollection('awards');
+const awardsList = rawAwards.map((a) => a.data);
+
+const rawSkills = await getCollection('skills');
+const skillsList = rawSkills.map((s) => s.data).sort((a, b) => a.order - b.order);
+---
+
+<PageLayout
+  title="Experience, Education & Credentials | Nazmul Hasan Shouvo"
+  description="Academic background at Canterbury Christ Church University (CCCU) and IUBAT, research assistant appointments, Cisco CCNA, and technical skills."
+  activeHref="/experience"
+>
+  <div class="experience-page-container container section-padding">
+    <SectionHeading
+      eyebrow="PROFESSIONAL RECORD"
+      title="Experience, Education & Credentials"
+      subtitle="Complete chronological record of postgraduate research appointments, undergraduate achievements, pedagogy, and technical competencies."
+    />
+
+    <!-- Sticky In-Page Sub-Nav with Scroll-Spy -->
+    <nav class="sticky-subnav card-surface" id="experience-subnav" aria-label="Experience Sub-Navigation">
+      <ul class="subnav-links-list">
+        <li><a href="#education-section" class="subnav-link active">Education</a></li>
+        <li><a href="#experience-section" class="subnav-link">Experience</a></li>
+        <li><a href="#teaching-section" class="subnav-link">Teaching & Mentoring</a></li>
+        <li><a href="#awards-section" class="subnav-link">Awards & Certifications</a></li>
+        <li><a href="#skills-section" class="subnav-link">Technical Skills</a></li>
+      </ul>
+    </nav>
+
+    <div class="sections-stack">
+      <!-- 1. Education Section -->
+      <section id="education-section" class="exp-category-block">
+        <h2 class="category-heading text-title-2">
+          <span class="heading-num font-mono">01.</span>
+          <span>Academic Education</span>
+        </h2>
+        <div class="category-cards-stack">
+          {educationList.map((edu) => (
+            <EducationCard edu={edu} />
+          ))}
+        </div>
+      </section>
+
+      <!-- 2. Experience Section -->
+      <section id="experience-section" class="exp-category-block">
+        <h2 class="category-heading text-title-2">
+          <span class="heading-num font-mono">02.</span>
+          <span>Research & Professional Experience</span>
+        </h2>
+        <div class="category-timeline-stack">
+          {experienceList.map((exp) => (
+            <TimelineItem exp={exp} />
+          ))}
+        </div>
+      </section>
+
+      <!-- 3. Teaching & Mentoring -->
+      <section id="teaching-section" class="exp-category-block">
+        <h2 class="category-heading text-title-2">
+          <span class="heading-num font-mono">03.</span>
+          <span>Teaching & Mentorship</span>
+        </h2>
+        <div class="category-cards-stack">
+          {teachingList.map((item) => (
+            <TeachingCard item={item} />
+          ))}
+        </div>
+      </section>
+
+      <!-- 4. Awards & Certifications -->
+      <section id="awards-section" class="exp-category-block">
+        <h2 class="category-heading text-title-2">
+          <span class="heading-num font-mono">04.</span>
+          <span>Honours, Awards & Certifications</span>
+        </h2>
+        <div class="category-cards-stack">
+          {awardsList.map((award) => (
+            <AwardCard award={award} />
+          ))}
+        </div>
+      </section>
+
+      <!-- 5. Technical Skills -->
+      <section id="skills-section" class="exp-category-block">
+        <h2 class="category-heading text-title-2">
+          <span class="heading-num font-mono">05.</span>
+          <span>Technical & Research Proficiencies</span>
+        </h2>
+        <div class="skills-grid-layout">
+          {skillsList.map((skillGroup) => (
+            <SkillGroup skillGroup={skillGroup} />
+          ))}
+        </div>
+      </section>
+    </div>
+  </div>
+</PageLayout>
+
+<style>
+  .sticky-subnav {
+    position: sticky;
+    top: 88px;
+    z-index: 50;
+    padding: 0.45rem 0.65rem;
+    margin-bottom: 3.5rem;
+    overflow-x: auto;
+    border-radius: var(--radius-full);
+    background: var(--bg-glass);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid var(--border-hairline);
+    box-shadow: var(--shadow-sm);
+    display: inline-flex;
+    max-width: 100%;
+  }
+
+  .subnav-links-list {
+    list-style: none;
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    white-space: nowrap;
+  }
+
+  .subnav-link {
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--text-secondary);
+    text-decoration: none;
+    padding: 0.45rem 1rem;
+    border-radius: var(--radius-full);
+    transition: all var(--transition-fast);
+  }
+
+  .subnav-link:hover {
+    color: var(--text-primary);
+    background: var(--bg-surface);
+  }
+
+  .subnav-link.active {
+    color: var(--accent);
+    background: var(--bg-surface);
+    font-weight: 600;
+    box-shadow: var(--shadow-sm);
+    border: 1px solid var(--border-hairline);
+  }
+
+  .sections-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 5rem;
+  }
+
+  .exp-category-block {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    scroll-margin-top: 160px;
+  }
+
+  .category-heading {
+    display: flex;
+    align-items: baseline;
+    gap: 0.75rem;
+    color: var(--text-primary);
+    border-bottom: 2px solid var(--border-hairline);
+    padding-bottom: 0.75rem;
+  }
+
+  .heading-num {
+    font-size: 1.25rem;
+    color: var(--accent);
+    font-weight: 700;
+  }
+
+  .category-cards-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 1.75rem;
+  }
+
+  .category-timeline-stack {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .skills-grid-layout {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 1.75rem;
+  }
+</style>
+
+<script>
+  function setupScrollSpy() {
+    const subnavLinks = document.querySelectorAll<HTMLAnchorElement>('.subnav-link');
+    const sections = Array.from(subnavLinks).map(link => {
+      const id = link.getAttribute('href')?.replace('#', '');
+      return id ? document.getElementById(id) : null;
+    }).filter(Boolean) as HTMLElement[];
+
+    function onScroll() {
+      const scrollPos = window.scrollY + 180;
+      let currentId = '';
+
+      sections.forEach(sec => {
+        if (sec.offsetTop <= scrollPos) {
+          currentId = sec.getAttribute('id') || '';
+        }
+      });
+
+      if (currentId) {
+        subnavLinks.forEach(link => {
+          const href = link.getAttribute('href') || '';
+          link.classList.toggle('active', href === `#${currentId}`);
+        });
+      }
+    }
+
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+  }
+
+  setupScrollSpy();
+  document.addEventListener('astro:page-load', setupScrollSpy);
+</script>

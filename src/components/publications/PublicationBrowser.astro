@@ -1,0 +1,498 @@
+---
+/**
+ * ═════════════════════════════════════════════════════════════
+ * [COMPONENT] PublicationBrowser — Search, Filter & Controller
+ * ─────────────────────────────────────────────────────────────
+ * Purpose     : Instant search by title, venue, author, and topic;
+ *               multi-select filtering by type/year, URL synchronization & aria-live.
+ * Props       : topics (string[]), years (number[])
+ * ═════════════════════════════════════════════════════════════
+ */
+
+interface Props {
+  topics: string[];
+  years: number[];
+}
+
+const { topics, years } = Astro.props;
+---
+
+<div class="pub-browser-controls card-surface" id="pub-browser-controls">
+  <!-- Search Input Row -->
+  <div class="search-row">
+    <div class="search-input-wrapper">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="search-icon" aria-hidden="true">
+        <circle cx="11" cy="11" r="8"></circle>
+        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+      </svg>
+      <input
+        type="search"
+        id="pub-search-input"
+        class="pub-search-input"
+        placeholder="Search publications by title, venue, author, or keyword..."
+        aria-label="Search publications"
+        autocomplete="off"
+      />
+      <button type="button" id="search-clear-btn" class="clear-search-btn" aria-label="Clear search" style="display: none;">
+        ✕
+      </button>
+    </div>
+
+    <!-- Sort Dropdown -->
+    <div class="sort-select-wrapper">
+      <label for="pub-sort-select" class="sort-label">Sort:</label>
+      <select id="pub-sort-select" class="pub-sort-select" aria-label="Sort publications">
+        <option value="newest">Newest First</option>
+        <option value="oldest">Oldest First</option>
+        <option value="title">Title (A–Z)</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- Filter Pills Row -->
+  <div class="filters-row">
+    <!-- Type Filter -->
+    <div class="filter-group">
+      <span class="filter-group-label font-mono">Type:</span>
+      <div class="filter-pills" role="radiogroup" aria-label="Filter by type">
+        <button type="button" class="filter-pill active" data-filter-type="all">All</button>
+        <button type="button" class="filter-pill" data-filter-type="conference">Conference</button>
+        <button type="button" class="filter-pill" data-filter-type="journal">Journal</button>
+        <button type="button" class="filter-pill" data-filter-type="book-chapter">Book Chapter</button>
+      </div>
+    </div>
+
+    <!-- Year Filter -->
+    <div class="filter-group">
+      <span class="filter-group-label font-mono">Year:</span>
+      <div class="filter-pills" role="radiogroup" aria-label="Filter by year">
+        <button type="button" class="filter-pill active" data-filter-year="all">All</button>
+        {years.map((y) => (
+          <button type="button" class="filter-pill" data-filter-year={y.toString()}>{y}</button>
+        ))}
+      </div>
+    </div>
+  </div>
+
+  <!-- Active Topics & Clear All Row -->
+  <div class="topics-filter-row">
+    <span class="filter-group-label font-mono">Topics:</span>
+    <div class="topic-filter-chips">
+      {topics.map((t) => (
+        <button type="button" class="chip topic-filter-chip" data-filter-topic={t}>
+          <span>{t}</span>
+        </button>
+      ))}
+    </div>
+  </div>
+
+  <!-- Results Count & Active Status with aria-live -->
+  <div class="browser-status-bar">
+    <div id="results-count" class="results-count font-mono" aria-live="polite">
+      Showing all publications
+    </div>
+    <button type="button" id="clear-all-filters-btn" class="clear-all-link" style="display: none;">
+      Reset Filters
+    </button>
+  </div>
+</div>
+
+<style>
+  .pub-browser-controls {
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    margin-bottom: 2rem;
+  }
+
+  .search-row {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+
+  .search-input-wrapper {
+    flex: 1;
+    min-width: 280px;
+    position: relative;
+    display: flex;
+    align-items: center;
+  }
+
+  .search-icon {
+    position: absolute;
+    left: 1rem;
+    color: var(--text-muted);
+    pointer-events: none;
+  }
+
+  .pub-search-input {
+    width: 100%;
+    padding: 0.75rem 2.5rem 0.75rem 2.75rem;
+    font-size: 0.95rem;
+    font-family: var(--font-sans);
+    border-radius: var(--radius-md);
+    background: var(--bg-subtle);
+    border: 1px solid var(--border-hairline);
+    color: var(--text-primary);
+    transition: all var(--transition-fast);
+  }
+
+  .pub-search-input:focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px var(--accent-subtle);
+    background: var(--bg-surface);
+  }
+
+  .clear-search-btn {
+    position: absolute;
+    right: 0.75rem;
+    background: transparent;
+    border: none;
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    cursor: pointer;
+    padding: 0.25rem 0.5rem;
+  }
+
+  .sort-select-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .sort-label {
+    font-size: 0.85rem;
+    font-family: var(--font-mono);
+    color: var(--text-muted);
+  }
+
+  .pub-sort-select {
+    padding: 0.65rem 1rem;
+    font-size: 0.9rem;
+    font-family: var(--font-sans);
+    background: var(--bg-surface);
+    color: var(--text-primary);
+    border: 1px solid var(--border-hairline);
+    border-radius: var(--radius-md);
+    cursor: pointer;
+  }
+
+  .filters-row {
+    display: flex;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+
+  .filter-group {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    flex-wrap: wrap;
+  }
+
+  .filter-group-label {
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--text-muted);
+    font-weight: 600;
+  }
+
+  .filter-pills {
+    display: flex;
+    gap: 0.35rem;
+    flex-wrap: wrap;
+  }
+
+  .filter-pill {
+    padding: 0.35rem 0.75rem;
+    font-size: 0.82rem;
+    font-weight: 500;
+    border-radius: var(--radius-full);
+    background: var(--bg-subtle);
+    color: var(--text-secondary);
+    border: 1px solid var(--border-hairline);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+  }
+
+  .filter-pill:hover {
+    color: var(--accent);
+    border-color: var(--accent);
+  }
+
+  .filter-pill.active {
+    background: var(--accent);
+    color: #ffffff;
+    border-color: var(--accent);
+  }
+
+  .topics-filter-row {
+    display: flex;
+    gap: 0.65rem;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    padding-top: 0.5rem;
+    border-top: 1px dashed var(--border-hairline);
+  }
+
+  .topic-filter-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    flex: 1;
+  }
+
+  .topic-filter-chip {
+    font-size: 0.78rem;
+    cursor: pointer;
+    padding: 0.25rem 0.65rem;
+  }
+
+  .browser-status-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 0.75rem;
+    border-top: 1px solid var(--border-hairline);
+    font-size: 0.88rem;
+  }
+
+  .results-count {
+    color: var(--text-secondary);
+  }
+
+  .clear-all-link {
+    background: transparent;
+    border: none;
+    color: var(--accent);
+    font-size: 0.85rem;
+    cursor: pointer;
+    font-weight: 500;
+    text-decoration: underline;
+  }
+</style>
+
+<script>
+  function setupPublicationBrowser() {
+    const searchInput = document.getElementById('pub-search-input') as HTMLInputElement | null;
+    const clearSearchBtn = document.getElementById('search-clear-btn');
+    const sortSelect = document.getElementById('pub-sort-select') as HTMLSelectElement | null;
+    const typePills = document.querySelectorAll<HTMLButtonElement>('[data-filter-type]');
+    const yearPills = document.querySelectorAll<HTMLButtonElement>('[data-filter-year]');
+    const topicChips = document.querySelectorAll<HTMLButtonElement>('[data-filter-topic]');
+    const resultsCountEl = document.getElementById('results-count');
+    const clearAllBtn = document.getElementById('clear-all-filters-btn');
+    const cards = Array.from(document.querySelectorAll<HTMLElement>('.publication-card'));
+    const yearGroups = Array.from(document.querySelectorAll<HTMLElement>('.year-group-section'));
+
+    if (!searchInput) return;
+
+    let currentType = 'all';
+    let currentYear = 'all';
+    let selectedTopics: string[] = [];
+    let currentSearch = '';
+    let currentSort = 'newest';
+
+    // Parse URL Params on load
+    const params = new URLSearchParams(window.location.search);
+    if (params.has('search')) currentSearch = params.get('search') || '';
+    if (params.has('type')) currentType = params.get('type') || 'all';
+    if (params.has('year')) currentYear = params.get('year') || 'all';
+    if (params.has('sort')) currentSort = params.get('sort') || 'newest';
+    if (params.has('topic')) {
+      const t = params.get('topic');
+      if (t) selectedTopics = [t];
+    }
+
+    // Set UI to match initial state
+    if (searchInput) searchInput.value = currentSearch;
+    if (sortSelect) sortSelect.value = currentSort;
+    if (clearSearchBtn) clearSearchBtn.style.display = currentSearch ? 'block' : 'none';
+
+    typePills.forEach(p => {
+      p.classList.toggle('active', p.getAttribute('data-filter-type') === currentType);
+    });
+
+    yearPills.forEach(p => {
+      p.classList.toggle('active', p.getAttribute('data-filter-year') === currentYear);
+    });
+
+    topicChips.forEach(c => {
+      const val = c.getAttribute('data-filter-topic') || '';
+      c.classList.toggle('active', selectedTopics.includes(val));
+    });
+
+    function updateUrl() {
+      const url = new URL(window.location.href);
+      if (currentSearch) url.searchParams.set('search', currentSearch);
+      else url.searchParams.delete('search');
+
+      if (currentType !== 'all') url.searchParams.set('type', currentType);
+      else url.searchParams.delete('type');
+
+      if (currentYear !== 'all') url.searchParams.set('year', currentYear);
+      else url.searchParams.delete('year');
+
+      if (selectedTopics.length > 0) url.searchParams.set('topic', selectedTopics[0]);
+      else url.searchParams.delete('topic');
+
+      if (currentSort !== 'newest') url.searchParams.set('sort', currentSort);
+      else url.searchParams.delete('sort');
+
+      window.history.replaceState({}, '', url.toString());
+    }
+
+    function filterAndSort() {
+      let visibleCount = 0;
+      const query = currentSearch.toLowerCase().trim();
+
+      cards.forEach(card => {
+        const text = card.textContent?.toLowerCase() || '';
+        const cType = card.getAttribute('data-type') || '';
+        const cYear = card.getAttribute('data-year') || '';
+        const cTopics = (card.getAttribute('data-topics') || '').split(',');
+
+        const matchesQuery = !query || text.includes(query);
+        const matchesType = currentType === 'all' || cType === currentType;
+        const matchesYear = currentYear === 'all' || cYear === currentYear;
+        const matchesTopic =
+          selectedTopics.length === 0 ||
+          selectedTopics.every(t => cTopics.includes(t));
+
+        const isVisible = matchesQuery && matchesType && matchesYear && matchesTopic;
+        card.style.display = isVisible ? 'flex' : 'none';
+        if (isVisible) visibleCount++;
+      });
+
+      // Update Year Group headers visibility
+      yearGroups.forEach(grp => {
+        const hasVisibleCards = Array.from(grp.querySelectorAll<HTMLElement>('.publication-card')).some(
+          c => c.style.display !== 'none'
+        );
+        grp.style.display = hasVisibleCards ? 'block' : 'none';
+      });
+
+      // Announce count
+      if (resultsCountEl) {
+        resultsCountEl.textContent = `Showing ${visibleCount} of ${cards.length} publications`;
+      }
+
+      // Show/hide Clear All button
+      const hasActiveFilter =
+        currentSearch !== '' ||
+        currentType !== 'all' ||
+        currentYear !== 'all' ||
+        selectedTopics.length > 0;
+      if (clearAllBtn) {
+        clearAllBtn.style.display = hasActiveFilter ? 'inline-block' : 'none';
+      }
+
+      updateUrl();
+    }
+
+    // Debounced Search Handler
+    let timeout: any;
+    searchInput.addEventListener('input', () => {
+      clearTimeout(timeout);
+      timeout = setTimeout(() => {
+        currentSearch = searchInput.value;
+        if (clearSearchBtn) clearSearchBtn.style.display = currentSearch ? 'block' : 'none';
+        filterAndSort();
+      }, 150);
+    });
+
+    clearSearchBtn?.addEventListener('click', () => {
+      searchInput.value = '';
+      currentSearch = '';
+      clearSearchBtn.style.display = 'none';
+      filterAndSort();
+      searchInput.focus();
+    });
+
+    // Type pills
+    typePills.forEach(pill => {
+      pill.addEventListener('click', () => {
+        currentType = pill.getAttribute('data-filter-type') || 'all';
+        typePills.forEach(p => p.classList.toggle('active', p === pill));
+        filterAndSort();
+      });
+    });
+
+    // Year pills
+    yearPills.forEach(pill => {
+      pill.addEventListener('click', () => {
+        currentYear = pill.getAttribute('data-filter-year') || 'all';
+        yearPills.forEach(p => p.classList.toggle('active', p === pill));
+        filterAndSort();
+      });
+    });
+
+    // Topic chips
+    topicChips.forEach(chip => {
+      chip.addEventListener('click', () => {
+        const topic = chip.getAttribute('data-filter-topic') || '';
+        if (selectedTopics.includes(topic)) {
+          selectedTopics = selectedTopics.filter(t => t !== topic);
+          chip.classList.remove('active');
+        } else {
+          selectedTopics = [topic]; // Single selection for simplicity
+          topicChips.forEach(c => c.classList.remove('active'));
+          chip.classList.add('active');
+        }
+        filterAndSort();
+      });
+    });
+
+    // Sort select
+    sortSelect?.addEventListener('change', () => {
+      currentSort = sortSelect.value;
+      const container = document.querySelector('.publications-list-container');
+      if (!container) return;
+
+      const cardNodes = Array.from(cards);
+      cardNodes.sort((a, b) => {
+        if (currentSort === 'newest') {
+          return parseInt(b.getAttribute('data-year') || '0', 10) - parseInt(a.getAttribute('data-year') || '0', 10);
+        } else if (currentSort === 'oldest') {
+          return parseInt(a.getAttribute('data-year') || '0', 10) - parseInt(b.getAttribute('data-year') || '0', 10);
+        } else if (currentSort === 'title') {
+          const tA = a.querySelector('.paper-title')?.textContent || '';
+          const tB = b.querySelector('.paper-title')?.textContent || '';
+          return tA.localeCompare(tB);
+        }
+        return 0;
+      });
+
+      cardNodes.forEach(c => container.appendChild(c));
+      filterAndSort();
+    });
+
+    // Reset all
+    clearAllBtn?.addEventListener('click', () => {
+      searchInput.value = '';
+      currentSearch = '';
+      currentType = 'all';
+      currentYear = 'all';
+      selectedTopics = [];
+      if (clearSearchBtn) clearSearchBtn.style.display = 'none';
+
+      typePills.forEach(p => p.classList.toggle('active', p.getAttribute('data-filter-type') === 'all'));
+      yearPills.forEach(p => p.classList.toggle('active', p.getAttribute('data-filter-year') === 'all'));
+      topicChips.forEach(c => c.classList.remove('active'));
+
+      filterAndSort();
+    });
+
+    // Initial run
+    filterAndSort();
+  }
+
+  setupPublicationBrowser();
+  document.addEventListener('astro:page-load', setupPublicationBrowser);
+</script>

@@ -1,0 +1,75 @@
+---
+/**
+ * ═════════════════════════════════════════════════════════════
+ * [COMPONENT] JsonLdPerson — Schema.org Person Structured Data
+ * ─────────────────────────────────────────────────────────────
+ * Purpose     : Generates Schema.org Person JSON-LD structured metadata
+ *               for Google Search and Google Scholar indexing.
+ * Props       : None
+ * Data Source : src/content/site/profile.yaml
+ * Used In     : src/layouts/BaseLayout.astro
+ * How to Edit : Add or update verified profile links in profile.yaml.
+ * ═════════════════════════════════════════════════════════════
+ */
+
+import { getEntry } from 'astro:content';
+
+const profileEntry = await getEntry('site', 'profile');
+const profile = profileEntry?.data;
+
+const siteUrl = import.meta.env.PUBLIC_SITE_URL || 'https://nazmul-hasan-shouvo.vercel.app';
+
+// Filter sameAs links: only include populated URLs (exclude empty strings)
+const sameAsLinks: string[] = [];
+if (profile?.links) {
+  if (profile.links.linkedin) sameAsLinks.push(profile.links.linkedin);
+  if (profile.links.googleScholar) sameAsLinks.push(profile.links.googleScholar);
+  if (profile.links.orcid) sameAsLinks.push(profile.links.orcid);
+  if (profile.links.github) sameAsLinks.push(profile.links.github);
+  if (profile.links.researchGate) sameAsLinks.push(profile.links.researchGate);
+}
+
+const personSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  name: profile?.name || 'Nazmul Hasan Shouvo',
+  givenName: 'Nazmul Hasan',
+  familyName: 'Shouvo',
+  jobTitle: profile?.currentRole || 'Research Assistant (Placement) & MSc Data Intelligence Student',
+  description: profile?.positioningLine || 'Building explainable, clinically meaningful AI for medical image analysis.',
+  url: siteUrl,
+  email: `mailto:${profile?.email || 'mdnazmulhasanshouv@gmail.com'}`,
+  affiliation: {
+    '@type': 'EducationalOrganization',
+    name: 'Canterbury Christ Church University',
+    address: {
+      '@type': 'PostalAddress',
+      addressLocality: 'Canterbury',
+      addressRegion: 'Kent',
+      addressCountry: 'United Kingdom'
+    }
+  },
+  alumniOf: [
+    {
+      '@type': 'EducationalOrganization',
+      name: 'International University of Business Agriculture and Technology (IUBAT)'
+    },
+    {
+      '@type': 'EducationalOrganization',
+      name: 'Canterbury Christ Church University'
+    }
+  ],
+  knowsAbout: profile?.researchInterests || [
+    'Artificial Intelligence',
+    'Machine Learning',
+    'Deep Learning',
+    'Medical Image Analysis',
+    'Explainable AI (XAI)',
+    '3D Medical Image Segmentation',
+    'Vision Transformers'
+  ],
+  sameAs: sameAsLinks
+};
+---
+
+<script type="application/ld+json" set:html={JSON.stringify(personSchema)} />

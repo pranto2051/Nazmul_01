@@ -1,0 +1,39 @@
+# ═════════════════════════════════════════════════════════════
+# [CARD] Education — Academic Qualifications & Degrees
+# ─────────────────────────────────────────────────────────────
+# [DATA]    MSc (CCCU, UK) and BSc (IUBAT, Bangladesh)
+# [MANUAL-UPDATE] Edit items below to update degrees or module lists.
+# ═════════════════════════════════════════════════════════════
+
+- id: msc-data-intelligence-cccu
+  degree: "MSc Data Intelligence with Placement"
+  institution: "Canterbury Christ Church University (CCCU)"
+  location: "Canterbury, Kent, United Kingdom"
+  period: "2025/26 – Present"
+  status: "In Progress"
+  grade: "Current Average 70% (Distinction, Ongoing)"
+  description: "Specialized master's program focusing on deep learning, big data infrastructure, and healthcare informatics with an integrated industrial/academic research placement."
+  modules:
+    - "Big Data Database Development"
+    - "Data in Action"
+    - "Applied Machine Learning"
+    - "Healthcare Informatics"
+  highlights:
+    - "Appointed Research Assistant (Placement) working on medical imaging & pancreatic CT segmentation."
+    - "Achieving a first-class distinction average across advanced data engineering modules."
+  verified: true
+
+- id: bsc-cse-iubat
+  degree: "BSc in Computer Science and Engineering"
+  institution: "IUBAT — International University of Business Agriculture and Technology"
+  location: "Dhaka, Bangladesh"
+  period: "Graduated Fall 2023"
+  status: "Completed"
+  grade: "CGPA 3.84 / 4.00 (High Distinction)"
+  thesisTitle: "An Efficient Scheduling Algorithm Based on Buffer Status and Queue Length to Satisfy Real-Time Users in 5G Networks"
+  thesisPublicationId: "chayon-5g-scheduling-2024"
+  description: "Comprehensive 4-year undergraduate curriculum in computer science theory, algorithms, telecommunications, and machine learning."
+  highlights:
+    - "Undergraduate thesis published and presented at the 27th IEEE ICCIT 2024 (pp. 2014–2019)."
+    - "Served as Academic Peer Mentor in Data Structures and Algorithms."
+  verified: true

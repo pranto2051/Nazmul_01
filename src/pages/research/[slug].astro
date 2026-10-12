@@ -1,0 +1,412 @@
+---
+/**
+ * ═════════════════════════════════════════════════════════════
+ * [SECTION] Research Case Study Deep-Dive (`/research/[slug]`)
+ * ─────────────────────────────────────────────────────────────
+ * Purpose     : Single research case study article, in-page jump-links,
+ *               results metrics grid, figures array, and prev/next navigation.
+ * Data Source : src/content/research/*.md
+ * ═════════════════════════════════════════════════════════════
+ */
+
+import { getCollection, render } from 'astro:content';
+import PageLayout from '../../layouts/PageLayout.astro';
+import ResultsGrid from '../../components/research/ResultsGrid.astro';
+import RelatedPublications from '../../components/research/RelatedPublications.astro';
+import Figure from '../../components/media/Figure.astro';
+import BeforeAfter from '../../components/media/BeforeAfter.astro';
+import DraftBadge from '../../components/ui/DraftBadge.astro';
+
+export async function getStaticPaths() {
+  const caseStudies = await getCollection('research');
+  return caseStudies.map((cs, index) => {
+    const prev = index > 0 ? caseStudies[index - 1] : null;
+    const next = index < caseStudies.length - 1 ? caseStudies[index + 1] : null;
+    return {
+      params: { slug: cs.id },
+      props: { caseStudy: cs, prev, next },
+    };
+  });
+}
+
+const { caseStudy, prev, next } = Astro.props;
+const { data, id } = caseStudy;
+const { Content } = await render(caseStudy);
+
+// Retrieve related publications
+const allPubs = await getCollection('publications');
+const relatedPubs = allPubs
+  .filter((p) => data.relatedPublicationIds.includes(p.data.id))
+  .map((p) => p.data);
+---
+
+<PageLayout
+  title={`${data.title} | Nazmul Hasan Shouvo`}
+  description={data.subtitle}
+  activeHref="/research"
+>
+  <article class="case-study-article container">
+    <!-- Header Hero -->
+    <header class="study-header">
+      <a href="/research" class="back-to-research-link">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="19" y1="12" x2="5" y2="12"></line>
+          <polyline points="12 19 5 12 12 5"></polyline>
+        </svg>
+        <span>Back to Research</span>
+      </a>
+
+      <div class="study-meta-bar">
+        <span class={`status-tag status-${data.status}`}>
+          {data.status === 'ongoing' ? 'Active Investigation' : 'Completed Project'}
+        </span>
+        <span class="study-period font-mono">{data.period}</span>
+        <span class="meta-dot">·</span>
+        <span class="study-role font-mono">{data.role}</span>
+        {!data.resultsVerified && <DraftBadge text="Draft Results" />}
+      </div>
+
+      <h1 class="study-title text-hero">{data.title}</h1>
+      <p class="study-subtitle text-title-3">{data.subtitle}</p>
+
+      <!-- Tech Stack -->
+      <div class="study-stack-chips">
+        {data.stack.map((tech) => (
+          <span class="chip font-mono">{tech}</span>
+        ))}
+      </div>
+    </header>
+
+    <!-- Two-column: Left sticky TOC & Right Markdown Body -->
+    <div class="study-content-layout">
+      <!-- In-Page Jump-Links (TOC) -->
+      <aside class="study-toc card-surface">
+        <span class="toc-heading font-mono">SECTIONS</span>
+        <nav class="toc-nav">
+          <a href="#summary" class="toc-link">1. Summary</a>
+          <a href="#problem" class="toc-link">2. Problem</a>
+          <a href="#approach" class="toc-link">3. Approach</a>
+          <a href="#results" class="toc-link">4. Benchmark Results</a>
+          <a href="#interpretability" class="toc-link">5. Interpretability</a>
+          <a href="#limitations" class="toc-link">6. Limitations & Next Steps</a>
+          {data.figures && data.figures.length > 0 && (
+            <a href="#figures" class="toc-link">7. Scientific Figures</a>
+          )}
+          {relatedPubs.length > 0 && (
+            <a href="#related-publications" class="toc-link">8. Associated Publications</a>
+          )}
+        </nav>
+      </aside>
+
+      <!-- Main Study Prose & Visuals -->
+      <div class="study-body-column prose">
+        <!-- Interactive Before/After for Pancreatic CT -->
+        {id === 'pancreatic-ct-segmentation' && (
+          <div class="study-interactive-block">
+            <h3 class="interactive-heading text-title-3 font-mono">
+              Volumetric Segmentation Comparison
+            </h3>
+            <BeforeAfter
+              beforeImageKey="pancreaticCtScan"
+              afterImageKey="pancreaticSegmentationMask"
+              beforeLabel="Raw Axial CT Slice"
+              afterLabel="Predicted 3D Mask"
+            />
+          </div>
+        )}
+
+        <!-- Benchmark Metrics Grid -->
+        <ResultsGrid results={data.results} resultsVerified={data.resultsVerified} />
+
+        <!-- Rendered Markdown Sections -->
+        <div class="markdown-prose">
+          <Content />
+        </div>
+
+        <!-- Scientific Figures Grid -->
+        {data.figures && data.figures.length > 0 && (
+          <section id="figures" class="study-figures-section">
+            <h3 class="figures-heading text-title-3 font-mono">Scientific Figures & Visualizations</h3>
+            <div class="study-figures-grid">
+              {data.figures.map((fig) => (
+                <Figure
+                  imageKey={fig.key}
+                  caption={fig.caption}
+                  credit={fig.credit}
+                  lightboxId={`figure-${fig.key}`}
+                />
+              ))}
+            </div>
+          </section>
+        )}
+
+        <!-- Related Publications -->
+        <RelatedPublications publications={relatedPubs} />
+
+        <!-- Next / Prev Navigation -->
+        <nav class="study-pagination" aria-label="Case Study Navigation">
+          {prev ? (
+            <a href={`/research/${prev.id}`} class="pagination-link prev-link card-surface">
+              <span class="pagination-sub font-mono">← PREVIOUS CASE STUDY</span>
+              <span class="pagination-title">{prev.data.title}</span>
+            </a>
+          ) : <div />}
+
+          {next ? (
+            <a href={`/research/${next.id}`} class="pagination-link next-link card-surface">
+              <span class="pagination-sub font-mono">NEXT CASE STUDY →</span>
+              <span class="pagination-title">{next.data.title}</span>
+            </a>
+          ) : <div />}
+        </nav>
+      </div>
+    </div>
+  </article>
+</PageLayout>
+
+<style>
+  .case-study-article {
+    padding-top: clamp(2.5rem, 5vw, 4rem);
+    padding-bottom: clamp(4rem, 8vw, 7rem);
+  }
+
+  .study-header {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    padding-bottom: 2.5rem;
+    border-bottom: 1px solid var(--border-hairline);
+    margin-bottom: 3rem;
+  }
+
+  .back-to-research-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--accent);
+    text-decoration: none;
+  }
+
+  .back-to-research-link:hover {
+    text-decoration: underline;
+  }
+
+  .study-meta-bar {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+    font-size: 0.88rem;
+  }
+
+  .status-tag {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    padding: 0.25rem 0.65rem;
+    border-radius: var(--radius-sm);
+  }
+
+  .status-ongoing {
+    background: rgba(13, 148, 136, 0.15);
+    color: var(--accent-2);
+    border: 1px solid var(--accent-2);
+  }
+
+  .status-completed {
+    background: rgba(3, 105, 161, 0.15);
+    color: var(--accent);
+    border: 1px solid var(--accent);
+  }
+
+  .study-period {
+    color: var(--text-muted);
+  }
+
+  .study-role {
+    color: var(--text-secondary);
+    font-weight: 600;
+  }
+
+  .study-title {
+    color: var(--text-primary);
+  }
+
+  .study-subtitle {
+    color: var(--text-secondary);
+    max-width: 65ch;
+  }
+
+  .study-stack-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+  }
+
+  /* Two column layout */
+  .study-content-layout {
+    display: grid;
+    grid-template-columns: 260px 1fr;
+    gap: 3.5rem;
+    align-items: flex-start;
+  }
+
+  .study-toc {
+    position: sticky;
+    top: 96px;
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+  }
+
+  .toc-heading {
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    color: var(--accent);
+  }
+
+  .toc-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .toc-link {
+    font-size: 0.88rem;
+    color: var(--text-secondary);
+    text-decoration: none;
+    transition: color var(--transition-fast);
+  }
+
+  .toc-link:hover {
+    color: var(--accent);
+  }
+
+  .study-body-column {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+  .study-interactive-block {
+    margin: 1.5rem 0;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .interactive-heading {
+    color: var(--text-primary);
+  }
+
+  /* Markdown Typography Styling */
+  .markdown-prose {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .markdown-prose :global(h2) {
+    font-size: 1.65rem;
+    margin-top: 2rem;
+    margin-bottom: 0.75rem;
+    border-bottom: 1px solid var(--border-hairline);
+    padding-bottom: 0.4rem;
+    scroll-margin-top: 96px;
+  }
+
+  .markdown-prose :global(p) {
+    font-size: 1.05rem;
+    line-height: 1.75;
+    color: var(--text-secondary);
+  }
+
+  .markdown-prose :global(ul),
+  .markdown-prose :global(ol) {
+    padding-left: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    color: var(--text-secondary);
+  }
+
+  .markdown-prose :global(li) {
+    line-height: 1.65;
+  }
+
+  .study-figures-section {
+    margin-top: 2.5rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--border-hairline);
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    scroll-margin-top: 96px;
+  }
+
+  .study-figures-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .study-pagination {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    margin-top: 3.5rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--border-hairline);
+  }
+
+  .pagination-link {
+    padding: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    text-decoration: none;
+    transition: all var(--transition-fast);
+  }
+
+  .pagination-link:hover {
+    border-color: var(--accent);
+  }
+
+  .pagination-sub {
+    font-size: 0.75rem;
+    color: var(--accent);
+    font-weight: 600;
+  }
+
+  .pagination-title {
+    font-size: 1rem;
+    color: var(--text-primary);
+    font-weight: 600;
+    line-height: 1.35;
+  }
+
+  .next-link {
+    text-align: right;
+    align-items: flex-end;
+  }
+
+  @media (max-width: 960px) {
+    .study-content-layout {
+      grid-template-columns: 1fr;
+    }
+
+    .study-toc {
+      display: none;
+    }
+
+    .study-pagination {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

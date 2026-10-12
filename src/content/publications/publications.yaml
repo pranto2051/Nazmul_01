@@ -1,0 +1,431 @@
+# ═════════════════════════════════════════════════════════════
+# [CARD] Publications — Primary Research Publications Registry
+# ─────────────────────────────────────────────────────────────
+# [DATA]    10 Conference papers, 2 Journal articles, 3 Book chapters
+# [MANUAL-UPDATE] To append new papers, duplicate a block below and place at top.
+# [VERIFY]  Leave DOI or Abstract blank if unpublished; set verified: false for demo records.
+# ═════════════════════════════════════════════════════════════
+
+- id: shouvo-guava-leaf-2026
+  title: "Class-Weighted ResNet50 for Robust Guava Leaf Disease Classification under Real-Field Conditions"
+  authors:
+    - "Nazmul Hasan Shouvo"
+    - "M. S. Alom"
+    - "F. A. Jibon"
+    - "A. Islam"
+    - "W. H. Hridoy"
+    - "A. Rakin"
+    - "M. I. Ahamed"
+  venue: "2026 IEEE International Conference on Quantum Photonics, Artificial Intelligence, and Nanotechnology (IEEE QPAIN)"
+  venueShort: "IEEE QPAIN 2026"
+  year: 2026
+  month: "April"
+  pages: "1–6"
+  type: "conference"
+  status: "accepted"
+  doi: ""
+  pdfUrl: ""
+  codeUrl: ""
+  abstract: "Agricultural disease diagnosis suffers from extreme class imbalance under uncontrolled ambient lighting and real-field occlusions. We propose a class-weighted ResNet50 framework combined with Grad-CAM visual interpretability to isolate early-stage foliar lesions without synthetic oversampling artefacts."
+  topics:
+    - "Deep Learning"
+    - "Explainable AI (XAI)"
+  thumbnail: "guavaArchitecture"
+  figures:
+    - key: "guavaArchitecture"
+      caption: "Class-weighted ResNet50 architectural pipeline"
+      credit: "IEEE QPAIN 2026 (Accepted)"
+    - key: "guavaGradcam"
+      caption: "Grad-CAM visual localization on symptomatic leaf patches"
+      credit: "IEEE QPAIN 2026"
+  bibtex: |
+    @inproceedings{shouvo2026guava,
+      title={Class-Weighted ResNet50 for Robust Guava Leaf Disease Classification under Real-Field Conditions},
+      author={Shouvo, Nazmul Hasan and Alom, M. S. and Jibon, F. A. and Islam, A. and Hridoy, W. H. and Rakin, A. and Ahamed, M. I.},
+      booktitle={2026 IEEE International Conference on Quantum Photonics, Artificial Intelligence, and Nanotechnology (IEEE QPAIN)},
+      pages={1--6},
+      year={2026}
+    }
+  featured: true
+  verified: true
+
+- id: rakin-aids-ensemble-2026
+  title: "Robust AIDS Disease Classification Using a Threshold-Optimized Weighted Ensemble and Class-Balanced Machine Learning"
+  authors:
+    - "A. Rakin"
+    - "Nazmul Hasan Shouvo"
+    - "M. S. Alom"
+    - "M. I. Ahamed"
+    - "W. H. Hridoy"
+    - "I. Al Mamoon"
+    - "M. A. Awal"
+  venue: "2026 IEEE International Conference on Quantum Photonics, Artificial Intelligence, and Nanotechnology (IEEE QPAIN)"
+  venueShort: "IEEE QPAIN 2026"
+  year: 2026
+  month: "April"
+  pages: "1–6"
+  type: "conference"
+  status: "accepted"
+  doi: ""
+  pdfUrl: ""
+  codeUrl: ""
+  abstract: "Clinical staging of immune deficiency requires rigorous threshold calibration to minimize false negative diagnoses. This study develops a weighted soft-voting ensemble across heterogeneous learners with cross-validated decision threshold optimization."
+  topics:
+    - "Machine Learning"
+    - "AI for Healthcare"
+    - "Trustworthy AI"
+  thumbnail: "aidsEnsembleFramework"
+  featured: false
+  verified: true
+
+- id: alom-applenet-2026
+  title: "AppleNet-B1: Explainable Auto-Reweighted EfficientNet for Apple Disease Detection"
+  authors:
+    - "M. S. Alom"
+    - "A. Al Rafee"
+    - "A. Rakin"
+    - "F. A. Jibon"
+    - "Nazmul Hasan Shouvo"
+    - "A. H. M. Kamal"
+    - "M. I. Ahamed"
+  venue: "2026 IEEE International Conference on Quantum Photonics, Artificial Intelligence, and Nanotechnology (IEEE QPAIN)"
+  venueShort: "IEEE QPAIN 2026"
+  year: 2026
+  month: "April"
+  pages: "1–6"
+  type: "conference"
+  status: "accepted"
+  doi: ""
+  pdfUrl: ""
+  codeUrl: ""
+  abstract: "An auto-reweighted EfficientNet-B1 model featuring post-hoc attribution and attention heatmaps for fine-grained botanical disease detection."
+  topics:
+    - "Deep Learning"
+    - "Explainable AI (XAI)"
+    - "Trustworthy AI"
+  thumbnail: "appleNetArchitecture"
+  featured: false
+  verified: true
+
+- id: alom-tomatonet-2026
+  title: "TomatoNet-R50: A ResNet50-Based Deep Learning Architecture for the Detection of Tomato Leaf Disease"
+  authors:
+    - "M. S. Alom"
+    - "M. I. Ahamed"
+    - "F. A. Jibon"
+    - "Nazmul Hasan Shouvo"
+    - "A. H. M. Kamal"
+    - "A. Rakin"
+  venue: "2026 IEEE International Conference on Quantum Photonics, Artificial Intelligence, and Nanotechnology (IEEE QPAIN)"
+  venueShort: "IEEE QPAIN 2026"
+  year: 2026
+  month: "April"
+  pages: "1–6"
+  type: "conference"
+  status: "accepted"
+  doi: ""
+  pdfUrl: ""
+  codeUrl: ""
+  abstract: "Deep convolutional architecture adapted for fine-grained foliar disease discrimination in solanaceous crops."
+  topics:
+    - "Deep Learning"
+  thumbnail: "tomatoNetDiagram"
+  featured: false
+  verified: true
+
+- id: alom-mangonet-2026
+  title: "MangoNet-SA: A Lightweight MobileNetV2-Based Spatial Attention CNN for Robust Mango Leaf Disease Classification"
+  authors:
+    - "M. S. Alom"
+    - "A. Rakin"
+    - "F. A. Jibon"
+    - "Nazmul Hasan Shouvo"
+    - "A. H. M. Kamal"
+    - "M. I. Ahamed"
+  venue: "2026 IEEE International Conference on Quantum Photonics, Artificial Intelligence, and Nanotechnology (IEEE QPAIN)"
+  venueShort: "IEEE QPAIN 2026"
+  year: 2026
+  month: "April"
+  pages: "1–6"
+  type: "conference"
+  status: "accepted"
+  doi: ""
+  pdfUrl: ""
+  codeUrl: ""
+  abstract: "A mobile-first spatial attention CNN model enabling fast edge-device inference for orchard disease pathology."
+  topics:
+    - "Deep Learning"
+    - "Explainable AI (XAI)"
+  thumbnail: "mangoNetSaArchitecture"
+  featured: false
+  verified: true
+
+- id: rakin-eggplant-vit-2026
+  title: "Explainable Eggplant Leaf Disease Classification Using Vision Transformers and Convolutional Neural Networks"
+  authors:
+    - "A. Rakin"
+    - "M. S. Alom"
+    - "M. I. Ahamed"
+    - "Nazmul Hasan Shouvo"
+    - "I. Al Mamoon"
+    - "M. A. Awal"
+  venue: "2026 IEEE International Conference on Quantum Photonics, Artificial Intelligence, and Nanotechnology (IEEE QPAIN)"
+  venueShort: "IEEE QPAIN 2026"
+  year: 2026
+  month: "April"
+  pages: "1–6"
+  type: "conference"
+  status: "accepted"
+  doi: ""
+  pdfUrl: ""
+  codeUrl: ""
+  abstract: "Hybrid Vision Transformer and CNN framework analyzing patch self-attention representations for botanical pathology."
+  topics:
+    - "Vision Transformers"
+    - "Deep Learning"
+    - "Explainable AI (XAI)"
+  thumbnail: "pancreaticVitArchitecture"
+  featured: false
+  verified: true
+
+- id: haque-liver-stacking-2026
+  title: "Explainable Stacking Machine Learning Ensemble Model for Liver Disease Prediction"
+  authors:
+    - "O. Haque"
+    - "M. S. Alom"
+    - "F. A. Jibon"
+    - "S. K. Gain"
+    - "M. M. Alum"
+    - "M. A. A. Linkon"
+    - "Nazmul Hasan Shouvo"
+  venue: "2026 3rd International Conference on Electrical, Computer & Telecommunication Engineering (IEEE ICECTE)"
+  venueShort: "IEEE ICECTE 2026"
+  year: 2026
+  month: "January"
+  pages: "1–6"
+  type: "conference"
+  status: "accepted"
+  doi: ""
+  pdfUrl: ""
+  codeUrl: ""
+  abstract: "Stacking ensemble framework combining gradient boosted trees and regularized logistic meta-learners with SHAP feature explanations for hepatic risk scoring."
+  topics:
+    - "Machine Learning"
+    - "Explainable AI (XAI)"
+    - "AI for Healthcare"
+  thumbnail: "liverStackingPipeline"
+  featured: false
+  verified: true
+
+- id: shouvo-liver-peccii-2026
+  title: "Explainable Liver Disease Prediction Using Stacking Ensemble Machine Learning"
+  authors:
+    - "Nazmul Hasan Shouvo"
+    - "A. Rakin"
+    - "M. S. Alom"
+    - "et al."
+  venue: "2026 International Conference on Power, Electrical, Electronics and Computing Innovations (PECCII 2026)"
+  venueShort: "PECCII 2026"
+  year: 2026
+  month: ""
+  pages: ""
+  type: "conference"
+  status: "accepted"
+  doi: ""
+  pdfUrl: ""
+  codeUrl: ""
+  abstract: "Multi-model stacked ensemble for non-invasive hepatic disorder prediction with post-hoc local surrogate interpretability."
+  topics:
+    - "Machine Learning"
+    - "Explainable AI (XAI)"
+    - "AI for Healthcare"
+  thumbnail: "liverShapSummary"
+  featured: false
+  verified: true
+
+- id: shouvo-heart-stroke-2025
+  title: "Multi-Class Heart Disease and Stroke Risk Classification Framework"
+  authors:
+    - "Nazmul Hasan Shouvo"
+    - "A. Rakin"
+    - "M. S. Alom"
+    - "et al."
+  venue: "AI-Scientist-UK 2025 International Research Symposium"
+  venueShort: "AI-Scientist-UK 2025"
+  year: 2025
+  month: "November"
+  pages: ""
+  type: "conference"
+  status: "published"
+  doi: ""
+  pdfUrl: ""
+  codeUrl: ""
+  abstract: "A multi-target epidemiological classification architecture stratifying concurrent coronary disease and cerebrovascular accident risks from multimodal electronic health indicators."
+  topics:
+    - "Artificial Intelligence"
+    - "Machine Learning"
+    - "AI for Healthcare"
+    - "Trustworthy AI"
+  thumbnail: "heartStrokePipeline"
+  featured: true
+  verified: true
+
+- id: chayon-5g-scheduling-2024
+  title: "An Efficient Scheduling Algorithm Based on Buffer Status and Queue Length to Satisfy the Real-Time Users in 5G"
+  authors:
+    - "M. H. R. Chayon"
+    - "Nazmul Hasan Shouvo"
+    - "M. A. Al Mamun"
+  venue: "2024 27th International Conference on Computer and Information Technology (IEEE ICCIT)"
+  venueShort: "IEEE ICCIT 2024"
+  year: 2024
+  month: "December"
+  pages: "2014–2019"
+  type: "conference"
+  status: "published"
+  doi: "10.1109/ICCIT64658.2024.10892014" # [VERIFY] [DRAFT — confirm on IEEE Xplore before showing]
+  pdfUrl: ""
+  codeUrl: ""
+  abstract: "Proposes a dynamic resource allocation scheduling algorithm evaluating buffer status reports and instantaneous queue delays to satisfy strict ultra-reliable low-latency QoS constraints for real-time mobile users in 5G New Radio networks."
+  topics:
+    - "Machine Learning"
+    - "Artificial Intelligence"
+  thumbnail: "scheduling5gFlowchart"
+  bibtex: |
+    @inproceedings{chayon2024scheduling,
+      title={An Efficient Scheduling Algorithm Based on Buffer Status and Queue Length to Satisfy the Real-Time Users in 5G},
+      author={Chayon, M. H. R. and Shouvo, Nazmul Hasan and Al Mamun, M. A.},
+      booktitle={2024 27th International Conference on Computer and Information Technology (IEEE ICCIT)},
+      pages={2014--2019},
+      year={2024},
+      doi={10.1109/ICCIT64658.2024.10892014}
+    }
+  featured: true
+  verified: false # [VERIFY] DOI to be checked on IEEE Xplore
+
+- id: awal-skinnet-2026
+  title: "SkinNet: Explainable Lightweight CNN Model for Skin Disease Classification"
+  authors:
+    - "M. A. Awal"
+    - "A. Rakin"
+    - "M. S. Alom"
+    - "S. S. Akhi"
+    - "Nazmul Hasan Shouvo"
+    - "M. I. Ahamed"
+    - "I. A. Mamoon"
+    - "U. K. Das"
+  venue: "Frontiers in Complex Dynamical Systems (FCDS)"
+  venueShort: "Frontiers in Complex Dynamical Systems"
+  year: 2026
+  month: ""
+  pages: ""
+  type: "journal"
+  status: "accepted"
+  doi: ""
+  pdfUrl: ""
+  codeUrl: ""
+  abstract: "An efficient, parameter-reduced convolutional neural network paired with activation heatmaps for dermatoscopic lesion triage in low-resource clinics."
+  topics:
+    - "Deep Learning"
+    - "Explainable AI (XAI)"
+    - "AI for Healthcare"
+  thumbnail: "skinNetArchitecture"
+  featured: false
+  verified: true
+
+- id: ahamed-parkinsons-2026
+  title: "Variation-Based Ensemble Learning for Parkinson's Disease Prediction Using Weighted Voting and Stacking Models"
+  authors:
+    - "M. I. Ahamed"
+    - "S. S. Akhi"
+    - "Nazmul Hasan Shouvo"
+    - "A. Rakin"
+    - "M. S. Alom"
+  venue: "Engineering Reports (Wiley)"
+  venueShort: "Engineering Reports (Wiley)"
+  year: 2026
+  month: ""
+  pages: ""
+  type: "journal"
+  status: "under-review"
+  doi: ""
+  pdfUrl: ""
+  codeUrl: ""
+  abstract: "Biomarker variance analysis and stacked heterogeneous voting ensembles for non-invasive early-stage Parkinsonian neurodegenerative disorder discrimination."
+  topics:
+    - "Machine Learning"
+    - "Explainable AI (XAI)"
+    - "AI for Healthcare"
+  thumbnail: "parkinsonsVotingWorkflow"
+  featured: false
+  verified: true
+
+- id: shouvo-energy-ml-2026
+  title: "Energy Aware Machine Learning Frameworks for Sustainable Environmental Applications"
+  authors:
+    - "Nazmul Hasan Shouvo"
+    - "et al."
+  venue: "Bentham Science Publishers (Book Chapter)"
+  venueShort: "Bentham Science Publishers"
+  year: 2026
+  month: ""
+  pages: ""
+  type: "book-chapter"
+  status: "in-press"
+  doi: ""
+  pdfUrl: ""
+  codeUrl: ""
+  abstract: "Comprehensive analysis of algorithmic efficiency, hardware acceleration tradeoffs, and carbon-aware model training for environmental sensor monitoring."
+  topics:
+    - "Machine Learning"
+    - "Artificial Intelligence"
+    - "Trustworthy AI"
+  thumbnail: "pancreaticVitArchitecture"
+  featured: false
+  verified: false # [VERIFY] Confirm co-author list upon final indexing
+
+- id: shouvo-water-pollution-2026
+  title: "Artificial Intelligence in Water Pollution Monitoring and Management: Methods, Challenges, and Future Directions"
+  authors:
+    - "Nazmul Hasan Shouvo"
+    - "et al."
+  venue: "Bentham Science Publishers (Book Chapter)"
+  venueShort: "Bentham Science Publishers"
+  year: 2026
+  month: ""
+  pages: ""
+  type: "book-chapter"
+  status: "in-press"
+  doi: ""
+  pdfUrl: ""
+  codeUrl: ""
+  abstract: "Review of autonomous aquatic sensing, anomaly detection in time-series telemetry, and deep learning paradigms in freshwater resource conservation."
+  topics:
+    - "Artificial Intelligence"
+    - "Machine Learning"
+  thumbnail: "pancreaticVitArchitecture"
+  featured: false
+  verified: false # [VERIFY] Confirm co-author list upon final indexing
+
+- id: shouvo-carbon-ai-2026
+  title: "Carbon Conscious Artificial Intelligence: Environmental Impact, Ethical Concerns, and Sustainable AI Frameworks"
+  authors:
+    - "Nazmul Hasan Shouvo"
+    - "et al."
+  venue: "Bentham Science Publishers (Book Chapter)"
+  venueShort: "Bentham Science Publishers"
+  year: 2026
+  month: ""
+  pages: ""
+  type: "book-chapter"
+  status: "in-press"
+  doi: ""
+  pdfUrl: ""
+  codeUrl: ""
+  abstract: "Explores computational carbon footprints in contemporary deep neural architectures and formulates sustainable design methodologies for responsible AI deployments."
+  topics:
+    - "Artificial Intelligence"
+    - "Trustworthy AI"
+  thumbnail: "pancreaticVitArchitecture"
+  featured: false
+  verified: false # [VERIFY] Confirm co-author list upon final indexing

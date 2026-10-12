@@ -1,0 +1,271 @@
+---
+/**
+ * ═════════════════════════════════════════════════════════════
+ * [COMPONENT] BeforeAfter — Interactive Before / After Comparison Slider
+ * ─────────────────────────────────────────────────────────────
+ * Purpose     : Live comparative slider between raw CT scan and predicted
+ *               segmentation mask (accessible via keyboard and touch gestures).
+ * Props       : beforeImageKey, afterImageKey, beforeLabel, afterLabel
+ * Data Source : src/data/images.ts (pancreaticCtScan & pancreaticSegmentationMask)
+ * Used In     : Home Page (Research Spotlight)
+ * ═════════════════════════════════════════════════════════════
+ */
+
+import { IMG } from '../../data/images';
+import ImageFallback from './ImageFallback.astro';
+
+interface Props {
+  beforeImageKey?: string;
+  afterImageKey?: string;
+  beforeLabel?: string;
+  afterLabel?: string;
+  className?: string;
+}
+
+const {
+  beforeImageKey = 'pancreaticCtScan',
+  afterImageKey = 'pancreaticSegmentationMask',
+  beforeLabel = 'Before: Raw CT Slice',
+  afterLabel = 'After: 3D Segmentation Mask',
+  className = '',
+} = Astro.props;
+
+const before = IMG[beforeImageKey];
+const after = IMG[afterImageKey];
+---
+
+<div class={`before-after-wrapper ${className}`}>
+  {before && after ? (
+    <div class="before-after-container" id="before-after-slider-box">
+      <!-- After Image (Base / Full Background) -->
+      <div class="image-layer layer-after">
+        <img
+          src={after.src}
+          alt={after.alt}
+          width={after.width}
+          height={after.height}
+          loading="lazy"
+          class="slider-img"
+        />
+        <span class="layer-pill pill-after">{afterLabel}</span>
+      </div>
+
+      <!-- Before Image (Clipped / Foreground) -->
+      <div class="image-layer layer-before" id="slider-before-layer" style="clip-path: polygon(0 0, 50% 0, 50% 100%, 0 100%);">
+        <img
+          src={before.src}
+          alt={before.alt}
+          width={before.width}
+          height={before.height}
+          loading="lazy"
+          class="slider-img"
+        />
+        <span class="layer-pill pill-before">{beforeLabel}</span>
+      </div>
+
+      <!-- Divider Bar & Handle -->
+      <div class="slider-divider" id="slider-handle-line" style="left: 50%;">
+        <div class="slider-handle-button" aria-hidden="true">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="15 18 9 12 15 6"></polyline>
+            <polyline points="9 18 15 12 9 6" transform="rotate(180 12 12)"></polyline>
+          </svg>
+        </div>
+      </div>
+
+      <!-- Accessible Range Input for Keyboard & Screen Readers -->
+      <input
+        type="range"
+        min="0"
+        max="100"
+        value="50"
+        id="slider-range-input"
+        class="slider-range-input"
+        aria-label="Comparison slider position between raw CT and segmentation mask"
+      />
+    </div>
+  ) : (
+    <ImageFallback caption="Medical segmentation comparison" aspect="square" />
+  )}
+
+  <p class="slider-hint">
+    <span class="font-mono">DRAG / USE ARROW KEYS</span> · Slide horizontally to compare raw clinical soft-tissue vs predicted segmentation boundary
+  </p>
+</div>
+
+<style>
+  .before-after-wrapper {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .before-after-container {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    max-width: 680px;
+    margin: 0 auto;
+    border-radius: var(--radius-2xl);
+    overflow: hidden;
+    background: #060913;
+    border: 1px solid var(--border-hairline);
+    box-shadow: 0 20px 45px -10px rgba(0, 0, 0, 0.5), 0 0 30px rgba(56, 189, 248, 0.12);
+    user-select: none;
+    -webkit-user-select: none;
+  }
+
+  .image-layer {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  .slider-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    pointer-events: none;
+  }
+
+  .layer-pill {
+    position: absolute;
+    bottom: 1.25rem;
+    padding: 0.4rem 0.95rem;
+    font-size: 0.78rem;
+    font-weight: 700;
+    font-family: var(--font-mono);
+    border-radius: var(--radius-full);
+    letter-spacing: 0.05em;
+    pointer-events: none;
+    z-index: 5;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  }
+
+  .pill-before {
+    left: 1.25rem;
+    background: rgba(15, 23, 42, 0.85);
+    color: #f1f5f9;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+  }
+
+  .pill-after {
+    right: 1.25rem;
+    background: rgba(13, 148, 136, 0.85);
+    color: #ccfbf1;
+    border: 1px solid rgba(45, 212, 191, 0.4);
+  }
+
+  .slider-divider {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 3px;
+    background: #ffffff;
+    z-index: 10;
+    pointer-events: none;
+    transform: translateX(-50%);
+    box-shadow: 0 0 16px rgba(56, 189, 248, 0.8), 0 0 8px rgba(255, 255, 255, 0.8);
+  }
+
+  .slider-handle-button {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 46px;
+    height: 46px;
+    border-radius: 50%;
+    background: #ffffff;
+    color: #0284c7;
+    border: 3px solid #38bdf8;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4), 0 0 15px rgba(56, 189, 248, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: ew-resize;
+    transition: transform var(--transition-fast);
+  }
+
+  .before-after-container:hover .slider-handle-button {
+    transform: translate(-50%, -50%) scale(1.08);
+  }
+
+  /* Visually Hidden but fully Accessible Range Input */
+  .slider-range-input {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    cursor: ew-resize;
+    z-index: 20;
+    margin: 0;
+  }
+
+  .slider-range-input:focus-visible ~ .slider-divider .slider-handle-button {
+    outline: 3px solid var(--accent);
+    outline-offset: 4px;
+  }
+
+  .slider-hint {
+    font-size: 0.82rem;
+    color: var(--text-muted);
+    text-align: center;
+  }
+</style>
+
+<script>
+  function setupBeforeAfter() {
+    const input = document.getElementById('slider-range-input') as HTMLInputElement | null;
+    const beforeLayer = document.getElementById('slider-before-layer');
+    const divider = document.getElementById('slider-handle-line');
+
+    if (!input || !beforeLayer || !divider) return;
+
+    function updatePosition(val: number) {
+      beforeLayer!.style.clipPath = `polygon(0 0, ${val}% 0, ${val}% 100%, 0 100%)`;
+      divider!.style.left = `${val}%`;
+    }
+
+    input.addEventListener('input', () => {
+      updatePosition(parseFloat(input.value));
+    });
+
+    // Touch and mouse pointer tracking
+    const container = document.getElementById('before-after-slider-box');
+    if (!container) return;
+
+    let isDragging = false;
+
+    function handlePointer(clientX: number) {
+      const rect = container!.getBoundingClientRect();
+      const x = clientX - rect.left;
+      const pct = Math.max(0, Math.min(100, (x / rect.width) * 100));
+      input!.value = pct.toString();
+      updatePosition(pct);
+    }
+
+    container.addEventListener('pointerdown', (e) => {
+      isDragging = true;
+      handlePointer(e.clientX);
+    });
+
+    window.addEventListener('pointermove', (e) => {
+      if (!isDragging) return;
+      handlePointer(e.clientX);
+    });
+
+    window.addEventListener('pointerup', () => {
+      isDragging = false;
+    });
+  }
+
+  setupBeforeAfter();
+  document.addEventListener('astro:page-load', setupBeforeAfter);
+</script>

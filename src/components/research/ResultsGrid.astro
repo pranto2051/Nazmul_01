@@ -1,0 +1,145 @@
+---
+/**
+ * ═════════════════════════════════════════════════════════════
+ * [COMPONENT] ResultsGrid — Research Results & Benchmark Metrics Grid
+ * ─────────────────────────────────────────────────────────────
+ * Purpose     : Quantitative case study performance metrics (Dice, F1, Accuracy)
+ *               with achieved/target distinctions and verification badges.
+ * Props       : results (label, value, kind: 'achieved' | 'target'), resultsVerified
+ * ═════════════════════════════════════════════════════════════
+ */
+
+import DraftBadge from '../ui/DraftBadge.astro';
+
+interface ResultItem {
+  label: string;
+  value: string;
+  kind: 'achieved' | 'target';
+}
+
+interface Props {
+  results: ResultItem[];
+  resultsVerified?: boolean;
+}
+
+const { results, resultsVerified = false } = Astro.props;
+---
+
+<div class="results-grid-wrapper card-surface">
+  <div class="results-grid-header">
+    <div class="header-tag-group">
+      <span class="results-tag font-mono">BENCHMARK PERFORMANCE METRICS</span>
+      {!resultsVerified && <DraftBadge text="Draft / Target Metrics" />}
+    </div>
+    <span class="results-note font-mono">
+      {resultsVerified ? "VERIFIED FINDINGS" : "PRE-PUBLICATION DRAFT"}
+    </span>
+  </div>
+
+  <div class="results-tiles-row">
+    {results.map((res) => (
+      <div class="result-tile">
+        <div class="tile-kind-badge">
+          <span class={`kind-tag ${res.kind === 'target' ? 'kind-target' : 'kind-achieved'}`}>
+            {res.kind === 'target' ? 'Target Milestone' : 'Empirical Result'}
+          </span>
+        </div>
+        <span class="result-value font-mono">{res.value}</span>
+        <span class="result-label">{res.label}</span>
+      </div>
+    ))}
+  </div>
+</div>
+
+<style>
+  .results-grid-wrapper {
+    padding: 1.75rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    margin: 2rem 0;
+    border-left: 4px solid var(--accent);
+  }
+
+  .results-grid-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid var(--border-hairline);
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+
+  .header-tag-group {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .results-tag {
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: var(--accent);
+    letter-spacing: 0.05em;
+  }
+
+  .results-note {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+  }
+
+  .results-tiles-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.25rem;
+  }
+
+  .result-tile {
+    padding: 1.25rem;
+    border-radius: var(--radius-md);
+    background: var(--bg-subtle);
+    border: 1px solid var(--border-hairline);
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+  }
+
+  .tile-kind-badge {
+    margin-bottom: 0.25rem;
+  }
+
+  .kind-tag {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    padding: 0.15rem 0.45rem;
+    border-radius: var(--radius-sm);
+  }
+
+  .kind-target {
+    background: rgba(180, 83, 9, 0.15);
+    color: #f59e0b;
+    border: 1px solid rgba(245, 158, 11, 0.3);
+  }
+
+  .kind-achieved {
+    background: rgba(4, 120, 87, 0.15);
+    color: #10b981;
+    border: 1px solid rgba(16, 185, 129, 0.3);
+  }
+
+  .result-value {
+    font-size: 1.85rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    line-height: 1.1;
+  }
+
+  .result-label {
+    font-size: 0.88rem;
+    color: var(--text-secondary);
+    line-height: 1.4;
+  }
+</style>
